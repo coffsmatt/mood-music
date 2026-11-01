@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Decades Mood Mixer</title>
+<meta name="description" content="Mood-based album and song picks from the 60s, 70s, 80s and 90s.">
+<meta name="theme-color" content="#FBF5EC" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17120F" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mood Mixer">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+:root{--bg:#FBF5EC;--card:#FFFFFF;--ink:#2A1E1A;--soft:#7A6A60;--line:#EADFCF;--chip:#F2E7D7;--acc:#E8572A;--acc-ink:#FFFFFF;--teal:#1F8A8A;--gold:#D9981E;--au:#0F7A4A;--au-bg:#E3F3EA;--bar:#E9DCCB;--shadow:0 2px 12px rgba(70,35,10,.07);
+--d60:#E0A526;--d70:#E8572A;--d80:#C2408F;--d90:#1F8A8A;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#17120F;--card:#221B17;--ink:#F3E9DC;--soft:#B3A394;--line:#382D26;--chip:#2E2520;--acc:#FF7A4D;--acc-ink:#1A0F0A;--teal:#4FC3C3;--gold:#F2C14E;--au:#5CD39A;--au-bg:#17342A;--bar:#3A2F28;--shadow:none}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,system-ui,sans-serif;padding:env(safe-area-inset-top) 0 calc(84px + env(safe-area-inset-bottom));-webkit-text-size-adjust:100%}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+a{color:var(--acc)}
+.top{padding:14px 16px 6px;display:flex;align-items:center;gap:10px}
+.top h1{font-size:22px;line-height:1.1;margin:0;letter-spacing:-.02em;font-weight:800}
+.top h1 span{display:block;font-size:12px;font-weight:600;color:var(--soft);letter-spacing:.02em}
+.stripe{height:4px;margin:0 16px 4px;border-radius:4px;background:linear-gradient(90deg,var(--d60) 0 25%,var(--d70) 25% 50%,var(--d80) 50% 75%,var(--d90) 75%)}
+main{max-width:560px;margin:0 auto}
+.tab{display:none;padding:8px 16px 16px}.tab.on{display:block}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);margin:18px 0 8px;font-weight:700}
+h3{margin:0;font-size:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:40px;padding:0 14px;border-radius:999px;background:var(--chip);font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:6px;border:2px solid transparent}
+.chip.on{background:var(--ink);color:var(--bg)}
+.chip.au.on{background:var(--au);color:#fff}
+.row{display:grid;grid-template-columns:74px 1fr;align-items:center;gap:10px;margin:8px 0}
+.row>label,.row>span{font-weight:700;font-size:14px}
+.seg{display:grid;grid-auto-columns:1fr;grid-auto-flow:column;background:var(--chip);border-radius:14px;padding:4px;gap:2px}
+.seg button{min-height:42px;border-radius:10px;font-weight:600;font-size:14px;padding:0 4px}
+.seg button.on{background:var(--acc);color:var(--acc-ink);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.seg.sm button{min-height:36px;font-size:13px}
+details.geek{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:0 14px}
+details.geek summary{list-style:none;min-height:50px;display:flex;align-items:center;gap:8px;font-weight:700;cursor:pointer}
+details.geek summary::-webkit-details-marker{display:none}
+details.geek summary .badge{font-size:12px;font-weight:600;background:var(--acc);color:var(--acc-ink);padding:3px 8px;border-radius:999px;max-width:55%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+details.geek summary .chev{margin-left:auto;transition:transform .2s}
+details.geek[open] summary .chev{transform:rotate(90deg)}
+.geekbody{padding:2px 0 14px}
+select{width:100%;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--chip);padding:0 12px}
+.btns{display:flex;gap:10px;margin:16px 0 4px}
+.btn{flex:1;min-height:50px;border-radius:14px;font-weight:700;background:var(--chip);display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 12px}
+.btn.pri{background:var(--acc);color:var(--acc-ink)}
+.btn.sm{min-height:40px;flex:0 0 auto;font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);margin:12px 0;overflow:hidden}
+.phw{display:flex;align-items:center}
+.phw .ph{flex:1;min-width:0;padding-right:6px}
+a.play,ol.pl a.play{flex:none;width:46px;height:46px;margin-right:12px;border-radius:50%;background:#1DB954;color:#062b14;display:flex;align-items:center;justify-content:center;font-size:17px;text-decoration:none;padding:0 0 0 3px;font-weight:700}
+ol.pl a.play{margin-right:0;width:42px;height:42px}
+a.play:active{transform:scale(.92)}
+.ph{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:14px;min-height:64px}
+.ph .pt{flex:1;min-width:0}
+.ph .pt b{display:block;font-size:16px;line-height:1.25}
+.ph .pt small{display:block;color:var(--soft);font-size:13px;margin-top:2px}
+.plabel{display:block;font-size:12px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.pct{font-weight:800;font-size:20px;color:var(--teal);font-variant-numeric:tabular-nums}
+.pct small{font-size:12px}
+.chev{color:var(--soft);font-size:22px;transition:transform .2s}
+.card.open .ph .chev{transform:rotate(90deg)}
+.cb{padding:0 14px 14px}
+.desc{margin:0 0 10px}
+.why{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.why span{font-size:12.5px;font-weight:600;background:var(--chip);padding:5px 10px;border-radius:999px}
+.why span.au{background:var(--au-bg);color:var(--au)}
+.meta{font-size:13px;color:var(--soft);margin:0 0 10px}
+.bars{display:grid;gap:7px;margin:4px 0 12px}
+.bar{display:grid;grid-template-columns:72px 1fr;align-items:center;gap:8px;font-size:12.5px;color:var(--soft)}
+.track{position:relative;height:8px;background:var(--bar);border-radius:6px}
+.fill{position:absolute;inset:0 auto 0 0;border-radius:6px;background:var(--teal)}
+.tick{position:absolute;top:-4px;width:3px;height:16px;margin-left:-1.5px;background:var(--ink);border-radius:2px}
+.ends{display:flex;justify-content:space-between;font-size:10.5px;color:var(--soft);margin:-2px 0 0 80px}
+.tags{font-size:13px;color:var(--soft);margin:0 0 12px}
+.links{display:flex;gap:8px;margin:0 0 10px}
+.links a{flex:1;min-height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:700;text-decoration:none;font-size:14px}
+.sp{background:#1DB954;color:#062b14}
+.am{background:#FA2D48;color:#fff}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.rate button{min-height:42px;border-radius:12px;background:var(--chip);font-size:13px;font-weight:600}
+.rate button.on{background:var(--ink);color:var(--bg)}
+.flag{font-size:13px}
+.people{font-size:12.5px;color:var(--soft);padding:0 14px 12px;margin-top:-6px;display:flex;flex-wrap:wrap;gap:4px 10px}
+.people b{color:var(--ink)}
+.note{background:var(--chip);border-radius:14px;padding:12px 14px;font-size:14px;margin:12px 0}
+.note b{display:block;margin-bottom:2px}
+.empty{color:var(--soft);text-align:center;padding:24px 8px}
+.person{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0}
+.person .pn{display:flex;gap:8px;margin-bottom:6px}
+.person input{flex:1;min-height:44px;border-radius:12px;border:1px solid var(--line);background:var(--chip);padding:0 12px;font-weight:700;font-size:16px}
+.person .x{width:44px;min-height:44px;border-radius:12px;background:var(--chip);font-size:18px}
+.person .row{grid-template-columns:62px 1fr;margin:6px 0}
+.person .chips{gap:6px}.person .chip{min-height:36px;padding:0 11px;font-size:13px}
+ol.pl{padding:0;margin:0;list-style:none;counter-reset:pl}
+ol.pl li{counter-increment:pl;display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+ol.pl li:last-child{border:0}
+ol.pl li::before{content:counter(pl);font-weight:800;color:var(--acc);width:22px;text-align:right;font-variant-numeric:tabular-nums}
+ol.pl .t{flex:1;min-width:0}ol.pl .t b{display:block;font-size:15px}ol.pl .t small{color:var(--soft)}
+ol.pl a{font-size:13px;font-weight:700;text-decoration:none;padding:8px;border-radius:10px;background:var(--chip);color:var(--ink)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:12px 0}
+.taste{font-size:20px;font-weight:800;margin:4px 0 10px;line-height:1.25}
+.search{width:100%;min-height:48px;border-radius:14px;border:1px solid var(--line);background:var(--card);padding:0 14px;font-size:16px}
+.count{font-size:13px;color:var(--soft);margin:10px 0 0}
+.game .clue{font-size:17px;margin:6px 0 12px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.opts button{min-height:58px;border-radius:14px;background:var(--chip);font-size:20px;font-weight:800}
+.opts button.right{background:var(--au);color:#fff}
+.opts button.wrong{background:#C0392B;color:#fff}
+.score{display:flex;gap:8px}.score div{flex:1;background:var(--chip);border-radius:12px;padding:8px;text-align:center;font-size:12px;color:var(--soft)}
+.score b{display:block;font-size:20px;color:var(--ink)}
+.reveal{font-size:15px;margin:4px 0 10px}
+.confirm{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--chip);border-radius:14px;padding:10px 12px;margin:10px 0}
+.confirm span{flex:1 1 100%;font-weight:600}
+.tabbar{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:5}
+.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:52px;font-size:11.5px;font-weight:600;color:var(--soft);border-radius:12px}
+.tabbar button i{font-style:normal;font-size:22px;line-height:1}
+.tabbar button.on{color:var(--acc)}
+#toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9;max-width:90vw}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.sub{font-size:14px;color:var(--soft);margin:2px 0 8px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header class="top">
+  <img src="icon.svg" alt="" width="40" height="40" style="border-radius:10px">
+  <h1>Decades Mood Mixer<span>60s · 70s · 80s · 90s</span></h1>
+</header>
+<div class="stripe"></div>
+<main>
+  <section id="tab-mix" class="tab on"><div id="mix-ctl"></div><div id="mix-res"></div></section>
+  <section id="tab-room" class="tab"><div id="room-ctl"></div><div id="room-res"></div></section>
+  <section id="tab-mine" class="tab"></section>
+  <section id="tab-explore" class="tab"><div id="ex-ctl"></div><div id="ex-res"></div></section>
+</main>
+<nav class="tabbar" aria-label="Tabs">
+  <button data-act="tab" data-v="mix" class="on"><i>🎛️</i>Mix</button>
+  <button data-act="tab" data-v="room"><i>👥</i>For the room</button>
+  <button data-act="tab" data-v="mine"><i>❤️</i>My music</button>
+  <button data-act="tab" data-v="explore"><i>🔍</i>Explore</button>
+</nav>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+// type|title|artist|year|genre|country|tier|energy,mood,dance,intensity,acoustic,vocals|occasions|description|sounds-like tags|related artists
+// occasions: c=chilled night in, p=party, r=road trip, d=dinner, w=workout, n=nostalgic
+const RAW=[
+// ---------- 1960s albums ----------
+"A|Abbey Road|The Beatles|1969|rock|UK|0|55,65,40,45,50,80|r,n,d|The band's polished farewell, capped by a dazzling side-two medley.|melodic;layered harmonies;warm|The Kinks;The Beach Boys",
+"A|Pet Sounds|The Beach Boys|1966|pop|US|0|40,55,30,25,55,90|c,n,d|Lush, wistful pop symphonies built from sleigh bells and stacked harmonies.|orchestral pop;dreamy;harmonies|The Beatles;The Zombies",
+"A|Revolver|The Beatles|1966|rock|UK|0|60,60,40,50,45,80|r,n|Studio experiments meet tight pop songs, tape loops and brass side by side.|psychedelic;punchy;inventive|The Kinks;The Byrds",
+"A|Highway 61 Revisited|Bob Dylan|1965|folk|US|0|60,45,30,55,50,95|r,n|Dylan plugs in: wild, wordy, electric blues-rock storytelling.|wordy;bluesy;raw|The Byrds;Leonard Cohen",
+"A|Are You Experienced|The Jimi Hendrix Experience|1967|rock|UK|0|80,50,40,85,20,65|r,w|A blast of fuzzed-out guitar wizardry that rewrote the instrument.|fuzzy guitar;psychedelic;loud|Cream;Led Zeppelin",
+"A|The Velvet Underground & Nico|The Velvet Underground|1967|rock|US|1|50,30,25,60,35,75|c|Droning, streetwise art-rock that was decades ahead of its time.|drone;arty;cool|Lou Reed;Television",
+"A|Let It Bleed|The Rolling Stones|1969|rock|UK|0|65,40,45,65,40,80|r,p|Dark, swaggering blues-rock with a choir and a storm brewing.|swagger;bluesy;gritty|The Kinks;The Doors",
+"A|Otis Blue|Otis Redding|1965|soul|US|1|60,60,55,45,50,95|d,n,p|Raw Memphis soul with a voice that pleads and testifies.|horns;gritty soul;heartfelt|Aretha Franklin;Wilson Pickett",
+"A|I Never Loved a Man the Way I Love You|Aretha Franklin|1967|soul|US|0|60,60,55,50,50,95|d,p,n|The Queen arrives: gospel power poured into secular soul.|gospel;powerhouse vocals;horns|Otis Redding;Dusty Springfield",
+"A|Astral Weeks|Van Morrison|1968|folk|UK|2|35,50,15,25,85,90|c,d|Free-flowing, jazz-tinged song cycles that drift like a daydream.|jazzy;stream of consciousness;acoustic|Nick Drake;Joni Mitchell",
+"A|Forever Changes|Love|1967|rock|US|2|40,45,25,30,70,85|c|Baroque folk-rock with strings and horns, sunny but uneasy.|baroque;strings;mysterious|The Byrds;The Zombies",
+"A|Bookends|Simon & Garfunkel|1968|folk|US|1|35,40,20,25,80,90|c,d,n|A tender concept record about youth, age and time slipping by.|harmonies;acoustic;wistful|Bob Dylan;Joni Mitchell",
+"A|The Doors|The Doors|1967|rock|US|0|65,40,45,60,30,85|r|Moody organ-driven rock with poetry and a long dark edge.|organ;brooding;hypnotic|Jefferson Airplane;The Velvet Underground",
+"A|Led Zeppelin II|Led Zeppelin|1969|rock|UK|0|85,55,40,90,25,70|w,r|Heavy riffs and swagger that laid the blueprint for hard rock.|heavy riffs;bluesy;thunderous|The Jimi Hendrix Experience;Black Sabbath",
+"A|At Folsom Prison|Johnny Cash|1968|country|US|0|55,50,35,45,75,90|r,n|Cash live for a roaring prison crowd, all grit and dark humour.|live;outlaw;storytelling|Merle Haggard;Willie Nelson",
+"A|Dusty in Memphis|Dusty Springfield|1969|soul|UK|1|40,50,40,25,60,95|d,c|Silky blue-eyed soul cut with Memphis's finest players.|smooth;sultry;strings|Aretha Franklin;Burt Bacharach",
+"A|Tommy|The Who|1969|rock|UK|1|65,55,35,65,50,75|r|A sprawling rock opera with big chords and bigger ideas.|rock opera;power chords;epic|The Kinks;Led Zeppelin",
+"A|Surrealistic Pillow|Jefferson Airplane|1967|rock|US|1|60,50,35,55,50,85|r|The sound of San Francisco's psychedelic summer, sharp and trippy.|psychedelic;west coast;vocal|The Doors;Big Brother and the Holding Company",
+"A|The Piper at the Gates of Dawn|Pink Floyd|1967|rock|UK|1|50,55,25,50,35,65|c|Whimsical, spacey psychedelia from Syd Barrett's brief reign.|spacey;whimsical;trippy|The Zombies;Soft Machine",
+"A|The Kinks Are the Village Green Preservation Society|The Kinks|1968|pop|UK|2|45,60,35,30,60,85|c,d,n|A fond, funny ode to vanishing English village life.|quaint;witty;nostalgic|The Zombies;Blur",
+"A|Odessey and Oracle|The Zombies|1968|pop|UK|2|40,55,30,25,55,90|c,d|Gorgeous chamber-pop that flopped, then became a cult treasure.|chamber pop;mellotron;harmonies|The Beach Boys;Love",
+"A|Songs of Leonard Cohen|Leonard Cohen|1967|folk|CA|2|20,25,10,15,90,95|c|Hushed, poetic songs sung close to the ear.|poetic;sparse;melancholy|Nick Drake;Bob Dylan",
+"A|Good Friday|The Easybeats|1967|rock|AU|2|70,70,55,55,40,85|p,r,n|Sydney's finest beat group, all jangle and cheeky energy.|beat;jangly;cheeky|The Kinks;Small Faces",
+"A|A World of Our Own|The Seekers|1965|folk|AU|1|40,70,25,15,85,95|n,d,c|Clear-voiced Melbourne folk-pop with Judith Durham front and centre.|folk pop;clean harmonies;sweet|The Mamas & the Papas;Peter, Paul and Mary",
+"A|The Masters Apprentices|The Masters Apprentices|1967|rock|AU|2|65,55,40,60,40,80|r|Adelaide garage-psych with fuzz and a touch of flower power.|garage;fuzzy;psych|The Easybeats;Small Faces",
+"A|Where Did Our Love Go|The Supremes|1964|soul|US|1|65,75,70,25,40,90|p,n,d|Breezy early Motown hits with handclaps and girl-group gloss.|motown;handclaps;sweet|The Ronettes;Martha and the Vandellas",
+"A|Live at the Apollo|James Brown|1963|disco|US|1|85,70,75,60,30,90|p|A sweat-soaked live show from the hardest-working man in showbiz.|live;raw funk;screams|Sly and the Family Stone;Otis Redding",
+"A|Stand!|Sly and the Family Stone|1969|disco|US|1|80,80,85,55,30,85|p,w|Joyful funk-rock with big messages and bigger grooves.|funk;party;positive|James Brown;Parliament",
+"A|Green River|Creedence Clearwater Revival|1969|rock|US|1|70,60,50,55,45,85|r,p|Swampy, no-frills rock and roll made for the open road.|swamp rock;twangy;driving|The Band;The Rolling Stones",
+"A|Showcase|Patsy Cline|1961|country|US|1|30,40,25,15,70,95|d,c,n|Heartbreak ballads delivered with velvet Nashville polish.|torch ballads;velvet;heartbreak|Tammy Wynette;Dusty Springfield",
+"A|Wichita Lineman|Glen Campbell|1968|country|US|2|35,45,25,20,60,90|r,c,d|Lonely, widescreen country-pop with strings and big sky.|countrypolitan;lonesome;strings|Johnny Cash;Jimmy Webb",
+"A|Wild Is the Wind|Nina Simone|1966|soul|US|2|30,30,20,30,70,95|c,d|Haunting, jazz-shaded soul with Nina's commanding voice.|jazzy;haunting;intimate|Aretha Franklin;Billie Holiday",
+"A|Clouds|Joni Mitchell|1969|folk|CA|2|25,45,10,15,95,95|c|Intricate guitar and a crystal-clear voice in quiet reflection.|open tunings;intimate;poetic|Judy Collins;Leonard Cohen",
+"A|Sweetheart of the Rodeo|The Byrds|1968|country|US|2|45,55,35,30,75,85|r|Long-haired rockers go full Nashville and help invent country-rock.|country rock;pedal steel;harmonies|Gram Parsons;Creedence Clearwater Revival",
+"A|If You Can Believe Your Eyes and Ears|The Mamas & the Papas|1966|pop|US|1|50,65,40,25,60,95|r,n,d|Sun-kissed folk-pop with soaring four-part harmonies.|harmonies;sunny;folk pop|The Seekers;The Beach Boys",
+"A|Silver Apples|Silver Apples|1968|electronic|US|2|60,40,40,55,5,55||Homemade oscillators and pounding drums: proto-electronic oddness.|oscillators;hypnotic;experimental|Kraftwerk;Suicide",
+// ---------- 1960s songs ----------
+"S|Friday on My Mind|The Easybeats|1966|rock|AU|0|80,75,65,60,40,90|p,r,n|A weekday-blues anthem that explodes into Friday freedom.|beat;sing-along;jangly|The Kinks;The Who",
+"S|Georgy Girl|The Seekers|1966|folk|AU|1|55,80,45,15,75,95|n,r,d|Bouncy, whistling folk-pop with a big heart.|folk pop;whistled;cheerful|The Mamas & the Papas;Peter, Paul and Mary",
+"S|Living in a Child's Dream|The Masters Apprentices|1967|rock|AU|2|55,60,40,45,45,85|n|Dreamy Aussie psych-pop with a flower-power haze.|psych pop;dreamy;garage|The Easybeats;The Zombies",
+"S|The Real Thing|Russell Morris|1969|rock|AU|1|65,55,40,55,30,80|r,n|A sprawling, studio-trickery epic and an Aussie psychedelic landmark.|psychedelic;epic;studio magic|The Beatles;The Masters Apprentices",
+"S|Hey Jude|The Beatles|1968|rock|UK|0|50,70,35,40,55,95|r,n,p|A gentle ballad that swells into a giant crowd sing-along.|sing-along;piano;anthemic|The Beach Boys;Elton John",
+"S|(I Can't Get No) Satisfaction|The Rolling Stones|1965|rock|UK|0|75,45,60,65,35,85|p,r|That fuzz riff, that sneer: pure restless rock and roll.|fuzz riff;sneering;iconic|The Kinks;The Who",
+"S|Respect|Aretha Franklin|1967|soul|US|0|80,85,80,55,40,100|p,w,n|A thundering soul demand that became an anthem.|powerhouse;horns;empowering|Otis Redding;Etta James",
+"S|My Girl|The Temptations|1964|soul|US|0|50,90,55,15,50,95|d,n,p|Sunny Motown sweetness with an unforgettable bass intro.|motown;sweet;harmonies|Four Tops;Smokey Robinson",
+"S|Good Vibrations|The Beach Boys|1966|pop|US|0|60,85,50,35,45,90|r,n|A pocket symphony of theremin, cello and sunshine.|pocket symphony;theremin;harmonies|The Beatles;The Zombies",
+"S|Like a Rolling Stone|Bob Dylan|1965|folk|US|0|65,45,35,55,45,95|r,n|Six snarling minutes of organ, wit and freewheeling scorn.|organ;snarling;wordy|The Byrds;The Band",
+"S|I Heard It Through the Grapevine|Marvin Gaye|1968|soul|US|0|55,30,60,40,40,95|d,p|Paranoid, simmering soul about love gone sideways.|moody;groove;motown|The Temptations;Gladys Knight",
+"S|Be My Baby|The Ronettes|1963|pop|US|0|65,80,65,45,35,95|n,p,d|Booming drums and a Wall of Sound swoon.|wall of sound;girl group;big drums|The Supremes;The Shangri-Las",
+"S|Waterloo Sunset|The Kinks|1967|pop|UK|1|40,55,25,25,55,90|c,n|A bittersweet watercolour of London at dusk.|wistful;melodic;london|The Beatles;Blur",
+"S|Ring of Fire|Johnny Cash|1963|country|US|0|60,70,50,35,60,95|r,n|Mariachi horns and boom-chicka-boom love trouble.|boom-chicka;mariachi horns;sing-along|June Carter;Merle Haggard",
+"S|Stand by Your Man|Tammy Wynette|1968|country|US|0|35,55,25,20,60,100|n,d|A swelling, devoted Nashville ballad.|ballad;nashville;devoted|Patsy Cline;Loretta Lynn",
+"S|Papa's Got a Brand New Bag|James Brown|1965|disco|US|1|80,80,85,50,35,90|p,w|The birth of funk, all chopped guitar and horn stabs.|funk;horn stabs;tight|Sly and the Family Stone;The Meters",
+"S|Dancing in the Street|Martha and the Vandellas|1964|soul|US|0|80,90,85,45,40,95|p,n|An irresistible call to the dancefloor, horns blazing.|motown;party;horns|The Supremes;The Ronettes",
+"S|Twist and Shout|The Isley Brothers|1962|soul|US|1|85,90,85,50,40,95|p,n|Hollering, hip-shaking R&B that everyone wants to cover.|shout-along;party;raw|The Beatles;Sam Cooke",
+"S|Sunshine Superman|Donovan|1966|folk|UK|1|50,70,45,30,55,85|c,r|Breezy psychedelic folk with harpsichord and charm.|psych folk;harpsichord;breezy|The Byrds;The Mamas & the Papas",
+"S|Piece of My Heart|Big Brother and the Holding Company|1968|rock|US|1|70,40,40,75,40,100|r|Janis Joplin tears into a soul song with raw fury.|raw vocals;bluesy;fierce|Jefferson Airplane;Aretha Franklin",
+"S|In the Midnight Hour|Wilson Pickett|1965|soul|US|1|65,70,75,45,40,90|p,d|Cool Stax groove with a delayed-beat strut.|stax;groove;horns|Otis Redding;Sam & Dave",
+"S|Born to Be Wild|Steppenwolf|1968|rock|US|0|90,70,55,80,25,85|r,w|Revved-up biker anthem made for the highway.|driving;heavy;anthem|Deep Purple;The Doors",
+"S|Reach Out I'll Be There|Four Tops|1966|soul|US|0|70,65,65,45,40,100|p,n|Dramatic Motown with galloping drums and urgent vocals.|motown;dramatic;urgent|The Temptations;The Supremes",
+"S|Daydream Believer|The Monkees|1967|pop|US|1|55,85,45,20,55,95|n,r|Gentle sing-along pop with a sunny piano bounce.|sing-along;piano;sunny|The Beatles;The Turtles",
+"S|Tighten Up|Archie Bell & the Drells|1968|disco|US|2|70,85,90,35,40,70|p|A loose, chatty funk groove from Houston.|groove;bass;loose funk|James Brown;The Meters",
+"S|Cool Jerk|The Capitols|1966|soul|US|2|80,85,85,45,35,90|p|A cheeky dance-craze cut with a punchy groove.|dance craze;punchy;fun|Martha and the Vandellas;Wilson Pickett",
+"S|Pushin' Too Hard|The Seeds|1966|rock|US|2|70,40,50,60,40,85|w|Snotty, two-chord garage rock with a manic organ.|garage;organ;snotty|The Standells;Love",
+"S|Mama Tried|Merle Haggard|1968|country|US|1|60,55,45,35,70,95|r,n|A bouncy outlaw confession with Bakersfield twang.|bakersfield;twangy;storytelling|Johnny Cash;Buck Owens",
+"S|Both Sides Now|Judy Collins|1967|folk|US|1|30,45,20,10,80,95|c,d|A graceful, wistful reflection on clouds, love and life.|reflective;graceful;strings|Joni Mitchell;Joan Baez",
+"S|Itchycoo Park|Small Faces|1967|rock|UK|2|55,70,40,45,40,85|c|Phased, playful psych-pop about skiving off to the park.|phasing;psych pop;playful|The Kinks;The Who",
+"S|A Whiter Shade of Pale|Procol Harum|1967|rock|UK|0|35,35,25,30,45,90|c,d,n|Stately organ and cryptic lyrics in a hazy summer anthem.|organ;stately;hazy|The Moody Blues;The Zombies",
+"S|The Loved One|The Loved Ones|1966|rock|AU|2|55,50,50,45,40,90|n|Gritty Melbourne R&B with a strange, swaggering vocal.|r&b;swagger;garage|The Easybeats;The Animals",
+"S|Popcorn|Gershon Kingsley|1969|electronic|US|2|60,80,60,20,0,0|p|A bubbly Moog novelty that later popped worldwide.|moog;bouncy;novelty|Hot Butter;Kraftwerk",
+"S|Stand by Me|Ben E. King|1961|soul|US|0|40,60,45,15,60,95|d,n,c|A timeless bassline and a promise of loyalty.|timeless;bassline;tender|Sam Cooke;The Drifters",
+"S|Get Together|The Youngbloods|1967|folk|US|2|40,70,30,15,75,90|c,n|A gentle hippie plea for peace and togetherness.|hippie;gentle;hopeful|The Byrds;Jefferson Airplane",
+"S|Mr. Tambourine Man|The Byrds|1965|folk|US|0|55,75,40,30,50,90|r,n|Jangling twelve-string guitar meets Dylan's dreamy words.|jangle;12-string;harmonies|Bob Dylan;The Mamas & the Papas",
+"S|Brown Eyed Girl|Van Morrison|1967|pop|UK|0|65,90,65,35,55,95|p,r,n|A sunny, sha-la-la sing-along about young love.|sing-along;sunny;sha-la-la|The Beatles;Creedence Clearwater Revival",
+// ---------- 1970s albums ----------
+"A|Highway to Hell|AC/DC|1979|rock|AU|0|90,70,60,90,15,85|w,r,p|Bon Scott's last stand: lean, mean, boogie-driven hard rock.|riffs;boogie;pub rock|Rose Tattoo;The Angels",
+"A|Living in the 70's|Skyhooks|1974|rock|AU|1|75,75,60,60,30,90|p,n|Glam-rock satire of 70s Melbourne, cheeky and catchy.|glam;satirical;catchy|Sherbet;Split Enz",
+"A|Breakfast at Sweethearts|Cold Chisel|1979|rock|AU|1|70,50,45,65,40,90|r,n|Barnesy's roar meets Don Walker's bittersweet street stories.|pub rock;piano;gritty|Jimmy Barnes;The Angels",
+"A|Diamantina Cocktail|Little River Band|1977|rock|AU|2|50,65,40,30,55,90|r,c|Smooth Aussie soft-rock with gleaming harmonies.|soft rock;harmonies;smooth|Eagles;Air Supply",
+"A|Radios Appear|Radio Birdman|1977|rock|AU|2|90,45,45,90,15,80|w|Sydney's ferocious punk pioneers at full throttle.|punk;surf guitar;ferocious|The Saints;The Stooges",
+"A|(I'm) Stranded|The Saints|1977|rock|AU|2|90,40,45,90,15,80|w|Brisbane's blistering answer to punk, raw and fast.|punk;raw;fast|Radio Birdman;Ramones",
+"A|Rumours|Fleetwood Mac|1977|rock|UK|0|55,55,45,40,55,95|r,d,n|Heartbreak turned into glossy, perfect California soft-rock.|soft rock;harmonies;heartbreak|Eagles;Crosby, Stills & Nash",
+"A|The Dark Side of the Moon|Pink Floyd|1973|rock|UK|0|40,30,25,45,40,60|c|A seamless, spacey meditation on time, money and madness.|spacey;concept;atmospheric|Radiohead;Genesis",
+"A|What's Going On|Marvin Gaye|1971|soul|US|0|40,50,50,25,50,95|d,c|A smooth, compassionate soul suite with real-world concerns.|smooth soul;socially aware;lush|Curtis Mayfield;Stevie Wonder",
+"A|Songs in the Key of Life|Stevie Wonder|1976|soul|US|0|65,80,70,40,40,95|d,p,n|A sprawling double album of joy, funk and wonder.|funky;joyful;sprawling|Marvin Gaye;Earth, Wind & Fire",
+"A|Blue|Joni Mitchell|1971|folk|CA|0|25,30,10,15,90,100|c|Confessional, raw and beautiful: heartbreak at its most honest.|confessional;dulcimer;intimate|Carole King;Leonard Cohen",
+"A|Born to Run|Bruce Springsteen|1975|rock|US|0|80,60,40,70,40,95|r,n|Widescreen escape anthems with sax, glockenspiel and grit.|anthemic;wall of sound;sax|Cold Chisel;Tom Petty",
+"A|Hotel California|Eagles|1976|rock|US|0|55,45,35,45,55,90|r,n|Polished, shadowy West Coast rock with famous dueling guitars.|west coast;guitar solos;smooth|Fleetwood Mac;Little River Band",
+"A|Off the Wall|Michael Jackson|1979|disco|US|0|80,85,90,40,20,95|p,w|Sleek disco-funk joy with flawless grooves.|disco;funky;glossy|Chic;Earth, Wind & Fire",
+"A|C'est Chic|Chic|1978|disco|US|1|75,85,95,35,20,75|p|Elegant, bass-driven disco built on Nile Rodgers' guitar.|bass groove;elegant;disco|Sister Sledge;Earth, Wind & Fire",
+"A|Mothership Connection|Parliament|1975|disco|US|1|75,80,90,50,25,75|p|Cosmic P-Funk with horns, synths and space-age silliness.|p-funk;cosmic;grooves|Sly and the Family Stone;Funkadelic",
+"A|Trans-Europe Express|Kraftwerk|1977|electronic|DE|1|50,50,55,25,5,30|c,r|Precise, rhythmic synth music inspired by train travel.|synths;robotic;hypnotic|Jean-Michel Jarre;New Order",
+"A|The Rise and Fall of Ziggy Stardust and the Spiders from Mars|David Bowie|1972|rock|UK|0|65,55,40,55,40,90|r|Glam-rock space opera with crunchy guitars and theatrical flair.|glam;theatrical;crunchy guitar|T. Rex;Lou Reed",
+"A|Horses|Patti Smith|1975|rock|US|1|60,40,30,60,45,95||Poetry meets garage rock in a fierce, free-form debut.|poetic;raw;arty|Television;The Velvet Underground",
+"A|Ramones|Ramones|1976|rock|US|1|95,65,55,85,15,80|w,p|Fourteen songs in under half an hour: punk's blueprint.|punk;fast;three chords|The Saints;The Clash",
+"A|Parallel Lines|Blondie|1978|newwave|US|0|75,70,75,50,30,90|p,r|Sharp new wave pop with punk bite and disco shine.|new wave;punchy;catchy|Talking Heads;The Cars",
+"A|London Calling|The Clash|1979|rock|UK|0|75,55,55,65,40,85|r|A genre-hopping punk epic of reggae, rockabilly and rage.|punk;reggae;eclectic|Ramones;The Jam",
+"A|Unknown Pleasures|Joy Division|1979|newwave|UK|1|50,15,30,55,25,75||Cold, cavernous post-punk with a hypnotic bass.|post-punk;bleak;atmospheric|The Cure;New Order",
+"A|Fear of Music|Talking Heads|1979|newwave|US|2|65,45,65,50,30,80||Nervy, funky art-rock about everyday paranoia.|nervy;art funk;quirky|Blondie;Devo",
+"A|Red Headed Stranger|Willie Nelson|1975|country|US|1|25,35,15,10,90,90|c,d|A sparse outlaw concept album, like a quiet western.|sparse;outlaw;storytelling|Johnny Cash;Waylon Jennings",
+"A|Coat of Many Colors|Dolly Parton|1971|country|US|1|40,60,30,20,80,100|d,n,c|Warm, homespun country stories from the Smokies.|storytelling;homespun;twangy|Loretta Lynn;Emmylou Harris",
+"A|Pink Moon|Nick Drake|1972|folk|UK|2|20,30,5,10,100,90|c|Just a voice and guitar: short, sparse and spellbinding.|sparse;fingerpicked;hushed|Elliott Smith;John Martyn",
+"A|Tapestry|Carole King|1971|pop|US|0|45,60,40,20,75,95|d,c,n|Warm piano-led songs that feel like an old friend.|piano;warm;singer-songwriter|James Taylor;Joni Mitchell",
+"A|Superfly|Curtis Mayfield|1972|soul|US|1|60,40,75,40,35,85|d,p|Slick, cinematic funk-soul with wah guitar and strings.|wah guitar;cinematic;funky|Marvin Gaye;Isaac Hayes",
+"A|Harvest|Neil Young|1972|folk|CA|0|40,45,25,30,80,90|c,r|Dusty, harmonica-laced country-folk from a lonely heart.|harmonica;country folk;warm|Crosby, Stills & Nash;Bob Dylan",
+"A|Aja|Steely Dan|1977|rock|US|1|50,55,55,30,40,85|d,c|Immaculate jazz-rock with session-player perfection.|jazz rock;smooth;polished|Fleetwood Mac;Donald Fagen",
+"A|Paranoid|Black Sabbath|1970|rock|UK|0|80,25,35,95,15,75|w|Heavy metal's doom-laden birth, all sludge and menace.|heavy metal;doom riffs;dark|Led Zeppelin;Metallica",
+"A|Marquee Moon|Television|1977|rock|US|2|65,45,40,55,40,75|r|Interlocking guitar lines that spiral and soar.|twin guitars;angular;cerebral|Patti Smith;Talking Heads",
+"A|Oxygène|Jean-Michel Jarre|1976|electronic|FR|2|35,50,30,15,0,0|c|Floating, spacey synth landscapes from France.|ambient synths;spacey;instrumental|Kraftwerk;Vangelis",
+"A|Daddy Who? Daddy Cool|Daddy Cool|1971|rock|AU|1|75,85,70,45,40,90|p,n,r|Doo-wop and rock and roll revival from Melbourne, all fun.|doo-wop;rock and roll;fun|Skyhooks;Creedence Clearwater Revival",
+"A|Head Injuries|Midnight Oil|1979|rock|AU|2|85,40,40,85,25,85|w|Early Oils, raw and furious with surf-punk energy.|raw;punky;urgent|Cold Chisel;The Saints",
+"A|Let's Stay Together|Al Green|1972|soul|US|1|40,75,55,15,50,95|d,c|Velvety Memphis soul with a feathery falsetto.|silky;romantic;falsetto|Marvin Gaye;Otis Redding",
+// ---------- 1970s songs ----------
+"S|It's a Long Way to the Top (If You Wanna Rock 'n' Roll)|AC/DC|1975|rock|AU|0|85,70,55,80,20,85|r,w,p|Bagpipes meet boogie rock in a fair-dinkum road anthem.|bagpipes;boogie;anthem|Rose Tattoo;Cold Chisel",
+"S|Horror Movie|Skyhooks|1974|rock|AU|1|70,70,55,55,30,90|p,n|Glammy satire about the nightly news as a scary film.|glam;satirical;quirky|Split Enz;Sherbet",
+"S|Khe Sanh|Cold Chisel|1978|rock|AU|0|70,50,45,60,45,95|r,n,p|A veteran's restless story and the great Aussie pub sing-along.|pub rock;sing-along;piano|Jimmy Barnes;The Angels",
+"S|Howzat|Sherbet|1976|pop|AU|1|70,75,70,40,40,90|p,n|A cricket-themed glam-pop kiss-off with a catchy hook.|glam pop;hooky;cheeky|Skyhooks;Bay City Rollers",
+"S|Eagle Rock|Daddy Cool|1971|rock|AU|0|80,85,80,50,35,85|p,r,n|A strutting boogie that every Aussie wedding knows.|boogie;dance;sing-along|Creedence Clearwater Revival;Skyhooks",
+"S|Evie (Part 1)|Stevie Wright|1974|rock|AU|1|80,65,55,70,40,90|r,n|A rollicking epic from the Easybeats' singer.|epic;rollicking;guitar|The Easybeats;AC/DC",
+"S|Most People I Know (Think That I'm Crazy)|Billy Thorpe & the Aztecs|1972|rock|AU|2|50,55,35,50,55,90|r|Laid-back, then lifting: a Sunbury-era classic.|laid back;bluesy;jam|Daddy Cool;Cold Chisel",
+"S|Am I Ever Gonna See Your Face Again|The Angels|1976|rock|AU|1|85,45,50,80,20,85|p,w|Tense, chugging pub rock with a famous crowd response.|chugging;pub rock;tense|AC/DC;Midnight Oil",
+"S|Stayin' Alive|Bee Gees|1977|disco|UK|0|75,75,90,40,20,95|p,w,n|Falsetto swagger and a strutting disco beat.|falsetto;disco;strut|Earth, Wind & Fire;Chic",
+"S|I Will Survive|Gloria Gaynor|1978|disco|US|0|80,80,90,45,25,100|p,w,n|A defiant, string-swept disco anthem of resilience.|empowering;strings;disco|Donna Summer;Diana Ross",
+"S|I Feel Love|Donna Summer|1977|electronic|US|0|85,70,95,45,0,80|p,w|Pulsing all-synth disco that pointed to the future.|synth pulse;hypnotic;futuristic|Giorgio Moroder;New Order",
+"S|September|Earth, Wind & Fire|1978|disco|US|0|80,100,90,45,30,90|p,n,r|Pure joy in horns, ba-dee-ya and a groove you can't resist.|horns;joyful;groove|Kool & the Gang;Chic",
+"S|Superstition|Stevie Wonder|1972|soul|US|0|75,65,85,50,20,90|p,d|A clavinet riff so funky it's practically legal tender.|clavinet;funky;tight|Earth, Wind & Fire;Sly and the Family Stone",
+"S|Car Wash|Rose Royce|1976|disco|US|1|75,85,90,40,30,85|p,n|Handclaps and disco-funk shine on a working day.|handclaps;disco funk;fun|Earth, Wind & Fire;The Brothers Johnson",
+"S|Bohemian Rhapsody|Queen|1975|rock|UK|0|65,50,25,70,40,95|r,n|Ballad, opera and headbanging, all in six minutes.|epic;operatic;sing-along|David Bowie;Elton John",
+"S|Dancing Queen|ABBA|1976|pop|SE|0|65,90,85,30,30,95|p,n|Shimmering Swedish pop made for a sparkling dancefloor.|euphoric;shimmering;sing-along|Bee Gees;Fleetwood Mac",
+"S|Psycho Killer|Talking Heads|1977|newwave|US|1|65,40,70,50,40,85|p|Twitchy bass and nervy vocals in an art-punk classic.|nervy;bass;art punk|Blondie;Television",
+"S|Rapper's Delight|The Sugarhill Gang|1979|hiphop|US|0|75,90,90,35,25,90|p,n|The first big rap hit, rolling over a disco groove.|old school;disco groove;party|Grandmaster Flash and the Furious Five;Chic",
+"S|Take Me Home, Country Roads|John Denver|1971|country|US|0|50,75,35,15,85,95|r,n|A homesick road-trip sing-along for the ages.|sing-along;acoustic;homesick|Glen Campbell;James Taylor",
+"S|The Gambler|Kenny Rogers|1978|country|US|1|45,55,35,20,70,95|r,n|A card-table parable with a chorus everyone knows.|storytelling;sing-along;smooth|Johnny Cash;Willie Nelson",
+"S|Fire and Rain|James Taylor|1970|folk|US|1|30,30,15,15,90,95|c,d|Gentle, gut-wrenching reflections on loss.|gentle;reflective;acoustic|Carole King;Joni Mitchell",
+"S|Sweet Home Alabama|Lynyrd Skynyrd|1974|rock|US|0|75,80,65,60,45,90|r,p|Sunny Southern rock with an instantly familiar riff.|southern rock;riff;sing-along|Creedence Clearwater Revival;Tom Petty",
+"S|Anarchy in the U.K.|Sex Pistols|1976|rock|UK|1|90,40,50,95,10,85|w|A snarling, chaotic punk call to arms.|snarling;punk;chaotic|The Clash;Ramones",
+"S|Heroes|David Bowie|1977|rock|UK|0|70,60,40,60,25,95|r|A soaring, driving anthem written in the shadow of the Berlin Wall.|soaring;anthemic;krautrock|Iggy Pop;Talking Heads",
+"S|Lovely Day|Bill Withers|1977|soul|US|1|50,95,60,20,45,95|c,r,d|A warm, sunny lift with a legendary long-held note.|uplifting;warm;soulful|Al Green;Marvin Gaye",
+"S|Pick Up the Pieces|Average White Band|1974|disco|UK|2|75,75,90,40,30,20|p,w|Scottish funk instrumental with tight horn riffs.|instrumental;funk;horns|Tower of Power;The Meters",
+"S|Magic Fly|Space|1977|electronic|FR|2|60,65,75,25,5,10|p|Spacey French synth-disco with robot voices.|space disco;synths;instrumental|Jean-Michel Jarre;Kraftwerk",
+"S|Ever Fallen in Love (With Someone You Shouldn't've)|Buzzcocks|1978|newwave|UK|1|85,55,60,70,25,90|p,w|Breakneck pop-punk about inconvenient crushes.|pop punk;fast;catchy|The Undertones;Ramones",
+"S|Shake Some Action|Flamin' Groovies|1976|rock|US|2|70,60,45,55,40,85|r|Jangling power-pop that sounds like 1965 reborn.|power pop;jangle;retro|The Byrds;Big Star",
+"S|Love Train|The O'Jays|1972|soul|US|1|75,95,85,40,35,95|p,n|A joyous Philly soul invitation to the whole world.|philly soul;uplifting;strings|The Spinners;Harold Melvin & the Blue Notes",
+"S|Walk on the Wild Side|Lou Reed|1972|rock|US|0|35,50,40,20,45,85|c,d|A cool, sly sketch of New York characters over a lazy bass.|cool;laid back;bass|The Velvet Underground;David Bowie",
+"S|Ring My Bell|Anita Ward|1979|disco|US|2|75,90,90,30,10,90|p|Bubbly disco with famous syndrum bleeps.|syndrums;bubbly;disco|Donna Summer;Sister Sledge",
+"S|Wuthering Heights|Kate Bush|1978|pop|UK|1|45,40,25,35,45,100|c|A soaring, theatrical debut sung from a ghost's point of view.|theatrical;soaring;literary|David Bowie;Tori Amos",
+"S|Smoke on the Water|Deep Purple|1972|rock|UK|0|75,50,40,85,20,75|w,r|The riff every guitar shop has heard a million times.|heavy riff;hard rock;classic|Led Zeppelin;Black Sabbath",
+"S|Summer Breeze|Seals and Crofts|1972|folk|US|2|35,75,30,10,80,90|c,d,r|Soft-rock warmth that smells like jasmine.|soft rock;breezy;warm|America;Bread",
+"S|Lady Marmalade|Labelle|1974|disco|US|1|75,75,85,50,35,100|p|Sassy, sultry New Orleans funk with big voices.|sassy;funky;powerhouse|Chaka Khan;The Pointer Sisters",
+"S|The Passenger|Iggy Pop|1977|rock|US|1|65,60,55,50,35,85|r|A cool, loping ride with a la-la-la chorus.|loping;la-la chorus;cool|David Bowie;Lou Reed",
+// ---------- 1980s albums ----------
+"A|Back in Black|AC/DC|1980|rock|AU|0|90,65,60,90,10,85|w,r,p|A thunderous comeback with riffs carved in stone.|riffs;hard rock;anthemic|Guns N' Roses;Rose Tattoo",
+"A|Kick|INXS|1987|rock|AU|0|80,70,85,55,15,90|p,r|Slinky funk-rock with Michael Hutchence at his coolest.|funk rock;slinky;sax|The Cure;Duran Duran",
+"A|Diesel and Dust|Midnight Oil|1987|rock|AU|0|75,45,50,70,35,90|r|Urgent, outback-inspired rock with a conscience.|political;outback;driving|Hunters & Collectors;U2",
+"A|East|Cold Chisel|1980|rock|AU|1|70,55,50,60,40,90|r,p|Muscular pub rock with some of Chisel's best tunes.|pub rock;piano;muscular|Jimmy Barnes;The Angels",
+"A|Crowded House|Crowded House|1986|pop|AU|1|50,65,45,30,55,95|d,r,c|Melodic, warm pop songcraft from Neil Finn and co.|melodic;warm;crafted|Split Enz;Paul Kelly",
+"A|Gossip|Paul Kelly & the Coloured Girls|1986|folk|AU|1|55,60,40,35,65,95|r,d|Sharp, storytelling Aussie rock with a big heart.|storytelling;jangle;australiana|The Go-Betweens;Crowded House",
+"A|Human Frailty|Hunters & Collectors|1986|rock|AU|1|65,40,45,65,35,95|r|Brassy, brooding pub rock with stadium-sized feeling.|brass;brooding;anthemic|Midnight Oil;Cold Chisel",
+"A|Business as Usual|Men at Work|1981|newwave|AU|0|70,75,70,40,40,85|p,r,n|Quirky, reggae-tinged pop that conquered the world.|quirky;flute;reggae tinge|The Police;INXS",
+"A|Starfish|The Church|1988|rock|AU|2|45,35,30,40,40,85|c|Shimmering, chiming psych-pop with a dreamy undertow.|jangle;dreamy;chiming|The Go-Betweens;R.E.M.",
+"A|16 Lovers Lane|The Go-Betweens|1988|pop|AU|2|50,60,40,25,65,90|c,d|Bright, literate jangle-pop from Brisbane's best.|jangle pop;literate;warm|The Church;The Smiths",
+"A|Man of Colours|Icehouse|1987|newwave|AU|1|65,55,60,45,20,90|r,n|Polished synth-rock with big choruses.|synth rock;polished;anthemic|INXS;Duran Duran",
+"A|For the Working Class Man|Jimmy Barnes|1985|rock|AU|1|85,60,50,80,20,95|r,w|Full-throated heartland rock from the Aussie wailer.|heartland;powerful vocals;anthemic|Cold Chisel;Bruce Springsteen",
+"A|Thriller|Michael Jackson|1982|pop|US|0|80,75,95,50,20,95|p,w,n|The best-selling album ever: funky, spooky, flawless pop.|funk pop;iconic;polished|Prince;Janet Jackson",
+"A|Purple Rain|Prince and the Revolution|1984|pop|US|0|75,60,75,60,25,95|p,r|Guitar heroics, funk and heartbreak in one purple package.|funk rock;guitar;epic|Michael Jackson;Madonna",
+"A|Like a Prayer|Madonna|1989|pop|US|0|70,65,75,45,25,95|p,d|Confessional, confident pop with gospel and grooves.|pop;gospel;dancefloor|Janet Jackson;Prince",
+"A|The Joshua Tree|U2|1987|rock|IE|0|65,50,40,55,35,95|r,n|Chiming, widescreen rock inspired by wide American spaces.|chiming guitar;anthemic;widescreen|Midnight Oil;Simple Minds",
+"A|Remain in Light|Talking Heads|1980|newwave|US|1|75,60,85,50,25,85|p|Layered Afro-funk grooves meet art-rock smarts.|afrobeat;layered;polyrhythm|Peter Gabriel;Brian Eno",
+"A|The Queen Is Dead|The Smiths|1986|newwave|UK|1|60,40,40,45,45,95|r|Jangly guitars and droll, wounded wit.|jangle;witty;melancholy|The Go-Betweens;The Cure",
+"A|Disintegration|The Cure|1989|newwave|UK|1|45,20,30,50,20,80|c|Lush, gloomy waves of guitar and synth.|gloomy;lush;atmospheric|Joy Division;Siouxsie and the Banshees",
+"A|Rio|Duran Duran|1982|newwave|UK|0|80,75,85,45,15,90|p,r|Glossy, sun-soaked new romantic pop.|new romantic;glossy;danceable|INXS;Spandau Ballet",
+"A|Hounds of Love|Kate Bush|1985|pop|UK|1|60,45,50,50,30,95|c|Bold, cinematic art-pop with thunderous drums.|art pop;cinematic;big drums|Peter Gabriel;Tori Amos",
+"A|Appetite for Destruction|Guns N' Roses|1987|rock|US|0|90,50,45,95,15,90|w,r|Dirty, dangerous hard rock from LA's sleaziest.|hard rock;sleazy;riffs|AC/DC;Aerosmith",
+"A|Master of Puppets|Metallica|1986|rock|US|1|95,20,25,100,10,70|w|Precision thrash metal on an epic scale.|thrash;epic;relentless|Black Sabbath;Slayer",
+"A|Doolittle|Pixies|1989|rock|US|2|75,45,45,75,30,85|w|Loud-quiet-loud weirdness that inspired grunge.|loud-quiet-loud;surreal;punchy|Nirvana;The Breeders",
+"A|Daydream Nation|Sonic Youth|1988|rock|US|2|70,35,30,80,20,65||Sprawling noise-rock with gloriously detuned guitars.|noise rock;detuned;sprawling|Pixies;Nirvana",
+"A|It Takes a Nation of Millions to Hold Us Back|Public Enemy|1988|hiphop|US|1|90,35,70,85,5,95|w|Dense, furious, sample-packed political hip hop.|dense samples;political;intense|Run-DMC;Eric B. & Rakim",
+"A|Raising Hell|Run-DMC|1986|hiphop|US|0|85,70,80,70,10,95|p,w|Hard-hitting beats and rock riffs from Hollis, Queens.|boom bap;rock riffs;old school|Beastie Boys;Public Enemy",
+"A|Paid in Full|Eric B. & Rakim|1987|hiphop|US|1|65,55,75,50,10,95|p|Rakim's smooth, intricate flow over cool breaks.|smooth flow;breaks;golden age|Public Enemy;Nas",
+"A|3 Feet High and Rising|De La Soul|1989|hiphop|US|2|60,85,70,30,25,85|p|Playful, sample-happy hip hop with daisy-age charm.|playful;samples;quirky|A Tribe Called Quest;The Pharcyde",
+"A|Graceland|Paul Simon|1986|folk|US|0|60,80,60,25,60,90|d,r,n|South African rhythms meet New York songcraft.|world rhythms;upbeat;storytelling|Talking Heads;Peter Gabriel",
+"A|Tracy Chapman|Tracy Chapman|1988|folk|US|1|35,35,25,20,90,95|c,d|Stark, acoustic songs with quiet power.|acoustic;stark;thoughtful|Joni Mitchell;Suzanne Vega",
+"A|Guitar Town|Steve Earle|1986|country|US|2|65,55,45,50,55,90|r|Twangy, rocking new-traditionalist road songs.|twangy;heartland;road songs|Bruce Springsteen;Dwight Yoakam",
+"A|Trio|Dolly Parton, Linda Ronstadt & Emmylou Harris|1987|country|US|2|30,55,20,10,90,100|c,d|Three legendary voices blending on gentle country songs.|harmonies;acoustic;gentle|Dolly Parton;Alison Krauss",
+"A|Computer World|Kraftwerk|1981|electronic|DE|2|60,55,70,30,0,30||Crisp, playful synth-pop that predicted the digital age.|synth pop;robotic;minimal|Depeche Mode;Afrika Bambaataa",
+"A|Dare|The Human League|1981|newwave|UK|1|70,60,80,35,5,90|p,n|Cool, glossy synth-pop with killer hooks.|synth pop;glossy;hooky|Depeche Mode;Soft Cell",
+"A|Control|Janet Jackson|1986|soul|US|1|80,70,90,55,10,90|p,w|Hard-edged, drum-machine R&B with attitude.|new jack;drum machine;attitude|Michael Jackson;Madonna",
+// ---------- 1980s songs ----------
+"S|Down Under|Men at Work|1981|newwave|AU|0|70,80,70,40,45,90|p,r,n|A flute-hooked, tongue-in-cheek ode to Aussie travellers.|flute hook;quirky;sing-along|The Police;INXS",
+"S|Need You Tonight|INXS|1987|rock|AU|0|65,60,90,50,10,90|p|A minimal, slinky groove dripping with cool.|slinky;minimal;funky|Prince;Duran Duran",
+"S|Power and the Passion|Midnight Oil|1983|rock|AU|1|85,40,55,80,25,90|w|Pounding, drum-solo-packed Aussie rage.|big drums;urgent;political|Hunters & Collectors;The Clash",
+"S|Don't Dream It's Over|Crowded House|1986|pop|AU|0|40,50,35,25,55,95|c,d,n|A tender, timeless ballad with a gentle organ.|ballad;organ;tender|Split Enz;Paul Kelly",
+"S|Throw Your Arms Around Me|Hunters & Collectors|1984|rock|AU|0|45,55,30,40,55,95|r,n,c|An aching love song turned national sing-along.|sing-along;aching;heartfelt|Midnight Oil;Paul Kelly",
+"S|To Her Door|Paul Kelly & the Coloured Girls|1987|folk|AU|1|55,50,40,30,70,95|r,d|A whole short story of love and repair in three minutes.|storytelling;acoustic;australiana|The Go-Betweens;Crowded House",
+"S|Working Class Man|Jimmy Barnes|1985|rock|AU|0|80,65,50,75,20,95|r,w|A big-hearted, full-throttle Aussie anthem.|anthem;powerful vocals;heartland|Cold Chisel;Bruce Springsteen",
+"S|Under the Milky Way|The Church|1988|rock|AU|0|40,35,30,30,50,90|c,r|Haunting, chiming dream-pop with a bagpipe-like solo.|dreamy;chiming;haunting|The Go-Betweens;R.E.M.",
+"S|Great Southern Land|Icehouse|1982|newwave|AU|0|55,40,45,45,15,90|r,n|Brooding synths for the vast Australian landscape.|synths;brooding;widescreen|INXS;Ultravox",
+"S|You're the Voice|John Farnham|1986|pop|AU|0|75,80,55,60,20,100|r,p,n|Bagpipes, drums and a massive stand-up-and-sing chorus.|anthem;bagpipes;sing-along|Jimmy Barnes;Bon Jovi",
+"S|Cattle and Cane|The Go-Betweens|1983|pop|AU|1|40,45,30,25,60,85|c|A shifting-rhythm memory of a Queensland childhood.|nostalgic;odd time;jangle|The Church;The Smiths",
+"S|Solid Rock|Goanna|1982|rock|AU|2|65,45,50,55,55,90|r|Didgeridoo and guitars in an early land-rights anthem.|didgeridoo;anthemic;political|Midnight Oil;Yothu Yindi",
+"S|Billie Jean|Michael Jackson|1982|pop|US|0|70,45,95,45,15,95|p,w|An icy, hypnotic groove with an iconic bassline.|bassline;hypnotic;danceable|Prince;Janet Jackson",
+"S|Into the Groove|Madonna|1985|pop|US|1|80,80,95,40,10,90|p,w|Bright, irresistible mid-80s dance-pop.|dance pop;bright;catchy|Janet Jackson;Cyndi Lauper",
+"S|Don't You (Forget About Me)|Simple Minds|1985|rock|UK|0|70,65,60,50,25,95|r,n|A soaring teen-movie anthem with a giant la-la-la.|anthem;soaring;sing-along|U2;Tears for Fears",
+"S|Take On Me|a-ha|1985|newwave|NO|0|85,85,80,35,10,95|p,r,n|Bouncy synths and a sky-high chorus.|synths;falsetto;bouncy|Duran Duran;Tears for Fears",
+"S|Tainted Love|Soft Cell|1981|newwave|UK|0|65,45,80,40,5,90|p|Cool, minimal synth-pop with northern soul roots.|synth pop;minimal;cool|Depeche Mode;The Human League",
+"S|Blue Monday|New Order|1983|electronic|UK|0|80,40,90,50,0,60|p,w|Thudding drum machines and icy synths: a club landmark.|drum machine;club;icy|Kraftwerk;Depeche Mode",
+"S|Just Can't Get Enough|Depeche Mode|1981|newwave|UK|1|80,90,85,30,5,90|p,n|Bubbly early synth-pop, pure and simple.|bubbly;synth pop;catchy|The Human League;Soft Cell",
+"S|The Message|Grandmaster Flash and the Furious Five|1982|hiphop|US|0|55,25,70,45,10,95|c|A slow, sharp portrait of city struggle as rap gets serious.|storytelling;slow groove;socially aware|Run-DMC;Public Enemy",
+"S|Walk This Way|Run-DMC|1986|hiphop|US|0|85,75,75,75,15,95|p,w|Rap meets hard rock in a wall-busting collaboration.|rap rock;riffs;party|Beastie Boys;Aerosmith",
+"S|Fight the Power|Public Enemy|1989|hiphop|US|0|90,40,75,85,5,95|w|A furious, layered call to action.|dense samples;political;intense|Run-DMC;Eric B. & Rakim",
+"S|It Takes Two|Rob Base and DJ E-Z Rock|1988|hiphop|US|1|85,85,95,50,5,85|p,w|A party-starting hip house banger.|party;samples;hype|Run-DMC;Salt-N-Pepa",
+"S|Planet Rock|Afrika Bambaataa & the Soulsonic Force|1982|electronic|US|1|80,70,90,40,0,70|p|Electro-funk built on Kraftwerk's bones.|electro;808;funky|Kraftwerk;Grandmaster Flash and the Furious Five",
+"S|Big Fun|Inner City|1988|electronic|US|2|80,85,95,35,5,75|p,w|Uplifting Detroit techno-house with soulful vocals.|detroit techno;house;uplifting|Kevin Saunderson;Frankie Knuckles",
+"S|Let's Groove|Earth, Wind & Fire|1981|disco|US|1|75,95,95,35,15,90|p,n|Shiny, vocoder-tinged party funk.|vocoder;funky;party|Kool & the Gang;Chic",
+"S|Ain't Nobody|Rufus & Chaka Khan|1983|soul|US|1|70,75,85,40,10,100|p,d|Sparkling synth-funk with a huge vocal.|synth funk;powerhouse;sparkling|Whitney Houston;Prince",
+"S|Fast Car|Tracy Chapman|1988|folk|US|0|45,35,30,20,85,95|r,c|A quiet, determined dream of escape.|acoustic;storytelling;hopeful|Suzanne Vega;Joni Mitchell",
+"S|Sweet Dreams (Are Made of This)|Eurythmics|1983|newwave|UK|0|65,40,80,45,5,95|p|Cold synth throb and Annie Lennox's commanding voice.|synth;cool;hypnotic|Depeche Mode;Yazoo",
+"S|There Is a Light That Never Goes Out|The Smiths|1986|newwave|UK|1|50,40,40,30,50,95|c,r|Romantic despair set to strings and jangle.|jangle;romantic;bittersweet|The Cure;The Go-Betweens",
+"S|Love Will Tear Us Apart|Joy Division|1980|newwave|UK|0|65,20,55,50,25,90||An urgent, aching post-punk lament.|post-punk;aching;urgent|New Order;The Cure",
+"S|Don't Stop Believin'|Journey|1981|rock|US|0|70,85,45,55,30,100|r,p,n|The ultimate karaoke power-ballad climb.|power ballad;sing-along;anthemic|Bon Jovi;Boston",
+"S|Livin' on a Prayer|Bon Jovi|1986|rock|US|0|85,80,60,70,15,95|p,r,w|Talk-box riff and a fist-pumping chorus.|talk box;anthem;sing-along|Journey;Def Leppard",
+"S|He Stopped Loving Her Today|George Jones|1980|country|US|1|20,15,15,10,70,100|c,d|A devastating country ballad of devotion to the end.|tearjerker;strings;classic country|Tammy Wynette;Merle Haggard",
+"S|9 to 5|Dolly Parton|1980|country|US|0|80,90,75,40,50,95|p,r,n|A typewriter-clacking workday anthem.|sing-along;upbeat;working life|Kenny Rogers;Loretta Lynn",
+"S|Copperhead Road|Steve Earle|1988|country|US|1|75,45,50,70,45,90|r|Bagpipe-ish drones and stomping guitars tell an outlaw tale.|stomping;outlaw;storytelling|Bruce Springsteen;Johnny Cash",
+"S|Everybody Wants to Rule the World|Tears for Fears|1985|newwave|UK|0|60,65,65,30,20,95|r,c,n|A breezy shuffle with a big, sunny chorus.|shuffle;breezy;synths|Simple Minds;a-ha",
+"S|Pump Up the Jam|Technotronic|1989|electronic|BE|1|90,80,95,55,0,75|p,w|A Belgian hip-house banger built for the gym.|hip house;bass;high energy|Black Box;C+C Music Factory",
+// ---------- 1990s albums ----------
+"A|Internationalist|Powderfinger|1998|rock|AU|1|60,55,40,55,45,90|r|Confident Brisbane rock with big guitars and heart.|guitars;anthemic;melodic|You Am I;silverchair",
+"A|Frogstomp|silverchair|1995|grunge|AU|0|85,35,40,90,15,85|w,r|Teenage Newcastle grunge with heavyweight riffs.|grunge;heavy riffs;teenage angst|Pearl Jam;Nirvana",
+"A|Hi Fi Way|You Am I|1995|rock|AU|1|75,55,45,65,35,85|r,p|Swaggering, Kinks-inspired Aussie guitar rock.|guitars;swagger;mod|The Kinks;Powderfinger",
+"A|Woodface|Crowded House|1991|pop|AU|0|50,65,40,30,60,95|d,r,c|Gorgeous Finn brothers harmonies and timeless songs.|harmonies;melodic;warm|Paul Kelly;The Go-Betweens",
+"A|Tribal Voice|Yothu Yindi|1991|rock|AU|1|70,60,70,50,50,90|p,r|Yolŋu tradition meets dance-rock in a landmark record.|didgeridoo;dance rock;bilingual|Midnight Oil;Goanna",
+"A|The Boatman's Call|Nick Cave and the Bad Seeds|1997|rock|AU|2|20,25,10,15,80,95|c,d|Sparse, piano-led songs of love and doubt.|piano;sparse;brooding|Leonard Cohen;PJ Harvey",
+"A|The Honeymoon Is Over|The Cruel Sea|1993|rock|AU|2|55,45,55,45,50,70|r|Dusty, surf-twanged swamp grooves from Sydney.|swampy;twang;groove|Hunters & Collectors;The Triffids",
+"A|Unit|Regurgitator|1997|rock|AU|2|80,75,75,50,10,85|p|Bratty, genre-flipping fun with synths and riffs.|quirky;synths;bratty|You Am I;Beck",
+"A|Impossible Princess|Kylie Minogue|1997|pop|AU|2|60,50,60,45,20,90||Kylie's adventurous reinvention, tinged with trip hop and rock.|trip hop;adventurous;moody|Madonna;Garbage",
+"A|Savage Garden|Savage Garden|1997|pop|AU|1|60,70,60,30,30,95|n,d|Shiny Brisbane pop with big ballads.|pop;ballads;glossy|Roxette;Natalie Imbruglia",
+"A|Ivy and the Big Apples|Spiderbait|1996|rock|AU|2|85,75,55,75,25,80|w,p|Hyperactive, playful fuzz-pop from Finley.|fuzzy;playful;punchy|Regurgitator;The Breeders",
+"A|Nevermind|Nirvana|1991|grunge|US|0|85,30,45,90,20,85|w,r|The album that blew grunge wide open.|grunge;loud-quiet-loud;angst|Pixies;Pearl Jam",
+"A|Ten|Pearl Jam|1991|grunge|US|0|75,35,40,80,30,95|r,w|Soaring, emotional grunge with a big voice.|grunge;soaring;emotional|Soundgarden;silverchair",
+"A|Superunknown|Soundgarden|1994|grunge|US|1|75,25,35,85,20,90|w|Heavy, psychedelic, sludgy grunge at its peak.|sludgy;psychedelic;heavy|Alice in Chains;Black Sabbath",
+"A|Dirt|Alice in Chains|1992|grunge|US|1|75,10,35,90,15,85|w|Dark, harmonised grunge-metal.|dark;harmonies;heavy|Soundgarden;Nirvana",
+"A|Definitely Maybe|Oasis|1994|britpop|UK|0|85,70,50,75,25,90|r,p|Swaggering Manc rock and roll with huge choruses.|swagger;anthemic;guitars|Blur;The Verve",
+"A|Parklife|Blur|1994|britpop|UK|0|70,75,65,50,30,90|p,n|Witty, kaleidoscopic snapshots of British life.|witty;eclectic;cheeky|Pulp;The Kinks",
+"A|Different Class|Pulp|1995|britpop|UK|1|70,60,70,50,25,95|p|Sharp, sardonic, disco-tinged Britpop.|sardonic;disco tinge;storytelling|Blur;Suede",
+"A|OK Computer|Radiohead|1997|rock|UK|0|50,25,25,55,35,85|c|Anxious, beautiful rock for the digital age.|atmospheric;anxious;layered|Pink Floyd;The Verve",
+"A|Urban Hymns|The Verve|1997|britpop|UK|1|55,45,40,45,40,90|r,c|Sweeping, string-laden Britpop with soul.|strings;sweeping;soulful|Oasis;Radiohead",
+"A|I Should Coco|Supergrass|1995|britpop|UK|2|85,85,60,65,30,85|p,r|Youthful, sideburned Britpop buzzing with fun.|youthful;fun;guitars|Blur;The Bluetones",
+"A|The Miseducation of Lauryn Hill|Lauryn Hill|1998|hiphop|US|0|55,60,65,30,45,100|d,c|A soulful, wise blend of rap and R&B.|neo soul;rap;soulful|Erykah Badu;Fugees",
+"A|The Chronic|Dr. Dre|1992|hiphop|US|0|60,60,80,55,10,90|p,r|Laid-back G-funk with fat synth leads.|g-funk;laid back;synths|Snoop Doggy Dogg;2Pac",
+"A|Illmatic|Nas|1994|hiphop|US|1|60,40,65,50,20,100|r|Dense, poetic New York rhymes over jazzy beats.|jazzy beats;poetic;boom bap|The Notorious B.I.G.;Wu-Tang Clan",
+"A|The Low End Theory|A Tribe Called Quest|1991|hiphop|US|1|55,65,70,30,30,90|c,d,p|Jazz bass meets easy-going rhymes.|jazz rap;mellow;bassy|De La Soul;The Pharcyde",
+"A|Enter the Wu-Tang (36 Chambers)|Wu-Tang Clan|1993|hiphop|US|1|75,35,60,75,10,100|w|Gritty, kung-fu-flavoured hip hop.|gritty;raw;kung fu|Nas;Public Enemy",
+"A|Baduizm|Erykah Badu|1997|soul|US|1|35,55,55,15,45,95|c,d|Smoky, jazzy neo-soul with effortless cool.|neo soul;jazzy;smoky|Lauryn Hill;D'Angelo",
+"A|CrazySexyCool|TLC|1994|soul|US|0|60,65,80,35,15,95|p,d|Smooth, sassy R&B with great hooks.|r&b;sassy;smooth|Janet Jackson;Destiny's Child",
+"A|Screamadelica|Primal Scream|1991|electronic|UK|1|70,80,80,40,20,70|p|Acid house meets gospel rock and roll.|acid house;euphoric;gospel|The Stone Roses;Happy Mondays",
+"A|Dummy|Portishead|1994|electronic|UK|1|30,15,40,30,20,85|c|Smoky, cinematic trip hop.|trip hop;cinematic;smoky|Massive Attack;Björk",
+"A|Homework|Daft Punk|1997|electronic|FR|1|85,75,95,55,0,20|p,w|Filtered French house that's raw and relentless.|french house;filtered;relentless|The Chemical Brothers;Air",
+"A|Music for the Jilted Generation|The Prodigy|1994|electronic|UK|2|95,45,85,90,0,30|w|Breakbeat rave fury with punk energy.|breakbeat;rave;aggressive|The Chemical Brothers;Underworld",
+"A|Endtroducing.....|DJ Shadow|1996|electronic|US|2|40,35,40,40,25,10|c|A moody collage made entirely from samples.|sample collage;moody;instrumental|Portishead;Massive Attack",
+"A|Wildflowers|Tom Petty|1994|rock|US|1|50,60,40,35,70,90|r,c|Warm, rootsy, effortless songs.|rootsy;warm;acoustic|Bob Dylan;Neil Young",
+"A|Come On Over|Shania Twain|1997|country|CA|0|75,85,70,45,40,95|p,r|Pop-country with big hooks and big fun.|pop country;hooky;fun|Dixie Chicks;Faith Hill",
+"A|Car Wheels on a Gravel Road|Lucinda Williams|1998|country|US|2|50,40,40,40,65,95|r,c|Dusty Southern roots-rock with a lived-in voice.|roots;dusty;storytelling|Steve Earle;Emmylou Harris",
+"A|Grace|Jeff Buckley|1994|rock|US|1|45,30,20,50,55,100|c|A soaring voice and emotional, ornate rock.|soaring vocals;emotional;ornate|Radiohead;Leonard Cohen",
+"A|Either/Or|Elliott Smith|1997|folk|US|2|30,25,15,20,85,90|c|Whispered, intricate, quietly devastating songs.|whispered;fingerpicked;intimate|Nick Drake;Big Star",
+"A|Jagged Little Pill|Alanis Morissette|1995|rock|CA|0|70,40,45,65,40,100|r,w|Raw, confessional 90s rock with attitude.|confessional;angry;anthemic|Garbage;The Cranberries",
+// ---------- 1990s songs ----------
+"S|These Days|Powderfinger|1999|rock|AU|0|45,40,30,35,55,95|c,r,n|A slow-burning, bittersweet reflection.|slow burn;bittersweet;anthemic|You Am I;silverchair",
+"S|Tomorrow|silverchair|1994|grunge|AU|0|70,30,40,80,20,90|r,w|Teenage grunge breakthrough with a massive chorus.|grunge;quiet-loud;angst|Pearl Jam;Nirvana",
+"S|Berlin Chair|You Am I|1993|rock|AU|1|60,45,40,55,45,85|r|Jangly, aching guitar pop with a slow build.|jangle;aching;guitars|The Lemonheads;Powderfinger",
+"S|Treaty|Yothu Yindi|1991|rock|AU|0|85,75,85,55,40,90|p|A danceable land-rights anthem that stormed the charts.|dance rock;yolŋu;political|Midnight Oil;Goanna",
+"S|Truly Madly Deeply|Savage Garden|1997|pop|AU|0|40,70,35,15,40,95|d,c,n|A gently swaying, devotional love song.|ballad;romantic;gentle|Roxette;Boyz II Men",
+"S|Confide in Me|Kylie Minogue|1994|pop|AU|1|50,40,55,35,30,95|d|Sultry, string-swept dance-pop with a Middle Eastern hint.|sultry;strings;trip hop|Madonna;Massive Attack",
+"S|Buy Me a Pony|Spiderbait|1996|rock|AU|2|100,70,50,90,15,70|w|Under two minutes of turbo-charged punk fun.|punk;fast;fun|The Breeders;Regurgitator",
+"S|Mouth|Merril Bainbridge|1994|pop|AU|2|55,70,55,25,45,95|n,c|Breezy, flirty pop with a soft guitar.|breezy;flirty;pop|Natalie Imbruglia;Savage Garden",
+"S|How to Make Gravy|Paul Kelly|1996|folk|AU|1|40,45,25,20,80,95|d,c,n|A Christmas letter from prison, full of family warmth.|storytelling;acoustic;australiana|Crowded House;The Go-Betweens",
+"S|Greg! The Stop Sign!!|TISM|1995|electronic|AU|2|85,80,80,60,10,90|p|Satirical Melbourne dance-rock that's daft and smart.|satirical;dance rock;deadpan|Regurgitator;Pet Shop Boys",
+"S|Smells Like Teen Spirit|Nirvana|1991|grunge|US|0|90,30,50,90,15,85|w,r|The anthem of a generation, loud and fierce.|loud-quiet-loud;grunge;anthem|Pixies;silverchair",
+"S|Black Hole Sun|Soundgarden|1994|grunge|US|0|55,25,30,65,30,90|c|A woozy, psychedelic grunge ballad.|woozy;psychedelic;heavy|Alice in Chains;The Beatles",
+"S|Wonderwall|Oasis|1995|britpop|UK|0|55,55,40,40,75,95|r,n|The campfire sing-along of the 90s.|sing-along;acoustic;strummy|The Verve;Blur",
+"S|Common People|Pulp|1995|britpop|UK|0|80,60,70,65,25,95|p,r|A building, sardonic class-war disco anthem.|sardonic;building;anthemic|Blur;Suede",
+"S|Song 2|Blur|1997|britpop|UK|0|95,70,60,90,15,80|w,p|Two minutes of woo-hoo noise and fun.|woo-hoo;loud;short|Pavement;Supergrass",
+"S|Bitter Sweet Symphony|The Verve|1997|britpop|UK|0|60,35,45,45,40,90|r|Swirling strings and a defiant walk.|strings;swirling;defiant|Oasis;Massive Attack",
+"S|Alright|Supergrass|1995|britpop|UK|1|80,95,70,45,35,90|p,n,r|Bouncy piano-pop celebrating being young.|bouncy;piano;cheerful|Blur;The Bluetones",
+"S|Connection|Elastica|1994|britpop|UK|1|85,60,65,65,15,85|w,p|Spiky, angular, fast and cool.|spiky;angular;cool|Blur;Wire",
+"S|Slight Return|The Bluetones|1996|britpop|UK|2|60,65,50,35,45,90|r,c|Jangly, laid-back Britpop with a sweet melody.|jangle;laid back;sweet|Supergrass;The Stone Roses",
+"S|Juicy|The Notorious B.I.G.|1994|hiphop|US|0|60,85,80,35,20,100|p,n|A rags-to-riches story over a silky groove.|silky groove;storytelling;celebratory|Nas;2Pac",
+"S|California Love|2Pac|1995|hiphop|US|0|80,90,90,50,10,90|p,r|A talk-box West Coast party anthem.|talk box;g-funk;party|Dr. Dre;Snoop Doggy Dogg",
+"S|Gin and Juice|Snoop Doggy Dogg|1994|hiphop|US|0|60,75,85,35,10,95|p,r|Laid-back, lazy-day G-funk.|g-funk;laid back;smooth|Dr. Dre;2Pac",
+"S|Passin' Me By|The Pharcyde|1993|hiphop|US|2|45,45,60,25,35,90|c|Wistful jazz-rap about unrequited crushes.|jazz rap;wistful;mellow|A Tribe Called Quest;De La Soul",
+"S|No Scrubs|TLC|1999|soul|US|0|65,60,85,35,15,95|p|Crisp, sassy R&B with a crunchy beat.|sassy;crisp;r&b|Destiny's Child;Janet Jackson",
+"S|Doo Wop (That Thing)|Lauryn Hill|1998|hiphop|US|1|70,70,80,40,30,100|p,d|Brassy, doo-wop-flavoured soul-rap.|doo-wop;brass;soulful|Erykah Badu;Fugees",
+"S|Finally|CeCe Peniston|1991|disco|US|1|85,95,95,40,5,95|p,w|Joyous piano house with a soaring vocal.|piano house;joyous;diva|Crystal Waters;Black Box",
+"S|Groove Is in the Heart|Deee-Lite|1990|disco|US|0|80,95,95,35,15,85|p,n|A funky, psychedelic dance party in technicolour.|funky;psychedelic;party|The B-52's;Primal Scream",
+"S|Born Slippy .NUXX|Underworld|1996|electronic|UK|1|95,55,85,80,0,50|w,p|A pounding, euphoric rave classic.|techno;euphoric;pounding|The Chemical Brothers;The Prodigy",
+"S|Block Rockin' Beats|The Chemical Brothers|1997|electronic|UK|1|90,65,90,80,0,30|w,p|Big beat breaks and squelchy bass.|big beat;breaks;squelchy|Fatboy Slim;The Prodigy",
+"S|Around the World|Daft Punk|1997|electronic|FR|0|80,75,95,40,0,40|p,w|One looping phrase and a hypnotic bassline.|loop;french house;hypnotic|Cassius;Stardust",
+"S|Teardrop|Massive Attack|1998|electronic|UK|1|30,25,40,25,20,85|c,d|A heartbeat rhythm and an ethereal voice.|trip hop;ethereal;heartbeat|Portishead;Björk",
+"S|Praise You|Fatboy Slim|1998|electronic|UK|0|75,90,85,40,20,70|p,w|A joyful, sample-built big beat sing-along.|big beat;joyful;samples|The Chemical Brothers;Groove Armada",
+"S|Man! I Feel Like a Woman!|Shania Twain|1999|country|CA|0|85,90,80,55,30,95|p,r|Glam pop-country made for a big night out.|pop country;party;sassy|Dixie Chicks;Faith Hill",
+"S|Friends in Low Places|Garth Brooks|1990|country|US|0|55,75,50,30,65,100|p,r,n|A rowdy honky-tonk sing-along.|honky tonk;sing-along;rowdy|George Strait;Alan Jackson",
+"S|Wide Open Spaces|Dixie Chicks|1998|country|US|1|55,75,40,25,75,95|r,c|A banjo-bright song about leaving home.|banjo;bright;harmonies|Shania Twain;Alison Krauss",
+"S|Losing My Religion|R.E.M.|1991|rock|US|0|55,35,40,35,70,95|r,c|Mandolin-driven, anxious and beautiful.|mandolin;anxious;catchy|The Church;The Smiths",
+"S|Creep|Radiohead|1992|rock|UK|0|50,10,20,65,35,95|c|A self-loathing anthem with a crunching guitar blast.|crunch;self-doubt;anthem|Nirvana;The Verve",
+"S|Cannonball|The Breeders|1993|rock|US|1|75,65,55,65,25,80|p|Bouncy, bassy alt-rock with a megaphone hook.|bassy;bouncy;alt rock|Pixies;Spiderbait",
+"S|Linger|The Cranberries|1993|rock|IE|1|40,30,30,25,55,95|c,r|Lilting, string-touched heartache.|lilting;strings;heartache|The Sundays;Sinéad O'Connor",
+"S|Torn|Natalie Imbruglia|1997|pop|AU|0|55,50,50,35,55,95|r,n,d|A breezy break-up song everyone can sing.|sing-along;breezy;bittersweet|Alanis Morissette;Savage Garden"
+];
+
+(function(){
+'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(x,a=0,b=100)=>Math.max(a,Math.min(b,x));
+
+// ---------- constants ----------
+const OCC=[['chill','🛋️','Chilled night in'],['party','🎉','Party'],['road','🚗','Road trip'],['dinner','🍝','Dinner'],['workout','💪','Workout'],['nostalgic','📼','Feeling nostalgic'],['adventurous','🧭','Adventurous']];
+const OCODE={c:'chill',p:'party',r:'road',d:'dinner',w:'workout',n:'nostalgic'};
+const OFIT={chill:'Great for a chilled night',party:'Great for parties',road:'Great for road trips',dinner:'Great with dinner',workout:'Great for workouts',nostalgic:'Pure nostalgia'};
+const GENRES={rock:'Rock',pop:'Pop',soul:'Soul / R&B',disco:'Disco / Funk',country:'Country',folk:'Folk',newwave:'New wave',hiphop:'Hip hop',electronic:'Electronic',grunge:'Grunge',britpop:'Britpop'};
+const FLAG={AU:'🇦🇺',US:'🇺🇸',UK:'🇬🇧',CA:'🇨🇦',IE:'🇮🇪',DE:'🇩🇪',FR:'🇫🇷',SE:'🇸🇪',NO:'🇳🇴',BE:'🇧🇪'};
+const DIMS=[['energy','Energy','calm','wild'],['mood','Mood','melancholy','happy'],['dance','Dance','still','groovy'],['intensity','Intensity','gentle','heavy'],['acoustic','Acoustic','electronic','acoustic'],['vocals','Vocals','instrumental','vocal-led']];
+const EL=['Mellow','Steady','Pumped'],ML=['Moody','In between','Upbeat'],SL=['Acoustic','Mixed','Electric'],LVL=['Low','Mid','High'];
+const LV=[20,50,85],SV=[80,50,15],VV=[20,55,90];
+const DECS=[60,70,80,90];
+
+// ---------- catalogue ----------
+const slug=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const CAT=RAW.map(l=>{const p=l.split('|'),n=p[7].split(',').map(Number),y=+p[3];
+  return{id:slug(p[2]+'-'+p[1]),type:p[0]==='A'?'album':'song',title:p[1],artist:p[2],year:y,decade:Math.floor((y%100)/10)*10,genre:p[4],country:p[5],tier:+p[6],
+  energy:n[0],mood:n[1],dance:n[2],intensity:n[3],acoustic:n[4],vocals:n[5],occ:p[8]?p[8].split(',').map(c=>OCODE[c]):[],desc:p[9],tags:p[10].split(';'),rel:p[11].split(';')}});
+const BYID=Object.fromEntries(CAT.map(x=>[x.id,x]));
+
+// ---------- storage ----------
+const LS={get(k,d){try{const v=localStorage.getItem('dmm.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('dmm.'+k,JSON.stringify(v))}catch(e){}}};
+const DEF={o:'',e:1,m:1,s:1,d:[],t:'b',g:'',au:false,xd:null,xi:null,xv:null};
+let S=Object.assign({},DEF,LS.get('mix',{}));
+let R=LS.get('ratings',{});
+let ROOM=LS.get('room',[{n:'Me',e:1,m:2,s:2,d:80},{n:'Friend',e:1,m:1,s:0,d:70}]);
+let GAME=Object.assign({best:0},LS.get('game',{}));
+const OPEN=new Set(['pick-0','surp']);
+let GEEKOPEN=false,SURP=-1,TAB='mix',CLEARASK=false;
+let EX={q:'',d:0,t:'b',au:false,mode:'browse',n:40};
+let G={cur:null,opts:[],ans:null,score:0,streak:0,played:0};
+
+// ---------- hash ----------
+function mixHash(){const a=[];if(S.o)a.push('o',S.o);a.push('e',S.e,'m',S.m,'s',S.s);if(S.d.length)a.push('d',S.d.join('.'));if(S.t!=='b')a.push('t',S.t);if(S.g)a.push('g',S.g);if(S.au)a.push('au',1);['xd','xi','xv'].forEach(k=>{if(S[k]!=null)a.push(k,S[k])});return '#'+a.join('-')}
+function roomHash(){return '#room-'+ROOM.map(p=>[encodeURIComponent(p.n.replace(/[.~]/g,' ')),p.e,p.m,p.s,p.d].join('.')).join('~')}
+function readHash(){
+  const h=decodeURIComponent(location.hash.slice(1)||'');if(!h)return false;
+  if(h.startsWith('room-')){
+    const ppl=location.hash.slice(6).split('~').map(s=>{const q=s.split('.');return{n:decodeURIComponent(q[0]||'Friend').slice(0,20),e:i3(q[1]),m:i3(q[2]),s:i3(q[3]),d:DECS.includes(+q[4])?+q[4]:0}}).slice(0,8);
+    if(ppl.length>=1){ROOM=ppl;LS.set('room',ROOM);TAB='room';return true}return false;
+  }
+  const p=h.split('-'),n=Object.assign({},DEF,{d:[]});let ok=false;
+  for(let i=0;i<p.length-1;i+=2){const k=p[i],v=p[i+1];ok=true;
+    if(k==='o'&&OCC.some(o=>o[0]===v))n.o=v;
+    else if(k==='e'||k==='m'||k==='s')n[k]=i3(v);
+    else if(k==='d')n.d=v.split('.').map(Number).filter(x=>DECS.includes(x));
+    else if(k==='t'&&['a','s','b'].includes(v))n.t=v;
+    else if(k==='g'&&GENRES[v])n.g=v;
+    else if(k==='au')n.au=v==='1';
+    else if(k==='xd'||k==='xi'||k==='xv')n[k]=i3(v);}
+  if(ok){S=n;TAB='mix';saveMix(false);}return ok;
+}
+function i3(v){v=parseInt(v,10);return v>=0&&v<=2?v:1}
+function saveMix(url=true){LS.set('mix',S);if(url&&TAB==='mix')try{history.replaceState(null,'',mixHash())}catch(e){}}
+
+// ---------- taste profile ----------
+function profile(){
+  const la={},na={},g={};
+  for(const id in R){const x=BYID[id];if(!x)continue;
+    if(R[id]==='love'){la[x.artist]=1;g[x.genre]=(g[x.genre]||0)+1}
+    if(R[id]==='nope'){na[x.artist]=1;g[x.genre]=(g[x.genre]||0)-1}}
+  return{la,na,g};
+}
+function personal(x,P){
+  let b=0;const r=R[x.id];
+  if(r==='love')b+=.06;else if(r==='want')b+=.02;else if(r==='nope')b-=.3;
+  if(P.la[x.artist]&&r!=='love')b+=.04;
+  if(P.na[x.artist]&&r!=='nope')b-=.06;
+  if(P.g[x.genre])b+=clamp(P.g[x.genre]*.015,-.04,.04);
+  return b;
+}
+function tasteSummary(){
+  const loved=Object.keys(R).filter(id=>R[id]==='love'&&BYID[id]).map(id=>BYID[id]);
+  if(loved.length<2)return null;
+  const avg=k=>loved.reduce((s,x)=>s+x[k],0)/loved.length;
+  const near=(v,arr)=>arr.reduce((bi,a,i)=>Math.abs(a-v)<Math.abs(arr[bi]-v)?i:bi,0);
+  const e=near(avg('energy'),LV),m=near(avg('mood'),LV),s=near(avg('acoustic'),SV);
+  const dc={};loved.forEach(x=>dc[x.decade]=(dc[x.decade]||0)+1);
+  const d=+Object.keys(dc).sort((a,b)=>dc[b]-dc[a])[0];
+  const w=[];if(e!==1)w.push(['mellow','','high-energy'][e]);if(m!==1)w.push(['moody','','upbeat'][m]);if(s!==1)w.push(['acoustic','','electric'][s]);
+  w.push(d+'s');
+  return{e,m,s,d,n:loved.length,text:'You lean '+(w.length>1?w.join(', '):'all over the place, mostly '+w[0])};
+}
+
+// ---------- scoring ----------
+function targetsFor(e,m,s,o,geek){
+  const t={energy:LV[e],mood:LV[m],acoustic:SV[s]},w={energy:1.2,mood:1,acoustic:.9};
+  const set=(k,v,wt)=>{t[k]=v;w[k]=wt};
+  if(o==='chill'){t.energy-=12;set('intensity',20,.6)}
+  if(o==='party'){t.energy+=15;t.mood+=10;set('dance',85,.9)}
+  if(o==='road'){t.mood+=8;set('vocals',90,.5)}
+  if(o==='dinner'){t.energy-=10;t.acoustic+=8;set('intensity',20,.7)}
+  if(o==='workout'){t.energy+=20;set('intensity',80,.7);set('dance',70,.4)}
+  if(geek){if(geek.xd!=null)set('dance',LV[geek.xd],.8);if(geek.xi!=null)set('intensity',LV[geek.xi],.8);if(geek.xv!=null)set('vocals',VV[geek.xv],.8)}
+  for(const k in t)t[k]=clamp(t[k]);
+  return{t,w};
+}
+function raw(x,T){let s=0,ws=0;for(const k in T.t){const d=(x[k]-T.t[k])/100;s+=T.w[k]*d*d;ws+=T.w[k]}return 1-Math.sqrt(s/ws)}
+function occBonus(x,o){if(!o)return 0;let b=x.occ.includes(o)?.05:0;
+  if(o==='road'&&x.tags.includes('sing-along'))b+=.03;
+  if(o==='nostalgic'&&x.tier===0)b+=.04;
+  if(o==='adventurous')b+=[-.03,.03,.08][x.tier];
+  return b}
+// spread the top end: 1.0 -> 100, .95 -> 92, .9 -> 83, .8 -> 66
+const pct=r=>Math.round(clamp(100-(1-r)*170,1,100));
+
+function mixFiltered(){return CAT.filter(x=>(!S.d.length||S.d.includes(x.decade))&&(S.t==='b'||(S.t==='a')===(x.type==='album'))&&(!S.g||x.genre===S.g)&&(!S.au||x.country==='AU')&&R[x.id]!=='nope')}
+function mixRanked(){const T=targetsFor(S.e,S.m,S.s,S.o,S),P=profile();
+  return{T,list:mixFiltered().map(x=>{const r=raw(x,T)+occBonus(x,S.o)+personal(x,P);return{x,r,p:pct(r)}}).sort((a,b)=>b.r-a.r)}}
+function threePicks(list){const used=new Set(),out=[];
+  for(const tier of[0,1,2]){let c=list.find(i=>i.x.tier===tier&&!used.has(i.x.artist));
+    if(!c)c=list.find(i=>!used.has(i.x.artist)&&!out.includes(i));
+    if(c)used.add(c.x.artist);out.push(c||null)}
+  return out}
+
+function whyChips(x,T,ctx){
+  const out=[],P=profile();
+  if(ctx.o&&x.occ.includes(ctx.o))out.push(OFIT[ctx.o]);
+  else if(ctx.o==='adventurous'&&x.tier===2)out.push('Off the beaten track');
+  if(P.la[x.artist]&&R[x.id]!=='love')out.push('You loved '+x.artist);
+  if(ctx.e!=null){const m=[];
+    if(Math.abs(x.energy-LV[ctx.e])<=18)m.push(EL[ctx.e]);
+    if(Math.abs(x.mood-LV[ctx.m])<=18)m.push(ML[ctx.m]);
+    if(Math.abs(x.acoustic-SV[ctx.s])<=20)m.push(SL[ctx.s]);
+    if(m.length>=2)out.push('Your style: '+m.join(' · '));}
+  if(x.country==='AU')out.push(x.tier===0?'🇦🇺 Aussie classic':'🇦🇺 Aussie gem');
+  if(x.tier===2&&ctx.o!=='adventurous')out.push('Hidden gem');
+  if(ctx.d&&ctx.d.length===1)out.push('Pure '+x.decade+'s');
+  if(x.tags.includes('sing-along')&&ctx.o!=='road')out.push('Big sing-along');
+  return out.slice(0,3);
+}
+
+// ---------- card ----------
+const q=x=>encodeURIComponent(x.artist+' '+x.title);
+const spWeb=x=>'https://open.spotify.com/search/'+q(x);
+const spApp=x=>'spotify:search:'+q(x);
+// Open the Spotify app straight to this song/album; if the app doesn't take over, fall back to the web player.
+function playOnSpotify(x){
+  let left=false;const gone=()=>{left=true};
+  document.addEventListener('visibilitychange',gone,{once:true});window.addEventListener('pagehide',gone,{once:true});window.addEventListener('blur',gone,{once:true});
+  location.href=spApp(x);
+  setTimeout(()=>{document.removeEventListener('visibilitychange',gone);window.removeEventListener('pagehide',gone);window.removeEventListener('blur',gone);
+    if(!left&&document.visibilityState==='visible')window.open(spWeb(x),'_blank','noopener')},1600);
+}
+const playBtn=x=>`<a class="play" href="${spWeb(x)}" data-act="play" data-id="${x.id}" aria-label="Play ${esc(x.title)} on Spotify" title="Play on Spotify">▶</a>`;
+function card(it,o){
+  const x=it.x||it,open=OPEN.has(o.key);
+  let h=`<article class="card${open?' open':''}"><div class="phw"><button class="ph" data-act="toggle" data-key="${o.key}" aria-expanded="${open}">
+  <span class="pt">${o.label?`<span class="plabel">${o.label}</span>`:''}<b>${esc(x.title)}</b><small>${esc(x.artist)} · ${x.year}${x.country==='AU'?' · 🇦🇺':''}</small></span>
+  ${it.p!=null?`<span class="pct">${it.p}<small>%</small></span>`:''}<span class="chev">›</span></button>${playBtn(x)}</div>`;
+  if(o.sub)h+=o.sub;
+  if(open){
+    const why=o.T?whyChips(x,o.T,o.ctx||{}):(x.country==='AU'?['🇦🇺 Aussie'+(x.tier===0?' classic':' gem')]:[]);
+    h+=`<div class="cb"><p class="desc">${esc(x.desc)}</p>`;
+    if(why.length)h+=`<div class="why">${why.map(w=>`<span${w.startsWith('🇦🇺')?' class="au"':''}>${esc(w)}</span>`).join('')}</div>`;
+    h+=`<p class="meta">${x.type==='album'?'💿 Album':'🎵 Song'} · ${GENRES[x.genre]} · ${FLAG[x.country]||''} · ${['Classic','Less obvious','Deep cut'][x.tier]}</p>`;
+    h+=`<div class="bars">${DIMS.map(([k,l])=>{const t=o.T&&o.T.t[k]!=null?`<i class="tick" style="left:${o.T.t[k]}%" title="You asked for ${o.T.t[k]}"></i>`:'';
+      return`<div class="bar"><span>${l}</span><div class="track"><div class="fill" style="width:${x[k]}%"></div>${t}</div></div>`}).join('')}</div>`;
+    if(o.T)h+=`<p class="tags" style="margin-top:-6px">▮ what it is · <b style="color:var(--ink)">|</b> what you asked for</p>`;
+    h+=`<p class="tags">Sounds like: ${x.tags.map(esc).join(', ')}<br>If you like: ${x.rel.map(esc).join(', ')}</p>`;
+    h+=`<div class="links"><a class="sp" href="${spWeb(x)}" data-act="play" data-id="${x.id}">▶ Play on Spotify</a><a class="am" href="https://music.apple.com/au/search?term=${q(x)}" target="_blank" rel="noopener">♫ Apple Music</a></div>`;
+    h+=rateRow(x)+'</div>';
+  }
+  return h+'</article>';
+}
+function rateRow(x){const r=R[x.id];
+  return`<div class="rate">${[['love','👍 Loved it'],['nope','👎 Not for me'],['want','🔖 Want to hear']].map(([v,l])=>`<button data-act="rate" data-id="${x.id}" data-v="${v}" class="${r===v?'on':''}" aria-pressed="${r===v}">${l}</button>`).join('')}</div>`}
+
+// ---------- UI helpers ----------
+const seg=(act,k,val,labels,cls='')=>`<div class="seg ${cls}" role="group">${labels.map((l,i)=>`<button data-act="${act}" data-k="${k}" data-v="${i}" class="${val===i?'on':''}" aria-pressed="${val===i}">${l}</button>`).join('')}</div>`;
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2200)}
+const base=()=>location.href.split('#')[0];
+async function share(title,text,url){
+  if(navigator.share){try{await navigator.share({title,text,url});return}catch(e){if(e&&e.name==='AbortError')return}}
+  try{await navigator.clipboard.writeText(text+'\n'+url);toast('Copied — paste it to your mates')}
+  catch(e){const ta=document.createElement('textarea');ta.value=text+'\n'+url;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('Copied to clipboard')}catch(_){toast('Couldn\'t copy')}ta.remove()}
+}
+
+// ---------- MIX ----------
+function geekBadge(){const b=[];if(S.g)b.push(GENRES[S.g]);if(S.au)b.push('🇦🇺 only');
+  if(S.xd!=null)b.push('Dance '+LVL[S.xd]);if(S.xi!=null)b.push('Intensity '+LVL[S.xi]);if(S.xv!=null)b.push('Vocals '+LVL[S.xv]);return b.join(' · ')}
+function renderMixCtl(){
+  const badge=geekBadge();
+  const opt=(k,lbl)=>`<div class="row"><span>${lbl}</span><div class="seg sm">${['Any',...LVL].map((l,i)=>{const v=i?i-1:null;return`<button data-act="geekx" data-k="${k}" data-v="${i?i-1:''}" class="${S[k]===v?'on':''}">${l}</button>`}).join('')}</div></div>`;
+  $('#mix-ctl').innerHTML=`
+  <h2>What's the occasion?</h2>
+  <div class="chips">${OCC.map(([k,e,l])=>`<button class="chip${S.o===k?' on':''}" data-act="occ" data-v="${k}" aria-pressed="${S.o===k}">${e} ${l}</button>`).join('')}</div>
+  <h2>Your vibe</h2>
+  <div class="row"><span>⚡ Energy</span>${seg('mix','e',S.e,EL)}</div>
+  <div class="row"><span>🌤️ Mood</span>${seg('mix','m',S.m,ML)}</div>
+  <div class="row"><span>🎸 Sound</span>${seg('mix','s',S.s,SL)}</div>
+  <h2>Decades & format</h2>
+  <div class="chips">${['Any',...DECS].map(d=>{const on=d==='Any'?!S.d.length:S.d.includes(d);return`<button class="chip${on?' on':''}" data-act="dec" data-v="${d}" aria-pressed="${on}">${d==='Any'?'Any':d+'s'}</button>`}).join('')}</div>
+  <div style="margin-top:10px">${seg('fmt','t',['a','s','b'].indexOf(S.t),['💿 Albums','🎵 Songs','Both'])}</div>
+  <details class="geek"${GEEKOPEN?' open':''}><summary data-act="geekopen">🤓 Music Geek mode ${badge?`<span class="badge">${esc(badge)}</span>`:''}<span class="chev">›</span></summary>
+   <div class="geekbody">
+    <div class="row"><span>Genre</span><select data-in="genre" aria-label="Genre"><option value="">Any genre</option>${Object.entries(GENRES).map(([k,l])=>`<option value="${k}"${S.g===k?' selected':''}>${l}</option>`).join('')}</select></div>
+    <div class="row"><span>Origin</span><div class="chips"><button class="chip au${S.au?' on':''}" data-act="au" aria-pressed="${S.au}">🇦🇺 Australian only</button></div></div>
+    ${opt('xd','Dance')}${opt('xi','Intensity')}${opt('xv','Vocals')}
+    ${badge?`<button class="btn sm" data-act="geekreset" style="margin-top:6px">Reset geek filters</button>`:''}
+   </div></details>`;
+}
+function renderMixRes(){
+  const {T,list}=mixRanked(),ctx={o:S.o,e:S.e,m:S.m,s:S.s,d:S.d};
+  if(!list.length){$('#mix-res').innerHTML=`<div class="empty">No matches with these filters.<br><button class="btn sm" data-act="geekreset" style="margin-top:10px">Loosen filters</button></div>`;return}
+  const P=threePicks(list),L=['🛡️ Safe bet','🔄 Smart swap','🧭 Discovery pick'];
+  let h='<h2>Your picks</h2>';
+  if(SURP>=0){const gems=gemList(list);if(gems.length){const g=gems[SURP%gems.length];h+=card(g,{key:'surp',label:`🎲 Surprise gem ${SURP%gems.length+1}/${gems.length}`,T,ctx})}}
+  P.forEach((it,i)=>{if(it)h+=card(it,{key:'pick-'+i,label:L[i],T,ctx})});
+  h+=`<div class="btns"><button class="btn" data-act="surprise">🎲 Surprise me</button><button class="btn pri" data-act="share-mix">📤 Share</button></div>`;
+  $('#mix-res').innerHTML=h;
+}
+const gemList=list=>list.filter(i=>i.x.tier===2).slice(0,8);
+function renderMix(){renderMixCtl();renderMixRes()}
+function mixChanged(){SURP=-1;saveMix();renderMix()}
+
+// ---------- ROOM ----------
+function personScore(x,p){const T=targetsFor(p.e,p.m,p.s,'',null);return pct(raw(x,T)+(p.d&&x.decade===p.d?.04:0))}
+function groupRank(ppl,pool){return pool.map(x=>{const ps=ppl.map(p=>personScore(x,p)),avg=ps.reduce((a,b)=>a+b,0)/ps.length,mn=Math.min(...ps);return{x,ps,p:Math.round(.6*avg+.4*mn)}}).sort((a,b)=>b.p-a.p)}
+function distinct(list,n){const u=new Set(),o=[];for(const i of list){if(u.has(i.x.artist))continue;u.add(i.x.artist);o.push(i);if(o.length>=n)break}return o}
+function renderRoomCtl(){
+  $('#room-ctl').innerHTML=`<h2>Who's in the room?</h2><p class="sub">Everyone picks a vibe in a few taps. We find what keeps the most people happy.</p>`+
+  ROOM.map((p,i)=>`<div class="person"><div class="pn"><input value="${esc(p.n)}" data-in="name" data-i="${i}" maxlength="20" aria-label="Name"><button class="x" data-act="room-del" data-i="${i}" aria-label="Remove ${esc(p.n)}"${ROOM.length<=2?' disabled style="opacity:.35"':''}>✕</button></div>
+   <div class="row"><span>Energy</span>${seg('room','e',p.e,EL,'sm').replace(/data-k="e"/g,`data-k="e" data-i="${i}"`)}</div>
+   <div class="row"><span>Mood</span>${seg('room','m',p.m,['Moody','Between','Upbeat'],'sm').replace(/data-k="m"/g,`data-k="m" data-i="${i}"`)}</div>
+   <div class="row"><span>Sound</span>${seg('room','s',p.s,SL,'sm').replace(/data-k="s"/g,`data-k="s" data-i="${i}"`)}</div>
+   <div class="row"><span>Decade</span><div class="chips">${[0,...DECS].map(d=>`<button class="chip${p.d===d?' on':''}" data-act="room-dec" data-i="${i}" data-v="${d}">${d?d+'s':'Any'}</button>`).join('')}</div></div></div>`).join('')+
+  (ROOM.length<8?`<button class="btn" data-act="room-add" style="width:100%">➕ Add person</button>`:'');
+}
+function renderRoomRes(){
+  const ppl=ROOM,pool=CAT.filter(x=>R[x.id]!=='nope');
+  const ranked=groupRank(ppl,pool),top=distinct(ranked,5);
+  let h='<h2>Best for the room</h2>';
+  top.forEach((it,i)=>{const sub=`<div class="people">${ppl.map((p,j)=>`<span>${esc(p.n)} <b>${it.ps[j]}%</b></span>`).join('')}</div>`;
+    h+=card(it,{key:'room-'+i,label:'#'+(i+1)+' for everyone',sub})});
+  if(top[0]){const ps=top[0].ps,mi=ps.indexOf(Math.min(...ps)),spread=Math.max(...ps)-ps[mi];
+    h+=`<div class="note"><b>🤝 Who's compromising?</b>${spread<8?'Nobody really — you lot are on the same page.':`${esc(ppl[mi].n)} is giving the most ground on #1 (${ps[mi]}%). Maybe they choose the next one.`}</div>`;}
+  // two-pick plan
+  let far=0,a=0,b=1;
+  for(let i=0;i<ppl.length;i++)for(let j=i+1;j<ppl.length;j++){const d=Math.abs(ppl[i].e-ppl[j].e)+Math.abs(ppl[i].m-ppl[j].m)+Math.abs(ppl[i].s-ppl[j].s);if(d>far){far=d;a=i;b=j}}
+  if(far>=3){
+    const tdist=(p,q)=>Math.abs(p.e-q.e)+Math.abs(p.m-q.m)+Math.abs(p.s-q.s);
+    const A=[],B=[];ppl.forEach(p=>(tdist(p,ppl[a])<=tdist(p,ppl[b])?A:B).push(p));
+    const pa=groupRank(A,pool)[0],used=pa?pa.x.artist:'';
+    const pb=groupRank(B,pool).find(i=>i.x.artist!==used);
+    if(pa&&pb)h+=`<div class="note"><b>✌️ Two-pick plan</b>Tastes are pretty far apart, so take turns:<br>① <b style="display:inline">${esc(pa.x.title)}</b> — ${esc(pa.x.artist)} for ${A.map(p=>esc(p.n)).join(', ')}<br>② <b style="display:inline">${esc(pb.x.title)}</b> — ${esc(pb.x.artist)} for ${B.map(p=>esc(p.n)).join(', ')}</div>`;
+  }
+  const pl=distinct(ranked.filter(i=>i.x.type==='song'),10);
+  h+=`<h2>Shared playlist · top 10 songs</h2><div class="box"><ol class="pl">${pl.map(i=>`<li><span class="t"><b>${esc(i.x.title)}</b><small>${esc(i.x.artist)} · ${i.x.year} · ${i.p}%</small></span>${playBtn(i.x)}</li>`).join('')}</ol></div>
+  <div class="btns"><button class="btn pri" data-act="share-room">📤 Share room picks</button></div>`;
+  $('#room-res').innerHTML=h;
+  renderRoomRes.pl=pl;renderRoomRes.top=top;
+}
+function renderRoom(){renderRoomCtl();renderRoomRes()}
+function saveRoom(){LS.set('room',ROOM);if(TAB==='room')try{history.replaceState(null,'',roomHash())}catch(e){}}
+
+// ---------- MY MUSIC ----------
+function renderMine(){
+  const ts=tasteSummary(),groups=[['love','👍 Loved it'],['want','🔖 Want to hear'],['nope','👎 Not for me']];
+  const ids=Object.keys(R).filter(id=>BYID[id]);
+  let h='<h2>Your taste</h2>';
+  if(ts)h+=`<div class="box"><div class="taste">${esc(ts.text)}</div><p class="sub">Based on ${ts.n} loves. Your loves and passes quietly steer every pick.</p><button class="btn pri" data-act="taste-apply" style="width:100%">🎛️ Set the sliders to my taste</button></div>`;
+  else h+=`<div class="note"><b>Tap 👍 on a couple of favourites</b>After two loves you'll get a taste summary here, and picks start leaning your way.</div>`;
+  if(!ids.length)h+=`<div class="empty">Nothing rated yet. Open any pick and tap 👍, 👎 or 🔖.</div>`;
+  groups.forEach(([v,l])=>{const list=ids.filter(id=>R[id]===v).map(id=>BYID[id]).sort((a,b)=>a.year-b.year);
+    if(list.length)h+=`<h2>${l} (${list.length})</h2>`+list.map(x=>card(x,{key:'mine-'+x.id})).join('')});
+  if(ids.length){h+=`<div class="btns"><button class="btn pri" data-act="share-mine">📤 Share my list</button><button class="btn" data-act="mine-clear">🗑️ Clear list</button></div>`;
+    if(CLEARASK)h+=`<div class="confirm" role="alertdialog"><span>Clear all ${ids.length} ratings on this phone? This can't be undone.</span><button class="btn sm pri" data-act="mine-clear-yes">Yes, clear</button><button class="btn sm" data-act="mine-clear-no">Cancel</button></div>`;}
+  $('#tab-mine').innerHTML=h;
+}
+
+// ---------- EXPLORE ----------
+function renderExCtl(){
+  let h=`<div style="margin-top:6px">${seg('exmode','mode',EX.mode==='browse'?0:1,['🔍 Browse','🎯 Guess the year'])}</div>`;
+  if(EX.mode==='browse')h+=`<div style="margin-top:12px"><input class="search" type="search" placeholder="Search title, artist, genre…" value="${esc(EX.q)}" data-in="search" aria-label="Search"></div>
+   <div class="chips" style="margin-top:10px">${[0,...DECS].map(d=>`<button class="chip${EX.d===d?' on':''}" data-act="ex-dec" data-v="${d}">${d?d+'s':'Any'}</button>`).join('')}<button class="chip au${EX.au?' on':''}" data-act="ex-au">🇦🇺</button></div>
+   <div style="margin-top:10px">${seg('ex','t',['a','s','b'].indexOf(EX.t),['💿 Albums','🎵 Songs','Both'])}</div>`;
+  $('#ex-ctl').innerHTML=h;
+}
+function exList(){const qq=EX.q.trim().toLowerCase();
+  return CAT.filter(x=>(!EX.d||x.decade===EX.d)&&(EX.t==='b'||(EX.t==='a')===(x.type==='album'))&&(!EX.au||x.country==='AU')&&
+   (!qq||(x.title+' '+x.artist+' '+GENRES[x.genre]+' '+x.year+' '+x.tags.join(' ')).toLowerCase().includes(qq))).sort((a,b)=>a.year-b.year||a.title.localeCompare(b.title))}
+function renderExRes(){
+  if(EX.mode==='game'){renderGame();return}
+  const l=exList();
+  let h=`<p class="count">${l.length} of ${CAT.length} · tap one to see more</p>`+l.slice(0,EX.n).map(x=>card(x,{key:'ex-'+x.id})).join('');
+  if(l.length>EX.n)h+=`<button class="btn" data-act="ex-more" style="width:100%">Show more</button>`;
+  if(!l.length)h+=`<div class="empty">Nothing found. Try another word.</div>`;
+  $('#ex-res').innerHTML=h;
+}
+function renderExplore(){renderExCtl();renderExRes()}
+
+// ---------- GAME ----------
+function newRound(){
+  const x=CAT[Math.floor(Math.random()*CAT.length)],ys=new Set([x.year]);
+  let guard=0;while(ys.size<4&&guard++<200){const y=x.year+Math.round((Math.random()*2-1)*9);if(y>=1960&&y<=1999&&y!==x.year)ys.add(y)}
+  G.cur=x;G.opts=[...ys].sort((a,b)=>a-b);G.ans=null;
+}
+function renderGame(){
+  if(!G.cur)newRound();
+  const x=G.cur;
+  let h=`<div class="box game"><div class="score"><div><b>${G.score}/${G.played}</b>Score</div><div><b>${G.streak}</b>Streak</div><div><b>${GAME.best}</b>Best streak</div></div>
+  <h2>Pass the phone · what year?</h2>
+  <p class="meta">${x.type==='album'?'💿 Album':'🎵 Song'} · ${GENRES[x.genre]} · ${FLAG[x.country]||''}</p>
+  <p class="clue">“${esc(x.desc)}”</p>
+  <div class="bars">${DIMS.map(([k,l])=>`<div class="bar"><span>${l}</span><div class="track"><div class="fill" style="width:${x[k]}%"></div></div></div>`).join('')}</div>
+  <p class="tags">Sounds like: ${x.tags.map(esc).join(', ')}</p>
+  <div class="opts">${G.opts.map(y=>{let c='';if(G.ans!=null){if(y===x.year)c='right';else if(y===G.ans)c='wrong'}return`<button data-act="g-ans" data-v="${y}" class="${c}"${G.ans!=null?' disabled':''}>${y}</button>`}).join('')}</div>`;
+  if(G.ans!=null)h+=`<p class="reveal">${G.ans===x.year?'✅ Nailed it!':'❌ It was '+x.year+'.'} <b>${esc(x.title)}</b> — ${esc(x.artist)}</p><button class="btn pri" data-act="g-next" style="width:100%">Next round →</button>`;
+  $('#ex-res').innerHTML=h+'</div>';
+}
+
+// ---------- tabs ----------
+function showTab(t){TAB=t;
+  document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('on',s.id==='tab-'+t));
+  document.querySelectorAll('.tabbar button').forEach(b=>{const on=b.dataset.v===t;b.classList.toggle('on',on);b.setAttribute('aria-current',on?'page':'false')});
+  try{history.replaceState(null,'',t==='mix'?mixHash():t==='room'?roomHash():location.pathname+location.search)}catch(e){}
+  ({mix:renderMix,room:renderRoom,mine:renderMine,explore:renderExplore})[t]();
+  window.scrollTo(0,0);
+}
+function rerenderCurrent(){({mix:renderMixRes,room:renderRoomRes,mine:renderMine,explore:renderExRes})[TAB]()}
+
+// ---------- events ----------
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]');if(!b)return;
+  const a=b.dataset.act,v=b.dataset.v,i=+b.dataset.i;let k=b.dataset.k;
+  switch(a){
+    case 'tab':showTab(v);break;
+    case 'occ':S.o=S.o===v?'':v;mixChanged();break;
+    case 'mix':S[k]=+v;mixChanged();break;
+    case 'fmt':S.t=['a','s','b'][+v];mixChanged();break;
+    case 'dec':if(v==='Any')S.d=[];else{const d=+v;S.d=S.d.includes(d)?S.d.filter(x=>x!==d):[...S.d,d].sort();if(S.d.length===4)S.d=[]}mixChanged();break;
+    case 'au':S.au=!S.au;mixChanged();break;
+    case 'geekx':S[k]=v===''?null:+v;mixChanged();break;
+    case 'geekopen':e.preventDefault();GEEKOPEN=!GEEKOPEN;renderMixCtl();break;
+    case 'geekreset':Object.assign(S,{g:'',au:false,xd:null,xi:null,xv:null});if(!mixFiltered().length)Object.assign(S,{d:[],t:'b'});mixChanged();break;
+    case 'surprise':{const {list}=mixRanked(),g=gemList(list);if(!g.length){toast('No hidden gems with these filters');break}SURP=SURP<0?0:SURP+1;OPEN.add('surp');renderMixRes();
+      const el=document.querySelector('[data-key="surp"]');if(el)el.scrollIntoView({behavior:'smooth',block:'center'});break}
+    case 'toggle':k=b.dataset.key;OPEN.has(k)?OPEN.delete(k):OPEN.add(k);{const art=b.closest('.card');const tmp=document.createElement('div');
+      const lab=art.querySelector('.plabel');const sub=art.querySelector('.people');
+      const it=resolveCard(k);if(!it){rerenderCurrent();break}
+      tmp.innerHTML=card(it.item,{key:k,label:lab?lab.textContent:'',T:it.T,ctx:it.ctx,sub:sub?sub.outerHTML:''});art.replaceWith(tmp.firstElementChild)}break;
+    case 'rate':{const id=b.dataset.id;R[id]===v?delete R[id]:R[id]=v;LS.set('ratings',R);
+      const art=b.closest('.card');art.querySelectorAll('.rate button').forEach(x=>{const on=R[id]===x.dataset.v;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on)});
+      toast(R[id]==='love'?'👍 Loved — picks will lean this way':R[id]==='nope'?'👎 Noted — you won\'t see it in picks':R[id]==='want'?'🔖 Saved to Want to hear':'Rating removed');
+      if(TAB==='mine')renderMine();break}
+    case 'share-mix':{const {list}=mixRanked(),P=threePicks(list),L=['🛡️','🔄','🧭'];
+      const head=[S.o?OCC.find(o=>o[0]===S.o)[2]:null,EL[S.e],ML[S.m],SL[S.s],S.d.length?S.d.map(d=>d+'s').join('/'):null].filter(Boolean).join(' · ');
+      const text=`🎛️ Decades Mood Mixer — ${head}\n`+P.filter(Boolean).map((it,j)=>`${L[j]} ${it.x.title} — ${it.x.artist} (${it.x.year}) ${it.p}%`).join('\n');
+      share('Decades Mood Mixer',text,base()+mixHash());break}
+    case 'room':ROOM[i][k]=+v;saveRoom();renderRoom();break;
+    case 'room-dec':ROOM[i].d=+v;saveRoom();renderRoom();break;
+    case 'room-add':if(ROOM.length<8){ROOM.push({n:'Friend '+(ROOM.length+1),e:1,m:1,s:1,d:0});saveRoom();renderRoom()}break;
+    case 'room-del':if(ROOM.length>2){ROOM.splice(i,1);saveRoom();renderRoom()}break;
+    case 'share-room':{const top=renderRoomRes.top||[],pl=renderRoomRes.pl||[];
+      const text=`👥 Decades Mood Mixer — for ${ROOM.map(p=>p.n).join(', ')}\nTop pick: ${top[0]?top[0].x.title+' — '+top[0].x.artist+' ('+top[0].p+'%)':''}\n\nPlaylist:\n`+pl.map((s,j)=>`${j+1}. ${s.x.title} — ${s.x.artist}`).join('\n');
+      share('Decades Mood Mixer',text,base()+roomHash());break}
+    case 'taste-apply':{const ts=tasteSummary();if(ts){Object.assign(S,{e:ts.e,m:ts.m,s:ts.s,d:[ts.d]});saveMix(false);showTab('mix');toast('Sliders set to your taste')}break}
+    case 'share-mine':{const g=[['love','👍 Loved'],['want','🔖 Want to hear'],['nope','👎 Not for me']];const ts=tasteSummary();
+      const text='🎛️ My Decades Mood Mixer list'+(ts?'\n'+ts.text:'')+'\n'+g.map(([v,l])=>{const xs=Object.keys(R).filter(id=>R[id]===v&&BYID[id]).map(id=>BYID[id]);return xs.length?`\n${l}\n`+xs.map(x=>`• ${x.title} — ${x.artist} (${x.year})`).join('\n'):''}).join('');
+      share('My music list',text,base());break}
+    case 'mine-clear':CLEARASK=true;renderMine();break;
+    case 'mine-clear-no':CLEARASK=false;renderMine();break;
+    case 'mine-clear-yes':R={};LS.set('ratings',R);CLEARASK=false;renderMine();toast('List cleared');break;
+    case 'exmode':EX.mode=+v?'game':'browse';renderExplore();break;
+    case 'ex-dec':EX.d=+v;EX.n=40;renderExplore();break;
+    case 'ex-au':EX.au=!EX.au;EX.n=40;renderExplore();break;
+    case 'ex':EX.t=['a','s','b'][+v];EX.n=40;renderExplore();break;
+    case 'ex-more':EX.n+=40;renderExRes();break;
+    case 'g-ans':{if(G.ans!=null)break;G.ans=+v;G.played++;if(G.ans===G.cur.year){G.score++;G.streak++;if(G.streak>GAME.best){GAME.best=G.streak;LS.set('game',GAME)}}else G.streak=0;renderGame();break}
+    case 'g-next':newRound();renderGame();break;
+    case 'play':e.preventDefault();if(BYID[b.dataset.id])playOnSpotify(BYID[b.dataset.id]);break;
+  }
+});
+function resolveCard(k){
+  if(k==='surp'||k.startsWith('pick-')){const {T,list}=mixRanked(),ctx={o:S.o,e:S.e,m:S.m,s:S.s,d:S.d};
+    if(k==='surp'){const g=gemList(list);return g.length?{item:g[SURP%g.length],T,ctx}:null}
+    const it=threePicks(list)[+k.slice(5)];return it?{item:it,T,ctx}:null}
+  if(k.startsWith('room-')){const t=(renderRoomRes.top||[])[+k.slice(5)];return t?{item:t}:null}
+  const id=k.replace(/^(ex|mine)-/,'');return BYID[id]?{item:BYID[id]}:null;
+}
+document.addEventListener('input',e=>{const el=e.target;
+  if(el.dataset.in==='search'){EX.q=el.value;EX.n=40;renderExRes()}
+  if(el.dataset.in==='name'){ROOM[+el.dataset.i].n=el.value.slice(0,20)||'Friend';saveRoom();clearTimeout(renderRoomRes.t);renderRoomRes.t=setTimeout(renderRoomRes,250)}
+});
+document.addEventListener('change',e=>{if(e.target.dataset.in==='genre'){S.g=e.target.value;mixChanged()}});
+window.addEventListener('hashchange',()=>{if(readHash())showTab(TAB)});
+
+// ---------- boot ----------
+readHash();
+showTab(TAB);
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+window.DMM={CAT,mixRanked,threePicks};
+})();
+
+</script>
+</body>
+</html>

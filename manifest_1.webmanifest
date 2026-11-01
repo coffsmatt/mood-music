@@ -1,0 +1,15 @@
+{
+  "name": "Decades Mood Mixer",
+  "short_name": "Mood Mixer",
+  "description": "Mood-based album and song picks from the 60s, 70s, 80s and 90s.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FBF5EC",
+  "theme_color": "#E8572A",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
