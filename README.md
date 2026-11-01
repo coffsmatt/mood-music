@@ -37,6 +37,20 @@ Tap the green ▶ on any song to open it in the Spotify app. The 😂 Cheeky cra
 
 The **Share** buttons use the phone's share sheet (or copy to clipboard). The link carries your settings, e.g. `#o-party-e-2-m-2-s-1`, so your mates open the same picks. Room links carry everyone's name and vibe.
 
+## Sending playlists to Spotify
+
+Any crate, room playlist, mood mix (top 20) or your Loved / Want to hear list can be sent into Spotify as a private playlist.
+
+One-time setup (about 5 minutes, easiest on a computer):
+
+1. Open your live site, go to **My music → Spotify → Set up Spotify**. It shows the exact **Redirect URI** to use (your GitHub Pages address).
+2. Go to [developer.spotify.com/dashboard](https://developer.spotify.com/dashboard) and log in. The account that owns the Spotify app needs **Premium**.
+3. **Create app**: any name and description, tick **Web API**, and paste the Redirect URI from step 1.
+4. In the app's **User Management**, add the name and Spotify email of each person who'll send playlists (Spotify allows 5 people for small personal apps).
+5. Copy the **Client ID** and paste it into the app. To save your mates pasting it too, you can instead put it between the quotes on the line `const SPOTIFY_CLIENT_ID='';` in `index.html` (search for it) and re-upload.
+
+The first time each person sends a playlist, they sign in to Spotify once.
+
 ## Notes
 
 - Listen links open a Spotify or Apple Music search for the artist and title.

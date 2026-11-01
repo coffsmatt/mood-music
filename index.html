@@ -128,6 +128,14 @@ ol.pl a{font-size:13px;font-weight:700;text-decoration:none;padding:8px;border-r
 .tabbar button.on{color:var(--acc)}
 #toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9;max-width:90vw}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+#sheet{position:fixed;inset:0;z-index:20;display:none}#sheet.on{display:block}
+.sheet-bg{position:absolute;inset:0;background:rgba(0,0,0,.45)}
+.sheet-card{position:absolute;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;max-height:88vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:22px 22px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom))}
+.sheet-card h3{margin-right:44px}
+.sheet-x{position:absolute;right:12px;top:12px;width:40px;height:40px;border-radius:50%;background:var(--chip);font-size:16px}
+.steps{padding-left:20px;font-size:14.5px;margin:8px 0 12px}.steps li{margin:9px 0}
+code.copy{display:block;background:var(--chip);padding:10px;border-radius:10px;margin-top:6px;word-break:break-all;font-size:13px;cursor:pointer}
+.btn.sp{background:#1DB954;color:#062b14}a.btn{text-decoration:none}
 .sub{font-size:14px;color:var(--soft);margin:2px 0 8px}
 .hidden{display:none!important}
 </style>
@@ -557,7 +565,55 @@ const RAW=[
 "S|Nutbush City Limits|Ike & Tina Turner|1973|rock|US|0|85,80,85,55,20,95|p,n|The song every Aussie knows the line dance to.|line dance;funky rock;stomp|Tina Turner;Sly and the Family Stone",
 "S|Come On Eileen|Dexys Midnight Runners|1982|pop|UK|0|80,90,80,40,50,95|p,n|Fiddles, dungarees and a tempo-shifting wedding classic.|fiddles;tempo shift;sing-along|The Pogues;Madness",
 "S|Footloose|Kenny Loggins|1984|rock|US|0|90,90,80,50,15,95|p,w,n|Kick-off-your-Sunday-shoes rock and roll.|rock and roll;bouncy;movie|Bonnie Tyler;Huey Lewis and the News",
-"S|Bat Out of Hell|Meat Loaf|1977|rock|US|0|90,60,45,80,25,100|r,p|Ten minutes of motorbike-revving, operatic rock melodrama.|melodrama;operatic;epic|Bonnie Tyler;Bruce Springsteen"
+"S|Bat Out of Hell|Meat Loaf|1977|rock|US|0|90,60,45,80,25,100|r,p|Ten minutes of motorbike-revving, operatic rock melodrama.|melodrama;operatic;epic|Bonnie Tyler;Bruce Springsteen",
+"S|The Day You Went Away|Wendy Matthews|1992|pop|AU|0|35,30,30,15,55,100|c,n|A slow, aching Aussie ballad for watching the taillights fade.|aching;ballad;soulful|Crowded House;Tina Arena",
+"S|Better Be Home Soon|Crowded House|1988|pop|AU|0|25,40,15,10,85,95|c,d,n|A gentle, strummed last-chance warning.|strummed;gentle;bittersweet|Paul Kelly;Neil Finn",
+"S|Forever Now|Cold Chisel|1982|rock|AU|1|65,45,45,50,40,95|r,n|A driving, wistful rocker about love slipping away.|driving;wistful;pub rock|Jimmy Barnes;The Angels",
+"S|Lost in Love|Air Supply|1980|pop|AU|0|35,45,25,15,55,100|c,n|Feathery, soaring Aussie soft rock.|soft rock;soaring;sweet|Little River Band;Bread",
+"S|Message to My Girl|Split Enz|1983|pop|NZ|1|30,40,20,10,60,95|c,d|A tender, apologetic Neil Finn ballad.|tender;apologetic;piano|Crowded House;The Beatles",
+"S|Downhearted|Australian Crawl|1980|rock|AU|1|55,35,45,40,45,90|r,n|Jangly, moody beach-rock heartbreak.|jangly;moody;surfy|Cold Chisel;Mental As Anything",
+"S|Black Betty|Ram Jam|1977|rock|US|0|90,60,60,85,20,85|w,p,r|A stomping, bam-ba-lam hard rock romp.|stomping;hard rock;chant|Lynyrd Skynyrd;Spiderbait",
+"S|Separate Ways (Worlds Apart)|Journey|1983|rock|US|0|85,35,45,75,10,100|r,w|Synth-stabbed, fist-clenched arena heartbreak.|synth stabs;arena rock;dramatic|Foreigner;Survivor",
+"S|Is She Really Going Out with Him?|Joe Jackson|1979|newwave|UK|1|50,45,50,35,35,95|r|A sardonic stroll of disbelief at who she's dating.|sardonic;bass;new wave|Elvis Costello;The Police",
+"S|Love Hurts|Nazareth|1975|rock|UK|1|35,15,15,40,40,100|c,n|A raw-throated power ballad of pure pain.|power ballad;raw;aching|Roy Orbison;Bad Company",
+"S|Every Rose Has Its Thorn|Poison|1988|rock|US|0|40,30,20,35,70,100|r,n|Acoustic hair-metal heartbreak, bandana optional.|hair metal;acoustic;ballad|Bon Jovi;Skid Row",
+"S|You've Lost That Lovin' Feelin'|The Righteous Brothers|1964|soul|US|0|40,25,25,40,40,100|d,n|A towering Wall of Sound plea.|wall of sound;towering;soulful|The Ronettes;Roy Orbison",
+"S|Layla|Derek and the Dominos|1970|rock|UK|0|80,35,40,75,30,90|r|Anguished riffs then a gorgeous piano coda.|anguished;riff;piano coda|Eric Clapton;The Allman Brothers Band",
+"S|In the Air Tonight|Phil Collins|1981|rock|UK|0|35,15,30,45,10,95|c,r|Brooding drum machine, then THAT drum fill.|brooding;drum fill;moody|Peter Gabriel;Genesis",
+"S|Against All Odds (Take a Look at Me Now)|Phil Collins|1984|pop|UK|1|35,20,15,40,30,100|c,n|A piano-led plea that builds to a howl.|piano;pleading;building|Lionel Richie;John Waite",
+"S|Missing You|John Waite|1984|rock|UK|1|55,35,40,40,25,95|r,n|Insisting he's fine while clearly not being fine.|denial;synth rock;yearning|Phil Collins;Don Henley",
+"S|Crying|Roy Orbison|1961|pop|US|0|30,15,15,30,50,100|c,n|A soaring, operatic sob of a ballad.|operatic;soaring;heartbreak|The Everly Brothers;The Righteous Brothers",
+"S|The Tracks of My Tears|Smokey Robinson & the Miracles|1965|soul|US|0|45,35,45,20,45,100|d,n|Smiling on the outside, crumbling within.|motown;tender;falsetto|The Temptations;Marvin Gaye",
+"S|Ain't No Sunshine|Bill Withers|1971|soul|US|0|30,15,20,20,70,100|c,d|Two minutes of stark, aching absence.|stark;aching;soulful|Al Green;Marvin Gaye",
+"S|Back for Good|Take That|1995|pop|UK|0|40,40,30,15,60,100|c,n|A boy-band plea for one more chance.|boy band;plea;acoustic|Boyzone;Savage Garden",
+"S|Yesterday|The Beatles|1965|pop|UK|0|15,15,5,5,95,100|c,n|Two minutes of strings and regret.|strings;acoustic;regret|Simon & Garfunkel;Paul McCartney",
+"S|Sweet Caroline|Neil Diamond|1969|pop|US|0|60,90,50,35,50,100|p,n,r|The so good, so good, so good crowd shout-along.|shout-along;horns;anthem|Elvis Presley;Tom Jones",
+"S|You Shook Me All Night Long|AC/DC|1980|rock|AU|0|85,85,70,80,10,90|p,w,r|Cheeky, strutting hard rock that fills every dancefloor.|strutting;riff;party|Guns N' Roses;Bon Jovi",
+"S|Love Shack|The B-52's|1989|newwave|US|0|85,95,90,40,20,95|p,n|A tin-roof-rusted, shimmying party classic.|party;retro;shimmy|Deee-Lite;The Go-Go's",
+"S|Don't Stop Me Now|Queen|1978|rock|UK|0|90,100,65,55,30,100|p,r,w|Piano-driven, rocket-fuelled pure joy.|piano;euphoric;sing-along|ELO;Elton John",
+"S|Hot Hot Hot|Buster Poindexter|1987|disco|US|1|85,95,85,35,30,90|p,n|A conga-line soca party in a tuxedo.|soca;conga line;party|Arrow;Kid Creole and the Coconuts",
+"S|Fire|The Pointer Sisters|1978|soul|US|1|35,40,40,30,40,100|d,c|A sultry, slow-burning Springsteen cover.|sultry;slow burn;smooth|Bruce Springsteen;Labelle",
+"S|Disco Inferno|The Trammps|1976|disco|US|0|85,80,95,50,15,90|p,w,n|Burn, baby, burn: an eleven-minute disco blaze.|disco;horns;relentless|Bee Gees;KC and the Sunshine Band",
+"S|Too Hot|Kool & the Gang|1979|soul|US|1|35,40,45,15,40,95|d,c|A smooth, sweaty slow jam.|smooth;slow jam;lush|Earth, Wind & Fire;Lionel Richie",
+"S|The Heat Is On|Glenn Frey|1984|rock|US|1|85,75,75,55,15,90|r,w|Sax-blasting 80s movie-chase energy.|sax;driving;movie|Kenny Loggins;Huey Lewis and the News",
+"S|Heat Wave|Martha and the Vandellas|1963|soul|US|1|80,85,80,45,40,95|p,n|A pounding Motown fever dream.|motown;pounding;joyful|The Supremes;The Ronettes",
+"S|I'm Every Woman|Chaka Khan|1978|disco|US|0|80,90,90,40,15,100|p,w,n|A sparkling disco declaration of total capability.|empowering;disco;powerhouse|Whitney Houston;Gloria Gaynor",
+"S|Hot in the City|Billy Idol|1982|newwave|UK|1|80,60,70,60,15,90|p,r|A sneering, sweaty new wave strut.|sneering;strut;synths|Blondie;The Cars",
+"S|Summer of '69|Bryan Adams|1984|rock|CA|0|85,80,55,60,35,100|r,n,p|Jangling, nostalgic air-guitar heaven.|nostalgic;jangle;sing-along|Bruce Springsteen;John Mellencamp",
+"S|Jack & Diane|John Mellencamp|1982|rock|US|0|60,60,45,45,60,95|r,n|A little ditty about two American kids, with that handclap.|handclap;nostalgic;storytelling|Bruce Springsteen;Tom Petty",
+"S|Night Moves|Bob Seger|1976|rock|US|1|45,45,30,35,55,95|r,n,c|A wistful look back at back-seat summer nights.|wistful;nostalgic;heartland|Bruce Springsteen;John Mellencamp",
+"S|Paradise by the Dashboard Light|Meat Loaf|1977|rock|US|0|85,80,55,70,30,100|p,r,n|An eight-minute operatic teen-romance farce with baseball commentary.|operatic;duet;farcical|Bonnie Tyler;Bruce Springsteen",
+"S|Summer Nights|John Travolta & Olivia Newton-John|1978|pop|AU|0|70,90,65,30,40,95|p,n|Tell me more, tell me more: a Grease duet sing-along.|duet;sing-along;fun|ABBA;Frankie Valli",
+"S|The Boys of Summer|Don Henley|1984|rock|US|1|55,35,50,40,20,95|r,n|A shimmering, wistful look back at a summer fling.|shimmering;wistful;synths|Eagles;Bryan Adams",
+"S|Teenage Kicks|The Undertones|1978|newwave|UK|1|90,80,60,70,25,90|p,w|Two and a half minutes of breathless teenage crush.|breathless;punk pop;crush|Buzzcocks;Ramones",
+"S|Under the Boardwalk|The Drifters|1964|soul|US|0|45,75,45,10,55,100|c,d,n|A breezy seaside escape, out of the sun.|breezy;seaside;soulful|Ben E. King;The Temptations",
+"S|My Sharona|The Knack|1979|newwave|US|0|90,70,70,70,20,90|p,w|That stuttering riff, and some very questionable lyrics.|stuttering riff;power pop;questionable|The Cars;Blondie",
+"S|Young Girl|Gary Puckett & the Union Gap|1968|pop|US|1|55,30,30,40,40,100|n|A booming ballad of realising she's far too young. Yikes.|booming;ballad;yikes|The Righteous Brothers;Tom Jones",
+"S|You're Sixteen|Ringo Starr|1973|pop|UK|1|65,85,60,25,45,90|n|A breezy oldies cover that has aged terribly.|breezy;oldies;aged badly|The Beatles;Harry Nilsson",
+"S|Hot Child in the City|Nick Gilder|1978|rock|CA|1|70,50,70,50,20,90|p|Glam-rock strut with a very uncomfortable subject.|glam;strut;uncomfortable|Sweet;Suzi Quatro",
+"S|Christine Sixteen|Kiss|1977|rock|US|2|70,60,50,65,25,85|r|Pounding piano-rock in full face paint.|piano rock;face paint;cringe|Alice Cooper;Cheap Trick",
+"S|Girl, You'll Be a Woman Soon|Neil Diamond|1967|pop|US|1|45,40,35,30,55,95|r,n|A brooding, strummed warning, later famous in Pulp Fiction.|brooding;strummed;cinematic|Urge Overkill;Johnny Cash",
+"S|Seventeen|Winger|1989|rock|US|2|85,60,55,80,15,90|w,p|Peak hair metal and peak cringe.|hair metal;cringe;shred|Poison;Warrant"
 ];
 
 (function(){
@@ -772,7 +828,7 @@ function renderMixRes(){
   let h='<h2>Your picks</h2>';
   if(SURP>=0){const gems=gemList(list);if(gems.length){const g=gems[SURP%gems.length];h+=card(g,{key:'surp',label:`🎲 Surprise gem ${SURP%gems.length+1}/${gems.length}`,T,ctx})}}
   P.forEach((it,i)=>{if(it)h+=card(it,{key:'pick-'+i,label:L[i],T,ctx})});
-  h+=`<div class="btns"><button class="btn" data-act="surprise">🎲 Surprise me</button><button class="btn pri" data-act="share-mix">📤 Share</button></div>`;
+  h+=`<div class="btns"><button class="btn" data-act="surprise">🎲 Surprise me</button><button class="btn pri" data-act="share-mix">📤 Share</button></div><div class="btns"><button class="btn sp" data-act="sp-send" data-sk="mix">🟢 Send top 20 to Spotify</button></div>`;
   $('#mix-res').innerHTML=h;
 }
 // ---------- cheeky crates ----------
@@ -782,14 +838,21 @@ const CRATES=[
  {id:'riddance',e:'👋',n:'Good Riddance',b:'For when they finally pack up their stuff. Door\'s that way, mate.',s:['Ray Charles|Hit the Road Jack','Nancy Sinatra|These Boots Are Made for Walkin\'','Gloria Gaynor|I Will Survive','Carly Simon|You\'re So Vain','Linda Ronstadt|You\'re No Good','TLC|No Scrubs','Sherbet|Howzat','Fleetwood Mac|Go Your Own Way','ABBA|Knowing Me, Knowing You','Blondie|Heart of Glass']},
  {id:'uglycry',e:'😭',n:'Ugly-Cry Ballads',b:'Tissues ready. Mascara optional. Lean into it.',s:['Bonnie Tyler|Total Eclipse of the Heart','Sinéad O\'Connor|Nothing Compares 2 U','Nilsson|Without You','ABBA|The Winner Takes It All','Air Supply|All Out of Love','Roxette|It Must Have Been Love','Heart|Alone','George Jones|He Stopped Loving Her Today','Moving Pictures|What About Me','Crowded House|Don\'t Dream It\'s Over','Patsy Cline|Crazy','Cold Chisel|Flame Trees']},
  {id:'karaoke',e:'🎤',n:'Karaoke Regret',b:'Songs you are definitely not able to sing. Do it anyway.',s:['Queen|Bohemian Rhapsody','Journey|Don\'t Stop Believin\'','Bon Jovi|Livin\' on a Prayer','a-ha|Take On Me','Whitney Houston|I Wanna Dance with Somebody (Who Loves Me)','John Farnham|You\'re the Voice','Bonnie Tyler|Total Eclipse of the Heart','Cold Chisel|Khe Sanh','Tina Turner|The Best','Oasis|Wonderwall','Guns N\' Roses|Sweet Child o\' Mine','Meat Loaf|Bat Out of Hell']},
- {id:'dad',e:'🕺',n:'Dad-Dancing at the Wedding',b:'Guaranteed to get Uncle Kev on the dancefloor, tie round his head.',s:['Ike & Tina Turner|Nutbush City Limits','Daddy Cool|Eagle Rock','John Paul Young|Love Is in the Air','Dexys Midnight Runners|Come On Eileen','Kenny Loggins|Footloose','Village People|Y.M.C.A.','Kool & the Gang|Celebration','Earth, Wind & Fire|September','ABBA|Dancing Queen','Boney M.|Rasputin','Hall & Oates|You Make My Dreams','Kylie Minogue|Locomotion']}
+ {id:'dad',e:'🕺',n:'Dad-Dancing at the Wedding',b:'Guaranteed to get Uncle Kev on the dancefloor, tie round his head.',s:['Ike & Tina Turner|Nutbush City Limits','Daddy Cool|Eagle Rock','John Paul Young|Love Is in the Air','Dexys Midnight Runners|Come On Eileen','Kenny Loggins|Footloose','Village People|Y.M.C.A.','Kool & the Gang|Celebration','Earth, Wind & Fire|September','ABBA|Dancing Queen','Boney M.|Rasputin','Hall & Oates|You Make My Dreams','Kylie Minogue|Locomotion']},
+ {id:'aussiebreakup',e:'🇦🇺',n:'Aussie Breakups',b:'She took the Commodore and the good esky.',s:['Wendy Matthews|The Day You Went Away','The Angels|Am I Ever Gonna See Your Face Again','Crowded House|Better Be Home Soon','Cold Chisel|Forever Now','Natalie Imbruglia|Torn','Air Supply|Lost in Love','Split Enz|Message to My Girl','Australian Crawl|Downhearted','Cold Chisel|Flame Trees']},
+ {id:'bitchleft',e:'🐕',n:'The Bitch Left Me',b:'And she took the dog. The DOG.',s:['Ram Jam|Black Betty','Journey|Separate Ways (Worlds Apart)','Joe Jackson|Is She Really Going Out with Him?','Nazareth|Love Hurts','Poison|Every Rose Has Its Thorn','The Righteous Brothers|You\'ve Lost That Lovin\' Feelin\'','Derek and the Dominos|Layla','Fleetwood Mac|Go Your Own Way']},
+ {id:'blokes',e:'😢',n:'Blokes Who Need a Cuddle',b:'Mate, are you crying? No, the onions.',s:['Phil Collins|In the Air Tonight','Phil Collins|Against All Odds (Take a Look at Me Now)','John Waite|Missing You','Roy Orbison|Crying','Smokey Robinson & the Miracles|The Tracks of My Tears','Bill Withers|Ain\'t No Sunshine','Nilsson|Without You','Take That|Back for Good','The Beatles|Yesterday']},
+ {id:'dj',e:'🎧',n:'DJ, Play My Song',b:'The DJ has played these 4,000 times and is dead inside.',s:['Neil Diamond|Sweet Caroline','Journey|Don\'t Stop Believin\'','Bon Jovi|Livin\' on a Prayer','AC/DC|You Shook Me All Night Long','The B-52\'s|Love Shack','Queen|Don\'t Stop Me Now','Earth, Wind & Fire|September','ABBA|Dancing Queen','Van Morrison|Brown Eyed Girl','The Isley Brothers|Twist and Shout']},
+ {id:'menopause',e:'🔥',n:'Menopause Singalong',b:'Is it hot in here or is it just me? It\'s just you, Sharon.',s:['Buster Poindexter|Hot Hot Hot','The Pointer Sisters|Fire','The Trammps|Disco Inferno','Kool & the Gang|Too Hot','Glenn Frey|The Heat Is On','Martha and the Vandellas|Heat Wave','Chaka Khan|I\'m Every Woman','Billy Idol|Hot in the City','Johnny Cash|Ring of Fire','Donna Summer|Hot Stuff']},
+ {id:'teenage',e:'🌅',n:'Reminiscing My Teenage Romance',b:'Back seat of an HQ Holden, 1984. Say no more.',s:['Bryan Adams|Summer of \'69','John Mellencamp|Jack & Diane','Bob Seger|Night Moves','Meat Loaf|Paradise by the Dashboard Light','John Travolta & Olivia Newton-John|Summer Nights','Don Henley|The Boys of Summer','The Undertones|Teenage Kicks','Mondo Rock|Come Said the Boy','The Drifters|Under the Boardwalk']},
+ {id:'tooyoung',e:'👴',n:'She\'s Way Too Young, Mate',b:'Lyrics that aged like milk in a hot car.',s:['The Knack|My Sharona','Gary Puckett & the Union Gap|Young Girl','Ringo Starr|You\'re Sixteen','Nick Gilder|Hot Child in the City','Kiss|Christine Sixteen','Neil Diamond|Girl, You\'ll Be a Woman Soon','Winger|Seventeen','The Police|Don\'t Stand So Close to Me']}
 ].map(c=>Object.assign(c,{items:c.s.map(s=>{const [a,t]=s.split('|');return BYID[slug(a+'-'+t)]}).filter(Boolean)}));
 let CRATE='';
 function renderCrates(){
   const c=CRATES.find(c=>c.id===CRATE);
   let h=`<h2>😂 Cheeky crates</h2><div class="chips">${CRATES.map(k=>`<button class="chip${k.id===CRATE?' on':''}" data-act="crate" data-v="${k.id}" aria-pressed="${k.id===CRATE}">${k.e} ${k.n}</button>`).join('')}</div>`;
   if(c)h+=`<div class="box crate" id="crate-box"><h3>${c.e} ${c.n}</h3><p class="sub">${esc(c.b)}</p><ol class="pl">${c.items.map(x=>`<li><span class="t"><b>${esc(x.title)}</b><small>${esc(x.artist)} · ${x.year}${x.country==='AU'?' · 🇦🇺':''}</small></span>${playBtn(x)}</li>`).join('')}</ol>
-   <div class="btns"><button class="btn pri" data-act="share-crate">📤 Share this crate</button></div></div>`;
+   <div class="btns"><button class="btn sp" data-act="sp-send" data-sk="crate" data-sid="${c.id}">🟢 Send to Spotify</button><button class="btn pri" data-act="share-crate">📤 Share</button></div></div>`;
   $('#mix-crates').innerHTML=h;
 }
 const gemList=list=>list.filter(i=>i.x.tier===2).slice(0,8);
@@ -829,7 +892,7 @@ function renderRoomRes(){
   }
   const pl=distinct(ranked.filter(i=>i.x.type==='song'),10);
   h+=`<h2>Shared playlist · top 10 songs</h2><div class="box"><ol class="pl">${pl.map(i=>`<li><span class="t"><b>${esc(i.x.title)}</b><small>${esc(i.x.artist)} · ${i.x.year} · ${i.p}%</small></span>${playBtn(i.x)}</li>`).join('')}</ol></div>
-  <div class="btns"><button class="btn pri" data-act="share-room">📤 Share room picks</button></div>`;
+  <div class="btns"><button class="btn sp" data-act="sp-send" data-sk="room">🟢 Send to Spotify</button><button class="btn pri" data-act="share-room">📤 Share</button></div>`;
   $('#room-res').innerHTML=h;
   renderRoomRes.pl=pl;renderRoomRes.top=top;
 }
@@ -845,9 +908,13 @@ function renderMine(){
   else h+=`<div class="note"><b>Tap 👍 on a couple of favourites</b>After two loves you'll get a taste summary here, and picks start leaning your way.</div>`;
   if(!ids.length)h+=`<div class="empty">Nothing rated yet. Open any pick and tap 👍, 👎 or 🔖.</div>`;
   groups.forEach(([v,l])=>{const list=ids.filter(id=>R[id]===v).map(id=>BYID[id]).sort((a,b)=>a.year-b.year);
-    if(list.length)h+=`<h2>${l} (${list.length})</h2>`+list.map(x=>card(x,{key:'mine-'+x.id})).join('')});
+    if(list.length){h+=`<h2>${l} (${list.length})</h2>`+list.map(x=>card(x,{key:'mine-'+x.id})).join('');
+      if(v!=='nope')h+=`<div class="btns"><button class="btn sp" data-act="sp-send" data-sk="${v}">🟢 Send ${v==='love'?'loved songs':'this list'} to Spotify</button></div>`}});
   if(ids.length){h+=`<div class="btns"><button class="btn pri" data-act="share-mine">📤 Share my list</button><button class="btn" data-act="mine-clear">🗑️ Clear list</button></div>`;
     if(CLEARASK)h+=`<div class="confirm" role="alertdialog"><span>Clear all ${ids.length} ratings on this phone? This can't be undone.</span><button class="btn sm pri" data-act="mine-clear-yes">Yes, clear</button><button class="btn sm" data-act="mine-clear-no">Cancel</button></div>`;}
+  const cid=SP.cid(),tok=SP.tok();
+  h+=`<h2>Spotify</h2><div class="box"><p class="sub" style="margin-top:0">${!cid?'Not set up yet. One-time setup lets you send any crate, room or list straight into your Spotify as a playlist.':tok?'✅ Connected. Tap 🟢 Send to Spotify on any crate, room or list.':'Set up. You\'ll sign in to Spotify the first time you send a playlist.'}</p>
+   <div class="btns" style="margin-bottom:0"><button class="btn sm" data-act="sp-setup">${cid?'⚙️ Setup':'🟢 Set up Spotify'}</button>${tok?'<button class="btn sm" data-act="sp-logout">Disconnect</button>':''}</div></div>`;
   $('#tab-mine').innerHTML=h;
 }
 
@@ -891,6 +958,125 @@ function renderGame(){
   $('#ex-res').innerHTML=h+'</div>';
 }
 
+// ---------- Spotify playlists ----------
+// Optional: paste your Spotify app's Client ID between the quotes so every phone that opens your site has it.
+// (Or leave it blank and paste it in the app: My music → Spotify → Set up.)
+const SPOTIFY_CLIENT_ID='';
+const SP={cid:()=>SPOTIFY_CLIENT_ID||LS.get('sp.cid',''),tok:()=>LS.get('sp.tok',null),
+  redirect:()=>location.origin+location.pathname.replace(/index\.html$/,'')};
+const mixHead=()=>[S.o?OCC.find(o=>o[0]===S.o)[2]:null,EL[S.e],ML[S.m],SL[S.s],S.d.length?S.d.map(d=>d+'s').join('/'):null].filter(Boolean).join(' · ');
+const b64url=buf=>btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+const randStr=n=>{const a=new Uint8Array(n);crypto.getRandomValues(a);return b64url(a).slice(0,n)};
+async function spLogin(pending){
+  if(!window.crypto||!crypto.subtle){toast('Spotify sign-in needs the https site');return}
+  const v=randStr(64),st=randStr(16),ch=b64url(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)));
+  LS.set('sp.pkce',{v,st,pending,hash:location.hash});
+  const u=new URL('https://accounts.spotify.com/authorize');
+  u.search=new URLSearchParams({response_type:'code',client_id:SP.cid(),scope:'playlist-modify-private playlist-modify-public',code_challenge_method:'S256',code_challenge:ch,redirect_uri:SP.redirect(),state:st}).toString();
+  location.href=u.toString();
+}
+async function spTokenReq(params){
+  const r=await fetch('https://accounts.spotify.com/api/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(Object.assign({client_id:SP.cid()},params))});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(j.error_description||j.error||('Spotify sign-in failed ('+r.status+')'));
+  const old=SP.tok()||{},t={a:j.access_token,r:j.refresh_token||old.r,x:Date.now()+((j.expires_in||3600)-60)*1000};
+  LS.set('sp.tok',t);return t;
+}
+async function spAccess(){let t=SP.tok();if(!t)return null;if(Date.now()<t.x)return t.a;
+  try{return (await spTokenReq({grant_type:'refresh_token',refresh_token:t.r})).a}catch(e){LS.set('sp.tok',null);return null}}
+function spHandleRedirect(){
+  const q=new URLSearchParams(location.search);if(!q.has('code')&&!q.has('error'))return;
+  const p=LS.get('sp.pkce',null);LS.set('sp.pkce',null);
+  try{history.replaceState(null,'',location.pathname+((p&&p.hash)||''))}catch(e){}
+  if(q.has('error')||!p||q.get('state')!==p.st){setTimeout(()=>toast(q.get('error')==='access_denied'?'Spotify sign-in cancelled':'Spotify sign-in didn\'t work, try again'),300);return}
+  spTokenReq({grant_type:'authorization_code',code:q.get('code'),redirect_uri:SP.redirect(),code_verifier:p.v})
+    .then(()=>{toast('✅ Spotify connected');if(TAB==='mine')renderMine();if(p.pending)sendPlaylist(p.pending)})
+    .catch(e=>showSheet(`<h3>Spotify sign-in didn't work</h3><p class="sub">${esc(e.message)}</p>`+setupHtml()));
+}
+async function spApi(method,path,body,retry=1){
+  const a=await spAccess();if(!a){const e=new Error('Not signed in');e.status=401;throw e}
+  const r=await fetch('https://api.spotify.com/v1'+path,{method,headers:Object.assign({Authorization:'Bearer '+a},body?{'Content-Type':'application/json'}:{}),body:body?JSON.stringify(body):undefined});
+  const j=await r.json().catch(()=>({}));
+  if(r.status===429&&retry&&!(j.error&&j.error.reason==='QUOTA_EXCEEDED')){await new Promise(z=>setTimeout(z,2500));return spApi(method,path,body,0)}
+  if(!r.ok){const e=new Error((j.error&&j.error.message)||('Spotify error '+r.status));e.status=r.status;e.reason=j.error&&j.error.reason;throw e}
+  return j;
+}
+const spNorm=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\(.*?\)/g,' ').replace(/ - .*$/,'').replace(/&/g,' and ').replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim();
+async function spFind(x){
+  const t=x.title.replace(/\s*\(.*?\)\s*/g,' ').trim()||x.title,nt=spNorm(t),na=spNorm(x.artist);
+  for(const q of[`track:${t} artist:${x.artist}`,`${t} ${x.artist}`]){
+    const j=await spApi('GET','/search?'+new URLSearchParams({q,type:'track',limit:'10'}));
+    const items=((j.tracks&&j.tracks.items)||[]).filter(Boolean);
+    const score=it=>{let s=0;const an=it.artists.map(a=>spNorm(a.name));
+      if(an.some(a=>a&&(na.includes(a)||a.includes(na))))s+=2;
+      const n=spNorm(it.name);if(n===nt)s+=2.5;else if(n.startsWith(nt)||nt.startsWith(n))s+=2;
+      if(/karaoke|tribute|cover|instrumental version/i.test(it.name+' '+an.join(' ')))s-=3;return s};
+    const best=items.map(it=>({it,s:score(it)})).sort((a,b)=>b.s-a.s)[0];
+    if(best&&best.s>=4)return best.it.uri;
+  }
+  return null;
+}
+async function spAddItems(id,uris){
+  for(let i=0;i<uris.length;i+=100){const chunk=uris.slice(i,i+100);
+    try{await spApi('POST',`/playlists/${id}/items`,{uris:chunk})}
+    catch(e){if(e.status===404||e.status===405)await spApi('POST',`/playlists/${id}/tracks`,{uris:chunk});else throw e}}
+}
+function playlistFor(p){
+  const tag=' Made with Decades Mood Mixer.';
+  if(p.k==='crate'){const c=CRATES.find(c=>c.id===p.id);return c&&{name:`${c.e} ${c.n}`,desc:c.b+tag,items:c.items}}
+  if(p.k==='room'){const r=groupRank(ROOM,CAT.filter(x=>R[x.id]!=='nope'));return{name:'👥 For the room: '+ROOM.map(x=>x.n).join(', '),desc:'Songs everyone can live with.'+tag,items:distinct(r,20).map(i=>i.x)}}
+  if(p.k==='mix')return{name:'🎛️ '+mixHead(),desc:'Top matches for this vibe.'+tag,items:distinct(mixRanked().list,20).map(i=>i.x)};
+  if(p.k==='love'||p.k==='want')return{name:p.k==='love'?'👍 Songs I loved':'🔖 Want to hear',desc:'My list.'+tag,items:Object.keys(R).filter(id=>R[id]===p.k&&BYID[id]).map(id=>BYID[id]).sort((a,b)=>a.year-b.year)};
+  return null;
+}
+function spErr(e){
+  if(e.status===403)return 'Spotify says this account isn\'t allowed to use your app yet. In the Spotify developer dashboard, open your app → User Management and add this person\'s Spotify email. (The app owner also needs an active Premium subscription.)';
+  if(e.status===429)return 'Spotify\'s daily limit for small apps has been hit. Try again later.';
+  return e.message||'Something went wrong.';
+}
+let SENDING=false;
+async function sendPlaylist(p){
+  if(SENDING)return;
+  if(!SP.cid()){showSheet(setupHtml(p));return}
+  const pl=playlistFor(p);if(!pl||!pl.items.length){toast('Nothing to send yet');return}
+  if(!await spAccess()){spLogin(p);return}
+  SENDING=true;
+  showSheet(`<h3>🟢 Sending to Spotify</h3><p class="sub"><b>${esc(pl.name)}</b></p><p class="sub" id="sp-prog">Finding songs… 0/${pl.items.length}</p>`);
+  try{
+    const cache=LS.get('sp.uri',{}),uris=[],miss=[];let n=0;
+    for(const x of pl.items){
+      let u=cache[x.id];
+      if(!u){u=await spFind(x);if(u){cache[x.id]=u;LS.set('sp.uri',cache)}}
+      u?uris.push(u):miss.push(x);
+      const el=$('#sp-prog');if(el)el.textContent=`Finding songs… ${++n}/${pl.items.length}`;
+    }
+    if(!uris.length)throw new Error('Couldn\'t find any of these songs on Spotify.');
+    const el=$('#sp-prog');if(el)el.textContent='Making the playlist…';
+    const made=await spApi('POST','/me/playlists',{name:pl.name.slice(0,100),description:pl.desc.slice(0,300),public:false});
+    await spAddItems(made.id,uris);
+    const web=(made.external_urls&&made.external_urls.spotify)||('https://open.spotify.com/playlist/'+made.id);
+    showSheet(`<h3>✅ Playlist made</h3><p class="sub"><b>${esc(pl.name)}</b> is now in your Spotify library with ${uris.length} song${uris.length===1?'':'s'}.${miss.length?`<br><br>Couldn't find on Spotify: ${miss.map(x=>esc(x.title+' — '+x.artist)).join(', ')}`:''}</p>
+      <div class="btns"><a class="btn sp" href="spotify:playlist:${esc(made.id)}">Open in Spotify app</a></div><p class="sub" style="text-align:center"><a href="${esc(web)}" target="_blank" rel="noopener">or open it on the web</a></p>`);
+  }catch(e){
+    if(e.status===401){LS.set('sp.tok',null);SENDING=false;spLogin(p);return}
+    showSheet(`<h3>Couldn't make the playlist</h3><p class="sub">${esc(spErr(e))}</p>`);
+  }finally{SENDING=false}
+}
+function setupHtml(p){const red=SP.redirect();
+  return`<h3>🟢 Connect Spotify</h3><p class="sub">One-time setup, about 5 minutes on a computer.</p>
+  <ol class="steps">
+   <li>Go to <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener">developer.spotify.com/dashboard</a> and log in. The account that owns the app needs Spotify Premium.</li>
+   <li>Tap <b>Create app</b>. Any name and description. Tick <b>Web API</b>. Under <b>Redirect URIs</b>, add exactly this (tap to copy):<code class="copy" data-act="copy" data-v="${esc(red)}">${esc(red)}</code></li>
+   <li>In your app's <b>User Management</b>, add the name and Spotify email of everyone who'll send playlists: you plus up to 4 mates.</li>
+   <li>Copy the app's <b>Client ID</b> and paste it here:</li>
+  </ol>
+  <input class="search" id="sp-cid" placeholder="Client ID" value="${esc(LS.get('sp.cid',''))}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+  <div class="btns"><button class="btn sp" data-act="sp-save" data-p="${p?esc(JSON.stringify(p)):''}">Save${p?' & send':''}</button></div>`}
+function showSheet(html){let s=$('#sheet');
+  if(!s){s=document.createElement('div');s.id='sheet';s.innerHTML='<div class="sheet-bg" data-act="sheet-close"></div><div class="sheet-card" role="dialog" aria-modal="true"><button class="sheet-x" data-act="sheet-close" aria-label="Close">✕</button><div class="sheet-body"></div></div>';document.body.appendChild(s)}
+  s.querySelector('.sheet-body').innerHTML=html;s.classList.add('on')}
+function closeSheet(){const s=$('#sheet');if(s)s.classList.remove('on')}
+
 // ---------- tabs ----------
 function showTab(t){TAB=t;
   document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('on',s.id==='tab-'+t));
@@ -926,7 +1112,7 @@ document.addEventListener('click',e=>{
       toast(R[id]==='love'?'👍 Loved — picks will lean this way':R[id]==='nope'?'👎 Noted — you won\'t see it in picks':R[id]==='want'?'🔖 Saved to Want to hear':'Rating removed');
       if(TAB==='mine')renderMine();break}
     case 'share-mix':{const {list}=mixRanked(),P=threePicks(list),L=['🛡️','🔄','🧭'];
-      const head=[S.o?OCC.find(o=>o[0]===S.o)[2]:null,EL[S.e],ML[S.m],SL[S.s],S.d.length?S.d.map(d=>d+'s').join('/'):null].filter(Boolean).join(' · ');
+      const head=mixHead();
       const text=`🎛️ Decades Mood Mixer — ${head}\n`+P.filter(Boolean).map((it,j)=>`${L[j]} ${it.x.title} — ${it.x.artist} (${it.x.year}) ${it.p}%`).join('\n');
       share('Decades Mood Mixer',text,base()+mixHash());break}
     case 'room':ROOM[i][k]=+v;saveRoom();renderRoom();break;
@@ -952,6 +1138,13 @@ document.addEventListener('click',e=>{
     case 'g-next':newRound();renderGame();break;
     case 'crate':CRATE=CRATE===v?'':v;renderCrates();if(CRATE){try{history.replaceState(null,'','#crate-'+CRATE)}catch(_){}const el=$('#crate-box');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}else saveMix();break;
     case 'share-crate':{const c=CRATES.find(c=>c.id===CRATE);if(c)share('Decades Mood Mixer',`${c.e} ${c.n} — ${c.b}\n\n`+c.items.map((x,j)=>`${j+1}. ${x.title} — ${x.artist} (${x.year})`).join('\n'),base()+'#crate-'+c.id);break}
+    case 'sp-send':sendPlaylist({k:b.dataset.sk,id:b.dataset.sid});break;
+    case 'sp-setup':showSheet(setupHtml());break;
+    case 'sp-logout':LS.set('sp.tok',null);LS.set('sp.uri',{});toast('Spotify disconnected');renderMine();break;
+    case 'sp-save':{const v=($('#sp-cid')||{}).value||'';const cid=v.trim();if(!/^[0-9a-f]{32}$/i.test(cid)){toast('That doesn\'t look like a Client ID (32 letters/numbers)');break}
+      LS.set('sp.cid',cid);LS.set('sp.tok',null);closeSheet();if(TAB==='mine')renderMine();const pp=b.dataset.p?JSON.parse(b.dataset.p):null;if(pp)sendPlaylist(pp);else toast('Saved');break}
+    case 'copy':navigator.clipboard&&navigator.clipboard.writeText(v).then(()=>toast('Copied'),()=>toast('Long-press to copy'));break;
+    case 'sheet-close':closeSheet();break;
     case 'play':e.preventDefault();if(BYID[b.dataset.id])playOnSpotify(BYID[b.dataset.id]);break;
   }
 });
@@ -970,6 +1163,7 @@ document.addEventListener('change',e=>{if(e.target.dataset.in==='genre'){S.g=e.t
 window.addEventListener('hashchange',()=>{if(readHash())showTab(TAB)});
 
 // ---------- boot ----------
+spHandleRedirect();
 readHash();
 showTab(TAB);
 if(CRATE){try{history.replaceState(null,'','#crate-'+CRATE)}catch(_){}setTimeout(()=>{const el=$('#crate-box');if(el)el.scrollIntoView({block:'start'})},50)}
