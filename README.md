@@ -1,6 +1,6 @@
 # Decades Mood Mixer
 
-A fun mood-based picker for albums and songs from the 60s, 70s, 80s and 90s — with a strong dose of Aussie classics. No accounts, no backend: ratings and your group live on your own phone.
+A fun mood-based picker for songs from the 60s, 70s, 80s and 90s — with a strong dose of Aussie classics. No accounts, no backend: ratings and your group live on your own phone.
 
 ## Files
 
@@ -32,6 +32,8 @@ A fun mood-based picker for albums and songs from the 60s, 70s, 80s and 90s — 
 3. On the iPhone, close and reopen the app once or twice.
 
 ## Sharing
+
+Tap the green ▶ on any song to open it in the Spotify app. The 😂 Cheeky crates on the Mix tab are themed playlists (Stalker Songs, Cheater Songs and more).
 
 The **Share** buttons use the phone's share sheet (or copy to clipboard). The link carries your settings, e.g. `#o-party-e-2-m-2-s-1`, so your mates open the same picks. Room links carry everyone's name and vibe.
 

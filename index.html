@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Decades Mood Mixer</title>
-<meta name="description" content="Mood-based album and song picks from the 60s, 70s, 80s and 90s.">
+<meta name="description" content="Mood-based song picks from the 60s, 70s, 80s and 90s.">
 <meta name="theme-color" content="#FBF5EC" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#17120F" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -107,6 +107,7 @@ ol.pl li:last-child{border:0}
 ol.pl li::before{content:counter(pl);font-weight:800;color:var(--acc);width:22px;text-align:right;font-variant-numeric:tabular-nums}
 ol.pl .t{flex:1;min-width:0}ol.pl .t b{display:block;font-size:15px}ol.pl .t small{color:var(--soft)}
 ol.pl a{font-size:13px;font-weight:700;text-decoration:none;padding:8px;border-radius:10px;background:var(--chip);color:var(--ink)}
+.crate h3{font-size:20px}
 .box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin:12px 0}
 .taste{font-size:20px;font-weight:800;margin:4px 0 10px;line-height:1.25}
 .search{width:100%;min-height:48px;border-radius:14px;border:1px solid var(--line);background:var(--card);padding:0 14px;font-size:16px}
@@ -138,7 +139,7 @@ ol.pl a{font-size:13px;font-weight:700;text-decoration:none;padding:8px;border-r
 </header>
 <div class="stripe"></div>
 <main>
-  <section id="tab-mix" class="tab on"><div id="mix-ctl"></div><div id="mix-res"></div></section>
+  <section id="tab-mix" class="tab on"><div id="mix-ctl"></div><div id="mix-res"></div><div id="mix-crates"></div></section>
   <section id="tab-room" class="tab"><div id="room-ctl"></div><div id="room-res"></div></section>
   <section id="tab-mine" class="tab"></section>
   <section id="tab-explore" class="tab"><div id="ex-ctl"></div><div id="ex-res"></div></section>
@@ -154,43 +155,6 @@ ol.pl a{font-size:13px;font-weight:700;text-decoration:none;padding:8px;border-r
 // type|title|artist|year|genre|country|tier|energy,mood,dance,intensity,acoustic,vocals|occasions|description|sounds-like tags|related artists
 // occasions: c=chilled night in, p=party, r=road trip, d=dinner, w=workout, n=nostalgic
 const RAW=[
-// ---------- 1960s albums ----------
-"A|Abbey Road|The Beatles|1969|rock|UK|0|55,65,40,45,50,80|r,n,d|The band's polished farewell, capped by a dazzling side-two medley.|melodic;layered harmonies;warm|The Kinks;The Beach Boys",
-"A|Pet Sounds|The Beach Boys|1966|pop|US|0|40,55,30,25,55,90|c,n,d|Lush, wistful pop symphonies built from sleigh bells and stacked harmonies.|orchestral pop;dreamy;harmonies|The Beatles;The Zombies",
-"A|Revolver|The Beatles|1966|rock|UK|0|60,60,40,50,45,80|r,n|Studio experiments meet tight pop songs, tape loops and brass side by side.|psychedelic;punchy;inventive|The Kinks;The Byrds",
-"A|Highway 61 Revisited|Bob Dylan|1965|folk|US|0|60,45,30,55,50,95|r,n|Dylan plugs in: wild, wordy, electric blues-rock storytelling.|wordy;bluesy;raw|The Byrds;Leonard Cohen",
-"A|Are You Experienced|The Jimi Hendrix Experience|1967|rock|UK|0|80,50,40,85,20,65|r,w|A blast of fuzzed-out guitar wizardry that rewrote the instrument.|fuzzy guitar;psychedelic;loud|Cream;Led Zeppelin",
-"A|The Velvet Underground & Nico|The Velvet Underground|1967|rock|US|1|50,30,25,60,35,75|c|Droning, streetwise art-rock that was decades ahead of its time.|drone;arty;cool|Lou Reed;Television",
-"A|Let It Bleed|The Rolling Stones|1969|rock|UK|0|65,40,45,65,40,80|r,p|Dark, swaggering blues-rock with a choir and a storm brewing.|swagger;bluesy;gritty|The Kinks;The Doors",
-"A|Otis Blue|Otis Redding|1965|soul|US|1|60,60,55,45,50,95|d,n,p|Raw Memphis soul with a voice that pleads and testifies.|horns;gritty soul;heartfelt|Aretha Franklin;Wilson Pickett",
-"A|I Never Loved a Man the Way I Love You|Aretha Franklin|1967|soul|US|0|60,60,55,50,50,95|d,p,n|The Queen arrives: gospel power poured into secular soul.|gospel;powerhouse vocals;horns|Otis Redding;Dusty Springfield",
-"A|Astral Weeks|Van Morrison|1968|folk|UK|2|35,50,15,25,85,90|c,d|Free-flowing, jazz-tinged song cycles that drift like a daydream.|jazzy;stream of consciousness;acoustic|Nick Drake;Joni Mitchell",
-"A|Forever Changes|Love|1967|rock|US|2|40,45,25,30,70,85|c|Baroque folk-rock with strings and horns, sunny but uneasy.|baroque;strings;mysterious|The Byrds;The Zombies",
-"A|Bookends|Simon & Garfunkel|1968|folk|US|1|35,40,20,25,80,90|c,d,n|A tender concept record about youth, age and time slipping by.|harmonies;acoustic;wistful|Bob Dylan;Joni Mitchell",
-"A|The Doors|The Doors|1967|rock|US|0|65,40,45,60,30,85|r|Moody organ-driven rock with poetry and a long dark edge.|organ;brooding;hypnotic|Jefferson Airplane;The Velvet Underground",
-"A|Led Zeppelin II|Led Zeppelin|1969|rock|UK|0|85,55,40,90,25,70|w,r|Heavy riffs and swagger that laid the blueprint for hard rock.|heavy riffs;bluesy;thunderous|The Jimi Hendrix Experience;Black Sabbath",
-"A|At Folsom Prison|Johnny Cash|1968|country|US|0|55,50,35,45,75,90|r,n|Cash live for a roaring prison crowd, all grit and dark humour.|live;outlaw;storytelling|Merle Haggard;Willie Nelson",
-"A|Dusty in Memphis|Dusty Springfield|1969|soul|UK|1|40,50,40,25,60,95|d,c|Silky blue-eyed soul cut with Memphis's finest players.|smooth;sultry;strings|Aretha Franklin;Burt Bacharach",
-"A|Tommy|The Who|1969|rock|UK|1|65,55,35,65,50,75|r|A sprawling rock opera with big chords and bigger ideas.|rock opera;power chords;epic|The Kinks;Led Zeppelin",
-"A|Surrealistic Pillow|Jefferson Airplane|1967|rock|US|1|60,50,35,55,50,85|r|The sound of San Francisco's psychedelic summer, sharp and trippy.|psychedelic;west coast;vocal|The Doors;Big Brother and the Holding Company",
-"A|The Piper at the Gates of Dawn|Pink Floyd|1967|rock|UK|1|50,55,25,50,35,65|c|Whimsical, spacey psychedelia from Syd Barrett's brief reign.|spacey;whimsical;trippy|The Zombies;Soft Machine",
-"A|The Kinks Are the Village Green Preservation Society|The Kinks|1968|pop|UK|2|45,60,35,30,60,85|c,d,n|A fond, funny ode to vanishing English village life.|quaint;witty;nostalgic|The Zombies;Blur",
-"A|Odessey and Oracle|The Zombies|1968|pop|UK|2|40,55,30,25,55,90|c,d|Gorgeous chamber-pop that flopped, then became a cult treasure.|chamber pop;mellotron;harmonies|The Beach Boys;Love",
-"A|Songs of Leonard Cohen|Leonard Cohen|1967|folk|CA|2|20,25,10,15,90,95|c|Hushed, poetic songs sung close to the ear.|poetic;sparse;melancholy|Nick Drake;Bob Dylan",
-"A|Good Friday|The Easybeats|1967|rock|AU|2|70,70,55,55,40,85|p,r,n|Sydney's finest beat group, all jangle and cheeky energy.|beat;jangly;cheeky|The Kinks;Small Faces",
-"A|A World of Our Own|The Seekers|1965|folk|AU|1|40,70,25,15,85,95|n,d,c|Clear-voiced Melbourne folk-pop with Judith Durham front and centre.|folk pop;clean harmonies;sweet|The Mamas & the Papas;Peter, Paul and Mary",
-"A|The Masters Apprentices|The Masters Apprentices|1967|rock|AU|2|65,55,40,60,40,80|r|Adelaide garage-psych with fuzz and a touch of flower power.|garage;fuzzy;psych|The Easybeats;Small Faces",
-"A|Where Did Our Love Go|The Supremes|1964|soul|US|1|65,75,70,25,40,90|p,n,d|Breezy early Motown hits with handclaps and girl-group gloss.|motown;handclaps;sweet|The Ronettes;Martha and the Vandellas",
-"A|Live at the Apollo|James Brown|1963|disco|US|1|85,70,75,60,30,90|p|A sweat-soaked live show from the hardest-working man in showbiz.|live;raw funk;screams|Sly and the Family Stone;Otis Redding",
-"A|Stand!|Sly and the Family Stone|1969|disco|US|1|80,80,85,55,30,85|p,w|Joyful funk-rock with big messages and bigger grooves.|funk;party;positive|James Brown;Parliament",
-"A|Green River|Creedence Clearwater Revival|1969|rock|US|1|70,60,50,55,45,85|r,p|Swampy, no-frills rock and roll made for the open road.|swamp rock;twangy;driving|The Band;The Rolling Stones",
-"A|Showcase|Patsy Cline|1961|country|US|1|30,40,25,15,70,95|d,c,n|Heartbreak ballads delivered with velvet Nashville polish.|torch ballads;velvet;heartbreak|Tammy Wynette;Dusty Springfield",
-"A|Wichita Lineman|Glen Campbell|1968|country|US|2|35,45,25,20,60,90|r,c,d|Lonely, widescreen country-pop with strings and big sky.|countrypolitan;lonesome;strings|Johnny Cash;Jimmy Webb",
-"A|Wild Is the Wind|Nina Simone|1966|soul|US|2|30,30,20,30,70,95|c,d|Haunting, jazz-shaded soul with Nina's commanding voice.|jazzy;haunting;intimate|Aretha Franklin;Billie Holiday",
-"A|Clouds|Joni Mitchell|1969|folk|CA|2|25,45,10,15,95,95|c|Intricate guitar and a crystal-clear voice in quiet reflection.|open tunings;intimate;poetic|Judy Collins;Leonard Cohen",
-"A|Sweetheart of the Rodeo|The Byrds|1968|country|US|2|45,55,35,30,75,85|r|Long-haired rockers go full Nashville and help invent country-rock.|country rock;pedal steel;harmonies|Gram Parsons;Creedence Clearwater Revival",
-"A|If You Can Believe Your Eyes and Ears|The Mamas & the Papas|1966|pop|US|1|50,65,40,25,60,95|r,n,d|Sun-kissed folk-pop with soaring four-part harmonies.|harmonies;sunny;folk pop|The Seekers;The Beach Boys",
-"A|Silver Apples|Silver Apples|1968|electronic|US|2|60,40,40,55,5,55||Homemade oscillators and pounding drums: proto-electronic oddness.|oscillators;hypnotic;experimental|Kraftwerk;Suicide",
 // ---------- 1960s songs ----------
 "S|Friday on My Mind|The Easybeats|1966|rock|AU|0|80,75,65,60,40,90|p,r,n|A weekday-blues anthem that explodes into Friday freedom.|beat;sing-along;jangly|The Kinks;The Who",
 "S|Georgy Girl|The Seekers|1966|folk|AU|1|55,80,45,15,75,95|n,r,d|Bouncy, whistling folk-pop with a big heart.|folk pop;whistled;cheerful|The Mamas & the Papas;Peter, Paul and Mary",
@@ -229,44 +193,6 @@ const RAW=[
 "S|Get Together|The Youngbloods|1967|folk|US|2|40,70,30,15,75,90|c,n|A gentle hippie plea for peace and togetherness.|hippie;gentle;hopeful|The Byrds;Jefferson Airplane",
 "S|Mr. Tambourine Man|The Byrds|1965|folk|US|0|55,75,40,30,50,90|r,n|Jangling twelve-string guitar meets Dylan's dreamy words.|jangle;12-string;harmonies|Bob Dylan;The Mamas & the Papas",
 "S|Brown Eyed Girl|Van Morrison|1967|pop|UK|0|65,90,65,35,55,95|p,r,n|A sunny, sha-la-la sing-along about young love.|sing-along;sunny;sha-la-la|The Beatles;Creedence Clearwater Revival",
-// ---------- 1970s albums ----------
-"A|Highway to Hell|AC/DC|1979|rock|AU|0|90,70,60,90,15,85|w,r,p|Bon Scott's last stand: lean, mean, boogie-driven hard rock.|riffs;boogie;pub rock|Rose Tattoo;The Angels",
-"A|Living in the 70's|Skyhooks|1974|rock|AU|1|75,75,60,60,30,90|p,n|Glam-rock satire of 70s Melbourne, cheeky and catchy.|glam;satirical;catchy|Sherbet;Split Enz",
-"A|Breakfast at Sweethearts|Cold Chisel|1979|rock|AU|1|70,50,45,65,40,90|r,n|Barnesy's roar meets Don Walker's bittersweet street stories.|pub rock;piano;gritty|Jimmy Barnes;The Angels",
-"A|Diamantina Cocktail|Little River Band|1977|rock|AU|2|50,65,40,30,55,90|r,c|Smooth Aussie soft-rock with gleaming harmonies.|soft rock;harmonies;smooth|Eagles;Air Supply",
-"A|Radios Appear|Radio Birdman|1977|rock|AU|2|90,45,45,90,15,80|w|Sydney's ferocious punk pioneers at full throttle.|punk;surf guitar;ferocious|The Saints;The Stooges",
-"A|(I'm) Stranded|The Saints|1977|rock|AU|2|90,40,45,90,15,80|w|Brisbane's blistering answer to punk, raw and fast.|punk;raw;fast|Radio Birdman;Ramones",
-"A|Rumours|Fleetwood Mac|1977|rock|UK|0|55,55,45,40,55,95|r,d,n|Heartbreak turned into glossy, perfect California soft-rock.|soft rock;harmonies;heartbreak|Eagles;Crosby, Stills & Nash",
-"A|The Dark Side of the Moon|Pink Floyd|1973|rock|UK|0|40,30,25,45,40,60|c|A seamless, spacey meditation on time, money and madness.|spacey;concept;atmospheric|Radiohead;Genesis",
-"A|What's Going On|Marvin Gaye|1971|soul|US|0|40,50,50,25,50,95|d,c|A smooth, compassionate soul suite with real-world concerns.|smooth soul;socially aware;lush|Curtis Mayfield;Stevie Wonder",
-"A|Songs in the Key of Life|Stevie Wonder|1976|soul|US|0|65,80,70,40,40,95|d,p,n|A sprawling double album of joy, funk and wonder.|funky;joyful;sprawling|Marvin Gaye;Earth, Wind & Fire",
-"A|Blue|Joni Mitchell|1971|folk|CA|0|25,30,10,15,90,100|c|Confessional, raw and beautiful: heartbreak at its most honest.|confessional;dulcimer;intimate|Carole King;Leonard Cohen",
-"A|Born to Run|Bruce Springsteen|1975|rock|US|0|80,60,40,70,40,95|r,n|Widescreen escape anthems with sax, glockenspiel and grit.|anthemic;wall of sound;sax|Cold Chisel;Tom Petty",
-"A|Hotel California|Eagles|1976|rock|US|0|55,45,35,45,55,90|r,n|Polished, shadowy West Coast rock with famous dueling guitars.|west coast;guitar solos;smooth|Fleetwood Mac;Little River Band",
-"A|Off the Wall|Michael Jackson|1979|disco|US|0|80,85,90,40,20,95|p,w|Sleek disco-funk joy with flawless grooves.|disco;funky;glossy|Chic;Earth, Wind & Fire",
-"A|C'est Chic|Chic|1978|disco|US|1|75,85,95,35,20,75|p|Elegant, bass-driven disco built on Nile Rodgers' guitar.|bass groove;elegant;disco|Sister Sledge;Earth, Wind & Fire",
-"A|Mothership Connection|Parliament|1975|disco|US|1|75,80,90,50,25,75|p|Cosmic P-Funk with horns, synths and space-age silliness.|p-funk;cosmic;grooves|Sly and the Family Stone;Funkadelic",
-"A|Trans-Europe Express|Kraftwerk|1977|electronic|DE|1|50,50,55,25,5,30|c,r|Precise, rhythmic synth music inspired by train travel.|synths;robotic;hypnotic|Jean-Michel Jarre;New Order",
-"A|The Rise and Fall of Ziggy Stardust and the Spiders from Mars|David Bowie|1972|rock|UK|0|65,55,40,55,40,90|r|Glam-rock space opera with crunchy guitars and theatrical flair.|glam;theatrical;crunchy guitar|T. Rex;Lou Reed",
-"A|Horses|Patti Smith|1975|rock|US|1|60,40,30,60,45,95||Poetry meets garage rock in a fierce, free-form debut.|poetic;raw;arty|Television;The Velvet Underground",
-"A|Ramones|Ramones|1976|rock|US|1|95,65,55,85,15,80|w,p|Fourteen songs in under half an hour: punk's blueprint.|punk;fast;three chords|The Saints;The Clash",
-"A|Parallel Lines|Blondie|1978|newwave|US|0|75,70,75,50,30,90|p,r|Sharp new wave pop with punk bite and disco shine.|new wave;punchy;catchy|Talking Heads;The Cars",
-"A|London Calling|The Clash|1979|rock|UK|0|75,55,55,65,40,85|r|A genre-hopping punk epic of reggae, rockabilly and rage.|punk;reggae;eclectic|Ramones;The Jam",
-"A|Unknown Pleasures|Joy Division|1979|newwave|UK|1|50,15,30,55,25,75||Cold, cavernous post-punk with a hypnotic bass.|post-punk;bleak;atmospheric|The Cure;New Order",
-"A|Fear of Music|Talking Heads|1979|newwave|US|2|65,45,65,50,30,80||Nervy, funky art-rock about everyday paranoia.|nervy;art funk;quirky|Blondie;Devo",
-"A|Red Headed Stranger|Willie Nelson|1975|country|US|1|25,35,15,10,90,90|c,d|A sparse outlaw concept album, like a quiet western.|sparse;outlaw;storytelling|Johnny Cash;Waylon Jennings",
-"A|Coat of Many Colors|Dolly Parton|1971|country|US|1|40,60,30,20,80,100|d,n,c|Warm, homespun country stories from the Smokies.|storytelling;homespun;twangy|Loretta Lynn;Emmylou Harris",
-"A|Pink Moon|Nick Drake|1972|folk|UK|2|20,30,5,10,100,90|c|Just a voice and guitar: short, sparse and spellbinding.|sparse;fingerpicked;hushed|Elliott Smith;John Martyn",
-"A|Tapestry|Carole King|1971|pop|US|0|45,60,40,20,75,95|d,c,n|Warm piano-led songs that feel like an old friend.|piano;warm;singer-songwriter|James Taylor;Joni Mitchell",
-"A|Superfly|Curtis Mayfield|1972|soul|US|1|60,40,75,40,35,85|d,p|Slick, cinematic funk-soul with wah guitar and strings.|wah guitar;cinematic;funky|Marvin Gaye;Isaac Hayes",
-"A|Harvest|Neil Young|1972|folk|CA|0|40,45,25,30,80,90|c,r|Dusty, harmonica-laced country-folk from a lonely heart.|harmonica;country folk;warm|Crosby, Stills & Nash;Bob Dylan",
-"A|Aja|Steely Dan|1977|rock|US|1|50,55,55,30,40,85|d,c|Immaculate jazz-rock with session-player perfection.|jazz rock;smooth;polished|Fleetwood Mac;Donald Fagen",
-"A|Paranoid|Black Sabbath|1970|rock|UK|0|80,25,35,95,15,75|w|Heavy metal's doom-laden birth, all sludge and menace.|heavy metal;doom riffs;dark|Led Zeppelin;Metallica",
-"A|Marquee Moon|Television|1977|rock|US|2|65,45,40,55,40,75|r|Interlocking guitar lines that spiral and soar.|twin guitars;angular;cerebral|Patti Smith;Talking Heads",
-"A|Oxygène|Jean-Michel Jarre|1976|electronic|FR|2|35,50,30,15,0,0|c|Floating, spacey synth landscapes from France.|ambient synths;spacey;instrumental|Kraftwerk;Vangelis",
-"A|Daddy Who? Daddy Cool|Daddy Cool|1971|rock|AU|1|75,85,70,45,40,90|p,n,r|Doo-wop and rock and roll revival from Melbourne, all fun.|doo-wop;rock and roll;fun|Skyhooks;Creedence Clearwater Revival",
-"A|Head Injuries|Midnight Oil|1979|rock|AU|2|85,40,40,85,25,85|w|Early Oils, raw and furious with surf-punk energy.|raw;punky;urgent|Cold Chisel;The Saints",
-"A|Let's Stay Together|Al Green|1972|soul|US|1|40,75,55,15,50,95|d,c|Velvety Memphis soul with a feathery falsetto.|silky;romantic;falsetto|Marvin Gaye;Otis Redding",
 // ---------- 1970s songs ----------
 "S|It's a Long Way to the Top (If You Wanna Rock 'n' Roll)|AC/DC|1975|rock|AU|0|85,70,55,80,20,85|r,w,p|Bagpipes meet boogie rock in a fair-dinkum road anthem.|bagpipes;boogie;anthem|Rose Tattoo;Cold Chisel",
 "S|Horror Movie|Skyhooks|1974|rock|AU|1|70,70,55,55,30,90|p,n|Glammy satire about the nightly news as a scary film.|glam;satirical;quirky|Split Enz;Sherbet",
@@ -305,43 +231,6 @@ const RAW=[
 "S|Summer Breeze|Seals and Crofts|1972|folk|US|2|35,75,30,10,80,90|c,d,r|Soft-rock warmth that smells like jasmine.|soft rock;breezy;warm|America;Bread",
 "S|Lady Marmalade|Labelle|1974|disco|US|1|75,75,85,50,35,100|p|Sassy, sultry New Orleans funk with big voices.|sassy;funky;powerhouse|Chaka Khan;The Pointer Sisters",
 "S|The Passenger|Iggy Pop|1977|rock|US|1|65,60,55,50,35,85|r|A cool, loping ride with a la-la-la chorus.|loping;la-la chorus;cool|David Bowie;Lou Reed",
-// ---------- 1980s albums ----------
-"A|Back in Black|AC/DC|1980|rock|AU|0|90,65,60,90,10,85|w,r,p|A thunderous comeback with riffs carved in stone.|riffs;hard rock;anthemic|Guns N' Roses;Rose Tattoo",
-"A|Kick|INXS|1987|rock|AU|0|80,70,85,55,15,90|p,r|Slinky funk-rock with Michael Hutchence at his coolest.|funk rock;slinky;sax|The Cure;Duran Duran",
-"A|Diesel and Dust|Midnight Oil|1987|rock|AU|0|75,45,50,70,35,90|r|Urgent, outback-inspired rock with a conscience.|political;outback;driving|Hunters & Collectors;U2",
-"A|East|Cold Chisel|1980|rock|AU|1|70,55,50,60,40,90|r,p|Muscular pub rock with some of Chisel's best tunes.|pub rock;piano;muscular|Jimmy Barnes;The Angels",
-"A|Crowded House|Crowded House|1986|pop|AU|1|50,65,45,30,55,95|d,r,c|Melodic, warm pop songcraft from Neil Finn and co.|melodic;warm;crafted|Split Enz;Paul Kelly",
-"A|Gossip|Paul Kelly & the Coloured Girls|1986|folk|AU|1|55,60,40,35,65,95|r,d|Sharp, storytelling Aussie rock with a big heart.|storytelling;jangle;australiana|The Go-Betweens;Crowded House",
-"A|Human Frailty|Hunters & Collectors|1986|rock|AU|1|65,40,45,65,35,95|r|Brassy, brooding pub rock with stadium-sized feeling.|brass;brooding;anthemic|Midnight Oil;Cold Chisel",
-"A|Business as Usual|Men at Work|1981|newwave|AU|0|70,75,70,40,40,85|p,r,n|Quirky, reggae-tinged pop that conquered the world.|quirky;flute;reggae tinge|The Police;INXS",
-"A|Starfish|The Church|1988|rock|AU|2|45,35,30,40,40,85|c|Shimmering, chiming psych-pop with a dreamy undertow.|jangle;dreamy;chiming|The Go-Betweens;R.E.M.",
-"A|16 Lovers Lane|The Go-Betweens|1988|pop|AU|2|50,60,40,25,65,90|c,d|Bright, literate jangle-pop from Brisbane's best.|jangle pop;literate;warm|The Church;The Smiths",
-"A|Man of Colours|Icehouse|1987|newwave|AU|1|65,55,60,45,20,90|r,n|Polished synth-rock with big choruses.|synth rock;polished;anthemic|INXS;Duran Duran",
-"A|For the Working Class Man|Jimmy Barnes|1985|rock|AU|1|85,60,50,80,20,95|r,w|Full-throated heartland rock from the Aussie wailer.|heartland;powerful vocals;anthemic|Cold Chisel;Bruce Springsteen",
-"A|Thriller|Michael Jackson|1982|pop|US|0|80,75,95,50,20,95|p,w,n|The best-selling album ever: funky, spooky, flawless pop.|funk pop;iconic;polished|Prince;Janet Jackson",
-"A|Purple Rain|Prince and the Revolution|1984|pop|US|0|75,60,75,60,25,95|p,r|Guitar heroics, funk and heartbreak in one purple package.|funk rock;guitar;epic|Michael Jackson;Madonna",
-"A|Like a Prayer|Madonna|1989|pop|US|0|70,65,75,45,25,95|p,d|Confessional, confident pop with gospel and grooves.|pop;gospel;dancefloor|Janet Jackson;Prince",
-"A|The Joshua Tree|U2|1987|rock|IE|0|65,50,40,55,35,95|r,n|Chiming, widescreen rock inspired by wide American spaces.|chiming guitar;anthemic;widescreen|Midnight Oil;Simple Minds",
-"A|Remain in Light|Talking Heads|1980|newwave|US|1|75,60,85,50,25,85|p|Layered Afro-funk grooves meet art-rock smarts.|afrobeat;layered;polyrhythm|Peter Gabriel;Brian Eno",
-"A|The Queen Is Dead|The Smiths|1986|newwave|UK|1|60,40,40,45,45,95|r|Jangly guitars and droll, wounded wit.|jangle;witty;melancholy|The Go-Betweens;The Cure",
-"A|Disintegration|The Cure|1989|newwave|UK|1|45,20,30,50,20,80|c|Lush, gloomy waves of guitar and synth.|gloomy;lush;atmospheric|Joy Division;Siouxsie and the Banshees",
-"A|Rio|Duran Duran|1982|newwave|UK|0|80,75,85,45,15,90|p,r|Glossy, sun-soaked new romantic pop.|new romantic;glossy;danceable|INXS;Spandau Ballet",
-"A|Hounds of Love|Kate Bush|1985|pop|UK|1|60,45,50,50,30,95|c|Bold, cinematic art-pop with thunderous drums.|art pop;cinematic;big drums|Peter Gabriel;Tori Amos",
-"A|Appetite for Destruction|Guns N' Roses|1987|rock|US|0|90,50,45,95,15,90|w,r|Dirty, dangerous hard rock from LA's sleaziest.|hard rock;sleazy;riffs|AC/DC;Aerosmith",
-"A|Master of Puppets|Metallica|1986|rock|US|1|95,20,25,100,10,70|w|Precision thrash metal on an epic scale.|thrash;epic;relentless|Black Sabbath;Slayer",
-"A|Doolittle|Pixies|1989|rock|US|2|75,45,45,75,30,85|w|Loud-quiet-loud weirdness that inspired grunge.|loud-quiet-loud;surreal;punchy|Nirvana;The Breeders",
-"A|Daydream Nation|Sonic Youth|1988|rock|US|2|70,35,30,80,20,65||Sprawling noise-rock with gloriously detuned guitars.|noise rock;detuned;sprawling|Pixies;Nirvana",
-"A|It Takes a Nation of Millions to Hold Us Back|Public Enemy|1988|hiphop|US|1|90,35,70,85,5,95|w|Dense, furious, sample-packed political hip hop.|dense samples;political;intense|Run-DMC;Eric B. & Rakim",
-"A|Raising Hell|Run-DMC|1986|hiphop|US|0|85,70,80,70,10,95|p,w|Hard-hitting beats and rock riffs from Hollis, Queens.|boom bap;rock riffs;old school|Beastie Boys;Public Enemy",
-"A|Paid in Full|Eric B. & Rakim|1987|hiphop|US|1|65,55,75,50,10,95|p|Rakim's smooth, intricate flow over cool breaks.|smooth flow;breaks;golden age|Public Enemy;Nas",
-"A|3 Feet High and Rising|De La Soul|1989|hiphop|US|2|60,85,70,30,25,85|p|Playful, sample-happy hip hop with daisy-age charm.|playful;samples;quirky|A Tribe Called Quest;The Pharcyde",
-"A|Graceland|Paul Simon|1986|folk|US|0|60,80,60,25,60,90|d,r,n|South African rhythms meet New York songcraft.|world rhythms;upbeat;storytelling|Talking Heads;Peter Gabriel",
-"A|Tracy Chapman|Tracy Chapman|1988|folk|US|1|35,35,25,20,90,95|c,d|Stark, acoustic songs with quiet power.|acoustic;stark;thoughtful|Joni Mitchell;Suzanne Vega",
-"A|Guitar Town|Steve Earle|1986|country|US|2|65,55,45,50,55,90|r|Twangy, rocking new-traditionalist road songs.|twangy;heartland;road songs|Bruce Springsteen;Dwight Yoakam",
-"A|Trio|Dolly Parton, Linda Ronstadt & Emmylou Harris|1987|country|US|2|30,55,20,10,90,100|c,d|Three legendary voices blending on gentle country songs.|harmonies;acoustic;gentle|Dolly Parton;Alison Krauss",
-"A|Computer World|Kraftwerk|1981|electronic|DE|2|60,55,70,30,0,30||Crisp, playful synth-pop that predicted the digital age.|synth pop;robotic;minimal|Depeche Mode;Afrika Bambaataa",
-"A|Dare|The Human League|1981|newwave|UK|1|70,60,80,35,5,90|p,n|Cool, glossy synth-pop with killer hooks.|synth pop;glossy;hooky|Depeche Mode;Soft Cell",
-"A|Control|Janet Jackson|1986|soul|US|1|80,70,90,55,10,90|p,w|Hard-edged, drum-machine R&B with attitude.|new jack;drum machine;attitude|Michael Jackson;Madonna",
 // ---------- 1980s songs ----------
 "S|Down Under|Men at Work|1981|newwave|AU|0|70,80,70,40,45,90|p,r,n|A flute-hooked, tongue-in-cheek ode to Aussie travellers.|flute hook;quirky;sing-along|The Police;INXS",
 "S|Need You Tonight|INXS|1987|rock|AU|0|65,60,90,50,10,90|p|A minimal, slinky groove dripping with cool.|slinky;minimal;funky|Prince;Duran Duran",
@@ -381,46 +270,6 @@ const RAW=[
 "S|Copperhead Road|Steve Earle|1988|country|US|1|75,45,50,70,45,90|r|Bagpipe-ish drones and stomping guitars tell an outlaw tale.|stomping;outlaw;storytelling|Bruce Springsteen;Johnny Cash",
 "S|Everybody Wants to Rule the World|Tears for Fears|1985|newwave|UK|0|60,65,65,30,20,95|r,c,n|A breezy shuffle with a big, sunny chorus.|shuffle;breezy;synths|Simple Minds;a-ha",
 "S|Pump Up the Jam|Technotronic|1989|electronic|BE|1|90,80,95,55,0,75|p,w|A Belgian hip-house banger built for the gym.|hip house;bass;high energy|Black Box;C+C Music Factory",
-// ---------- 1990s albums ----------
-"A|Internationalist|Powderfinger|1998|rock|AU|1|60,55,40,55,45,90|r|Confident Brisbane rock with big guitars and heart.|guitars;anthemic;melodic|You Am I;silverchair",
-"A|Frogstomp|silverchair|1995|grunge|AU|0|85,35,40,90,15,85|w,r|Teenage Newcastle grunge with heavyweight riffs.|grunge;heavy riffs;teenage angst|Pearl Jam;Nirvana",
-"A|Hi Fi Way|You Am I|1995|rock|AU|1|75,55,45,65,35,85|r,p|Swaggering, Kinks-inspired Aussie guitar rock.|guitars;swagger;mod|The Kinks;Powderfinger",
-"A|Woodface|Crowded House|1991|pop|AU|0|50,65,40,30,60,95|d,r,c|Gorgeous Finn brothers harmonies and timeless songs.|harmonies;melodic;warm|Paul Kelly;The Go-Betweens",
-"A|Tribal Voice|Yothu Yindi|1991|rock|AU|1|70,60,70,50,50,90|p,r|Yolŋu tradition meets dance-rock in a landmark record.|didgeridoo;dance rock;bilingual|Midnight Oil;Goanna",
-"A|The Boatman's Call|Nick Cave and the Bad Seeds|1997|rock|AU|2|20,25,10,15,80,95|c,d|Sparse, piano-led songs of love and doubt.|piano;sparse;brooding|Leonard Cohen;PJ Harvey",
-"A|The Honeymoon Is Over|The Cruel Sea|1993|rock|AU|2|55,45,55,45,50,70|r|Dusty, surf-twanged swamp grooves from Sydney.|swampy;twang;groove|Hunters & Collectors;The Triffids",
-"A|Unit|Regurgitator|1997|rock|AU|2|80,75,75,50,10,85|p|Bratty, genre-flipping fun with synths and riffs.|quirky;synths;bratty|You Am I;Beck",
-"A|Impossible Princess|Kylie Minogue|1997|pop|AU|2|60,50,60,45,20,90||Kylie's adventurous reinvention, tinged with trip hop and rock.|trip hop;adventurous;moody|Madonna;Garbage",
-"A|Savage Garden|Savage Garden|1997|pop|AU|1|60,70,60,30,30,95|n,d|Shiny Brisbane pop with big ballads.|pop;ballads;glossy|Roxette;Natalie Imbruglia",
-"A|Ivy and the Big Apples|Spiderbait|1996|rock|AU|2|85,75,55,75,25,80|w,p|Hyperactive, playful fuzz-pop from Finley.|fuzzy;playful;punchy|Regurgitator;The Breeders",
-"A|Nevermind|Nirvana|1991|grunge|US|0|85,30,45,90,20,85|w,r|The album that blew grunge wide open.|grunge;loud-quiet-loud;angst|Pixies;Pearl Jam",
-"A|Ten|Pearl Jam|1991|grunge|US|0|75,35,40,80,30,95|r,w|Soaring, emotional grunge with a big voice.|grunge;soaring;emotional|Soundgarden;silverchair",
-"A|Superunknown|Soundgarden|1994|grunge|US|1|75,25,35,85,20,90|w|Heavy, psychedelic, sludgy grunge at its peak.|sludgy;psychedelic;heavy|Alice in Chains;Black Sabbath",
-"A|Dirt|Alice in Chains|1992|grunge|US|1|75,10,35,90,15,85|w|Dark, harmonised grunge-metal.|dark;harmonies;heavy|Soundgarden;Nirvana",
-"A|Definitely Maybe|Oasis|1994|britpop|UK|0|85,70,50,75,25,90|r,p|Swaggering Manc rock and roll with huge choruses.|swagger;anthemic;guitars|Blur;The Verve",
-"A|Parklife|Blur|1994|britpop|UK|0|70,75,65,50,30,90|p,n|Witty, kaleidoscopic snapshots of British life.|witty;eclectic;cheeky|Pulp;The Kinks",
-"A|Different Class|Pulp|1995|britpop|UK|1|70,60,70,50,25,95|p|Sharp, sardonic, disco-tinged Britpop.|sardonic;disco tinge;storytelling|Blur;Suede",
-"A|OK Computer|Radiohead|1997|rock|UK|0|50,25,25,55,35,85|c|Anxious, beautiful rock for the digital age.|atmospheric;anxious;layered|Pink Floyd;The Verve",
-"A|Urban Hymns|The Verve|1997|britpop|UK|1|55,45,40,45,40,90|r,c|Sweeping, string-laden Britpop with soul.|strings;sweeping;soulful|Oasis;Radiohead",
-"A|I Should Coco|Supergrass|1995|britpop|UK|2|85,85,60,65,30,85|p,r|Youthful, sideburned Britpop buzzing with fun.|youthful;fun;guitars|Blur;The Bluetones",
-"A|The Miseducation of Lauryn Hill|Lauryn Hill|1998|hiphop|US|0|55,60,65,30,45,100|d,c|A soulful, wise blend of rap and R&B.|neo soul;rap;soulful|Erykah Badu;Fugees",
-"A|The Chronic|Dr. Dre|1992|hiphop|US|0|60,60,80,55,10,90|p,r|Laid-back G-funk with fat synth leads.|g-funk;laid back;synths|Snoop Doggy Dogg;2Pac",
-"A|Illmatic|Nas|1994|hiphop|US|1|60,40,65,50,20,100|r|Dense, poetic New York rhymes over jazzy beats.|jazzy beats;poetic;boom bap|The Notorious B.I.G.;Wu-Tang Clan",
-"A|The Low End Theory|A Tribe Called Quest|1991|hiphop|US|1|55,65,70,30,30,90|c,d,p|Jazz bass meets easy-going rhymes.|jazz rap;mellow;bassy|De La Soul;The Pharcyde",
-"A|Enter the Wu-Tang (36 Chambers)|Wu-Tang Clan|1993|hiphop|US|1|75,35,60,75,10,100|w|Gritty, kung-fu-flavoured hip hop.|gritty;raw;kung fu|Nas;Public Enemy",
-"A|Baduizm|Erykah Badu|1997|soul|US|1|35,55,55,15,45,95|c,d|Smoky, jazzy neo-soul with effortless cool.|neo soul;jazzy;smoky|Lauryn Hill;D'Angelo",
-"A|CrazySexyCool|TLC|1994|soul|US|0|60,65,80,35,15,95|p,d|Smooth, sassy R&B with great hooks.|r&b;sassy;smooth|Janet Jackson;Destiny's Child",
-"A|Screamadelica|Primal Scream|1991|electronic|UK|1|70,80,80,40,20,70|p|Acid house meets gospel rock and roll.|acid house;euphoric;gospel|The Stone Roses;Happy Mondays",
-"A|Dummy|Portishead|1994|electronic|UK|1|30,15,40,30,20,85|c|Smoky, cinematic trip hop.|trip hop;cinematic;smoky|Massive Attack;Björk",
-"A|Homework|Daft Punk|1997|electronic|FR|1|85,75,95,55,0,20|p,w|Filtered French house that's raw and relentless.|french house;filtered;relentless|The Chemical Brothers;Air",
-"A|Music for the Jilted Generation|The Prodigy|1994|electronic|UK|2|95,45,85,90,0,30|w|Breakbeat rave fury with punk energy.|breakbeat;rave;aggressive|The Chemical Brothers;Underworld",
-"A|Endtroducing.....|DJ Shadow|1996|electronic|US|2|40,35,40,40,25,10|c|A moody collage made entirely from samples.|sample collage;moody;instrumental|Portishead;Massive Attack",
-"A|Wildflowers|Tom Petty|1994|rock|US|1|50,60,40,35,70,90|r,c|Warm, rootsy, effortless songs.|rootsy;warm;acoustic|Bob Dylan;Neil Young",
-"A|Come On Over|Shania Twain|1997|country|CA|0|75,85,70,45,40,95|p,r|Pop-country with big hooks and big fun.|pop country;hooky;fun|Dixie Chicks;Faith Hill",
-"A|Car Wheels on a Gravel Road|Lucinda Williams|1998|country|US|2|50,40,40,40,65,95|r,c|Dusty Southern roots-rock with a lived-in voice.|roots;dusty;storytelling|Steve Earle;Emmylou Harris",
-"A|Grace|Jeff Buckley|1994|rock|US|1|45,30,20,50,55,100|c|A soaring voice and emotional, ornate rock.|soaring vocals;emotional;ornate|Radiohead;Leonard Cohen",
-"A|Either/Or|Elliott Smith|1997|folk|US|2|30,25,15,20,85,90|c|Whispered, intricate, quietly devastating songs.|whispered;fingerpicked;intimate|Nick Drake;Big Star",
-"A|Jagged Little Pill|Alanis Morissette|1995|rock|CA|0|70,40,45,65,40,100|r,w|Raw, confessional 90s rock with attitude.|confessional;angry;anthemic|Garbage;The Cranberries",
 // ---------- 1990s songs ----------
 "S|These Days|Powderfinger|1999|rock|AU|0|45,40,30,35,55,95|c,r,n|A slow-burning, bittersweet reflection.|slow burn;bittersweet;anthemic|You Am I;silverchair",
 "S|Tomorrow|silverchair|1994|grunge|AU|0|70,30,40,80,20,90|r,w|Teenage grunge breakthrough with a massive chorus.|grunge;quiet-loud;angst|Pearl Jam;Nirvana",
@@ -461,7 +310,254 @@ const RAW=[
 "S|Creep|Radiohead|1992|rock|UK|0|50,10,20,65,35,95|c|A self-loathing anthem with a crunching guitar blast.|crunch;self-doubt;anthem|Nirvana;The Verve",
 "S|Cannonball|The Breeders|1993|rock|US|1|75,65,55,65,25,80|p|Bouncy, bassy alt-rock with a megaphone hook.|bassy;bouncy;alt rock|Pixies;Spiderbait",
 "S|Linger|The Cranberries|1993|rock|IE|1|40,30,30,25,55,95|c,r|Lilting, string-touched heartache.|lilting;strings;heartache|The Sundays;Sinéad O'Connor",
-"S|Torn|Natalie Imbruglia|1997|pop|AU|0|55,50,50,35,55,95|r,n,d|A breezy break-up song everyone can sing.|sing-along;breezy;bittersweet|Alanis Morissette;Savage Garden"
+"S|Torn|Natalie Imbruglia|1997|pop|AU|0|55,50,50,35,55,95|r,n,d|A breezy break-up song everyone can sing.|sing-along;breezy;bittersweet|Alanis Morissette;Savage Garden",
+// ---------- more songs ----------
+"S|Waterloo|ABBA|1974|pop|SE|0|80,90,75,40,30,95|p,n|The glam-stomping Eurovision winner that launched the legend.|glam stomp;sing-along;euphoric|Bee Gees;Sweet",
+"S|Mamma Mia|ABBA|1975|pop|SE|0|70,85,80,30,30,95|p,n,r|Marimba tick-tock and a chorus nobody can resist.|marimba;sing-along;bouncy|Fleetwood Mac;Bee Gees",
+"S|SOS|ABBA|1975|pop|SE|1|60,50,60,30,30,95|n,r|A desperate plea wrapped in a soaring pop chorus.|dramatic;piano;soaring|Fleetwood Mac;Kate Bush",
+"S|Fernando|ABBA|1976|pop|SE|0|35,55,30,15,60,95|c,n,d|A misty, campfire ballad about old comrades.|ballad;flutes;nostalgic|The Carpenters;Olivia Newton-John",
+"S|Money, Money, Money|ABBA|1976|pop|SE|1|60,55,55,35,30,95|p,n|Cabaret-flavoured pop with a theatrical swagger.|cabaret;theatrical;piano|Boney M.;Blondie",
+"S|Knowing Me, Knowing You|ABBA|1977|pop|SE|1|55,35,50,30,35,95|n,r|A gorgeous, grown-up break-up song with a huge chorus.|break-up;bittersweet;harmonies|Fleetwood Mac;Roxette",
+"S|Take a Chance on Me|ABBA|1977|pop|SE|0|75,90,80,30,30,95|p,n,r|An a cappella hook that bounces into pure joy.|a cappella hook;bouncy;joyful|Bee Gees;The Bangles",
+"S|Eagle|ABBA|1978|pop|SE|2|50,60,45,30,35,90|c,r|A soaring, spacey deep cut about freedom.|epic;spacey;soaring|ELO;Fleetwood Mac",
+"S|Chiquitita|ABBA|1979|pop|SE|1|40,55,35,15,50,95|n,d|A comforting ballad with a Latin lilt.|ballad;comforting;latin lilt|The Carpenters;Olivia Newton-John",
+"S|Does Your Mother Know|ABBA|1979|pop|SE|1|85,85,75,50,25,95|p|Björn takes the mic for a cheeky rock and roll romp.|rock and roll;cheeky;fun|Blondie;ELO",
+"S|Voulez-Vous|ABBA|1979|disco|SE|1|80,70,90,45,15,95|p,w|Driving, Miami-recorded disco with a nocturnal edge.|disco;driving;nocturnal|Bee Gees;Donna Summer",
+"S|Gimme! Gimme! Gimme! (A Man After Midnight)|ABBA|1979|disco|SE|0|80,60,90,45,10,95|p,w|A dark, synth-stabbed disco classic.|synth stabs;disco;moody|Donna Summer;Madonna",
+"S|The Winner Takes It All|ABBA|1980|pop|SE|0|45,25,35,25,50,100|n,d,c|A devastating piano ballad of divorce and pride.|piano ballad;heartbreak;powerhouse|Fleetwood Mac;Roxette",
+"S|Super Trouper|ABBA|1980|pop|SE|1|65,80,65,25,35,95|p,n|Sparkling pop about stage lights and missing someone.|sparkling;sing-along;bright|Olivia Newton-John;ELO",
+"S|Lay All Your Love on Me|ABBA|1980|disco|SE|1|70,55,85,40,10,95|p|A hypnotic, synth-driven confession of jealousy.|synths;hypnotic;dancefloor|Pet Shop Boys;Erasure",
+"S|The Day Before You Came|ABBA|1982|pop|SE|2|35,25,30,20,30,90|c|ABBA's quietly devastating final masterpiece.|minimal;melancholy;synths|Kate Bush;Roxy Music",
+"S|Albatross|Fleetwood Mac|1968|rock|UK|2|20,55,15,10,60,0|c,d|Peter Green's dreamy instrumental that drifts like a seabird.|instrumental;dreamy;guitar|The Shadows;Santana",
+"S|Rhiannon|Fleetwood Mac|1975|rock|UK|0|60,50,50,40,45,95|r,n|Stevie Nicks' witchy, spellbinding breakthrough.|witchy;spellbinding;harmonies|Stevie Nicks;Heart",
+"S|Landslide|Fleetwood Mac|1975|folk|UK|0|20,40,10,5,95,95|c,d|A gentle fingerpicked meditation on change.|fingerpicked;gentle;reflective|Joni Mitchell;The Carpenters",
+"S|Say You Love Me|Fleetwood Mac|1975|rock|UK|2|55,75,55,30,50,95|r,d|Christine McVie's breezy, piano-led love song.|breezy;piano;harmonies|The Carpenters;Eagles",
+"S|Go Your Own Way|Fleetwood Mac|1976|rock|UK|0|80,55,55,60,45,95|r,p,n|A galloping, angry break-up anthem with a blazing solo.|galloping drums;break-up;anthem|Eagles;Tom Petty",
+"S|Dreams|Fleetwood Mac|1977|rock|UK|0|45,45,55,25,40,95|c,r,d|A hazy, hypnotic groove with Stevie's sweetest vocal.|hazy;hypnotic;smooth|Stevie Nicks;Eagles",
+"S|Don't Stop|Fleetwood Mac|1977|rock|UK|0|70,95,60,40,45,95|r,p,n|A bouncy, sunny anthem about tomorrow.|bouncy;optimistic;sing-along|ELO;Hall & Oates",
+"S|The Chain|Fleetwood Mac|1977|rock|UK|0|65,35,40,60,45,95|r|A brooding build to that legendary bassline.|bassline;brooding;build|Eagles;Heart",
+"S|Tusk|Fleetwood Mac|1979|rock|UK|1|70,55,60,60,30,70|a,p|Tribal drums and a marching band gone wonderfully weird.|tribal drums;marching band;weird|Talking Heads;Peter Gabriel",
+"S|Sara|Fleetwood Mac|1979|rock|UK|1|40,45,40,20,45,95|c,d|A drifting, misty Stevie Nicks reverie.|misty;drifting;dreamy|Stevie Nicks;Kate Bush",
+"S|Gypsy|Fleetwood Mac|1982|rock|UK|1|55,55,50,30,45,95|r,n|Shimmering nostalgia for a carefree past.|shimmering;nostalgic;smooth|Stevie Nicks;The Bangles",
+"S|Hold Me|Fleetwood Mac|1982|rock|UK|2|60,65,60,35,40,95|r|Lazy, swaying pop-rock with sweet harmonies.|swaying;harmonies;laid back|Hall & Oates;Toto",
+"S|Everywhere|Fleetwood Mac|1987|pop|UK|0|60,90,65,20,25,95|r,p,n|Twinkling, lovestruck synth-pop bliss.|twinkling;lovestruck;synths|The Bangles;Belinda Carlisle",
+"S|Little Lies|Fleetwood Mac|1987|pop|UK|1|55,45,60,25,20,95|r,d|Glossy, wistful 80s pop with a pleading chorus.|glossy;wistful;synths|Roxette;Heart",
+"S|Seven Wonders|Fleetwood Mac|1987|pop|UK|2|65,70,60,35,20,95|r|Shiny, driving Stevie Nicks pop.|driving;shiny;synths|Stevie Nicks;Belinda Carlisle",
+"S|Edge of Seventeen|Stevie Nicks|1981|rock|US|1|75,45,55,60,30,95|r,w|A chugging, galloping guitar riff under a mystic vocal.|chugging riff;mystic;driving|Fleetwood Mac;Heart",
+"S|Denis|Blondie|1977|newwave|US|2|65,80,60,35,30,95|p,n|A doo-wop cover reborn as cheeky new wave.|doo-wop;cheeky;bilingual|The Ronettes;The Go-Go's",
+"S|One Way or Another|Blondie|1978|newwave|US|0|85,60,65,65,20,95|p,r,w|A pounding, playful stalker anthem.|pounding;playful;punk pop|The Cars;Pat Benatar",
+"S|Hanging on the Telephone|Blondie|1978|newwave|US|1|90,60,65,70,20,95|p,w|Two minutes of urgent, ringing power pop.|power pop;urgent;short|Buzzcocks;The Cars",
+"S|Sunday Girl|Blondie|1978|newwave|US|2|55,60,55,25,35,95|c,n|Breezy, girl-group-flavoured new wave sweetness.|breezy;girl group;sweet|The Go-Go's;The Ronettes",
+"S|Heart of Glass|Blondie|1979|disco|US|0|65,60,90,30,5,95|p,n|Disco meets new wave in a shimmering, cool classic.|disco;synth pulse;cool|Donna Summer;Chic",
+"S|Dreaming|Blondie|1979|newwave|US|1|85,75,65,60,25,95|r,p|Thundering drums and a daydream that won't quit.|big drums;rush;dreamy|The Pretenders;The Cars",
+"S|Atomic|Blondie|1979|newwave|US|1|80,60,85,50,10,90|p,w|Spaghetti-western guitars on a disco-rock spaceship.|disco rock;twangy;cool|Duran Duran;Roxy Music",
+"S|Call Me|Blondie|1980|newwave|US|0|90,65,80,65,10,95|p,w,r|A neon, Moroder-produced night-drive banger.|driving;synths;neon|Giorgio Moroder;Pat Benatar",
+"S|The Tide Is High|Blondie|1980|pop|US|0|50,80,65,15,40,95|c,d,n|A breezy reggae cover with brass and charm.|reggae;breezy;brass|UB40;The Police",
+"S|Rapture|Blondie|1980|newwave|US|1|55,65,80,25,15,85|p|A slinky groove with a pioneering rap verse.|slinky;early rap;cool|Tom Tom Club;Talking Heads",
+"S|Maria|Blondie|1999|pop|US|1|70,60,60,45,25,95|r,n|A glossy late-career comeback with a big chorus.|glossy;comeback;anthemic|Garbage;The Cardigans",
+"S|Brass in Pocket|The Pretenders|1979|newwave|UK|1|55,65,65,35,30,95|p,r|Chrissie Hynde's cool, confident strut.|cool;strut;confident|Blondie;Patti Smith",
+"S|Don't Get Me Wrong|The Pretenders|1986|pop|UK|2|70,85,60,30,40,95|r,n|A jaunty, jangly burst of 60s-style pop.|jangly;jaunty;sunny|The Bangles;The Go-Go's",
+"S|Hit Me with Your Best Shot|Pat Benatar|1980|rock|US|1|85,70,60,75,15,95|w,p,r|A defiant, punchy arena-rock challenge.|punchy;defiant;arena|Heart;Joan Jett",
+"S|Love Is a Battlefield|Pat Benatar|1983|rock|US|1|75,45,70,55,10,95|r,p|Dramatic synth-rock with a stomping beat.|dramatic;synth rock;stomp|Heart;Blondie",
+"S|Barracuda|Heart|1977|rock|US|1|90,35,45,85,25,100|w,r|A galloping riff and Ann Wilson's ferocious wail.|galloping riff;ferocious;hard rock|Led Zeppelin;Pat Benatar",
+"S|Alone|Heart|1987|rock|US|1|55,30,25,60,25,100|r,n|The ultimate 80s power ballad.|power ballad;soaring;dramatic|Pat Benatar;Roxette",
+"S|Just What I Needed|The Cars|1978|newwave|US|1|80,70,60,55,20,90|r,p|Crunchy guitars meet chirpy synths in perfect power pop.|power pop;synths;crunchy|Blondie;Cheap Trick",
+"S|Drive|The Cars|1984|newwave|US|1|30,25,35,20,10,95|c,n|A hushed, glassy ballad full of quiet concern.|glassy;hushed;ballad|Roxy Music;Tears for Fears",
+"S|We Got the Beat|The Go-Go's|1981|newwave|US|1|90,90,85,45,25,90|p,w|Jet-fuelled surf-punk pop from LA's all-girl band.|surf punk;bouncy;party|Blondie;The Bangles",
+"S|Walk Like an Egyptian|The Bangles|1986|pop|US|0|70,85,75,30,30,95|p,n|A quirky, whistling novelty that's endlessly catchy.|quirky;whistled;catchy|The Go-Go's;Cyndi Lauper",
+"S|Manic Monday|The Bangles|1986|pop|US|1|60,75,55,20,40,95|r,n|A breezy jangle-pop moan about the week starting.|jangle pop;breezy;harmonies|The Go-Go's;Fleetwood Mac",
+"S|Eternal Flame|The Bangles|1989|pop|US|0|30,55,25,10,55,95|c,d,n|A tender, slow-dance ballad.|ballad;tender;slow dance|Roxette;Heart",
+"S|Girls Just Want to Have Fun|Cyndi Lauper|1983|pop|US|0|85,95,85,35,10,95|p,n|A bubbly, joyous anthem for a night out.|bubbly;joyous;synths|Madonna;The Bangles",
+"S|Time After Time|Cyndi Lauper|1984|pop|US|0|35,50,40,10,40,95|c,d,n|A tender, loyal ballad with a gentle sway.|tender;swaying;ballad|The Bangles;Everything but the Girl",
+"S|Here Comes the Rain Again|Eurythmics|1984|newwave|UK|1|55,30,55,40,20,95|c,r|Sweeping strings and synths for a grey day.|strings;synths;moody|Tears for Fears;Yazoo",
+"S|Kids in America|Kim Wilde|1981|newwave|UK|1|85,75,75,50,5,90|p,r,w|Pulsing, punky synth-pop shout-along.|synth pop;shout-along;pulsing|Blondie;The Human League",
+"S|How Deep Is Your Love|Bee Gees|1977|pop|UK|0|35,65,40,10,40,95|d,c,n|Silky, swooning soft-rock romance.|silky;falsetto;romantic|Hall & Oates;The Carpenters",
+"S|Night Fever|Bee Gees|1977|disco|UK|0|70,75,90,30,20,95|p,n|Smooth, sophisticated disco glide.|disco;falsetto;smooth|ABBA;Chic",
+"S|Livin' Thing|Electric Light Orchestra|1976|pop|UK|1|60,70,55,30,40,95|r,n|Swirling strings and a sweeping pop chorus.|strings;sweeping;orchestral pop|ABBA;The Beatles",
+"S|Mr. Blue Sky|Electric Light Orchestra|1977|pop|UK|0|75,100,65,40,35,95|r,p,n|A sunburst of strings, vocoders and Beatles-esque joy.|sunny;orchestral pop;euphoric|The Beatles;Queen",
+"S|Don't Bring Me Down|Electric Light Orchestra|1979|rock|UK|1|80,75,70,55,20,90|r,p,w|A stomping drum loop and a big shout-along.|drum loop;stomp;shout-along|Queen;Supertramp",
+"S|Xanadu|Olivia Newton-John & Electric Light Orchestra|1980|pop|AU|1|65,80,70,30,20,95|p,n|Glittery roller-disco fantasy pop.|glittery;roller disco;dreamy|ABBA;ELO",
+"S|Rasputin|Boney M.|1978|disco|DE|1|85,75,90,45,15,95|p,w|A galloping, history-lesson disco romp.|galloping;euro disco;fun|ABBA;Village People",
+"S|Rivers of Babylon|Boney M.|1978|disco|DE|0|55,70,70,20,35,95|p,n,d|A sunny euro-disco take on a reggae hymn.|euro disco;sunny;harmonies|ABBA;The Melodians",
+"S|Hot Stuff|Donna Summer|1979|disco|US|0|85,70,90,60,10,95|p,w|Disco with a rock-guitar edge and plenty of heat.|disco rock;guitar;fiery|Blondie;Chic",
+"S|Bad Girls|Donna Summer|1979|disco|US|1|80,70,90,45,15,95|p|Brassy, whistle-blowing disco attitude.|brassy;disco;attitude|Gloria Gaynor;Chic",
+"S|Le Freak|Chic|1978|disco|US|0|75,85,95,35,15,85|p,w,n|The 'Freak out!' groove that took over the world.|bass groove;disco;party|Sister Sledge;Bee Gees",
+"S|Good Times|Chic|1979|disco|US|1|65,80,90,25,15,85|p,d|Laid-back disco with a bassline that launched rap.|bassline;laid back;cool|Sister Sledge;Queen",
+"S|We Are Family|Sister Sledge|1979|disco|US|0|75,95,90,35,20,95|p,n|A joyous anthem for any gathering of mates.|joyous;disco;anthem|Chic;Kool & the Gang",
+"S|That's the Way (I Like It)|KC and the Sunshine Band|1975|disco|US|0|80,90,90,40,20,85|p|Horn-blasting, uh-huh party funk.|horns;party;funky|Kool & the Gang;Earth, Wind & Fire",
+"S|Y.M.C.A.|Village People|1978|disco|US|0|85,95,85,40,15,95|p,n|The arms-in-the-air party staple.|party;arms up;fun|Boney M.;Kool & the Gang",
+"S|Celebration|Kool & the Gang|1980|disco|US|0|80,100,90,35,15,90|p,n|The ultimate let's-get-this-party-started cue.|party;joyful;horns|Earth, Wind & Fire;Sister Sledge",
+"S|I'm So Excited|The Pointer Sisters|1982|pop|US|1|85,95,85,45,10,95|p,w|Pure fizz: synths, handclaps and big voices.|fizzy;handclaps;powerhouse|Whitney Houston;Cyndi Lauper",
+"S|You're So Vain|Carly Simon|1972|pop|US|0|50,50,40,30,55,95|r,d,n|A sly, piano-strutting takedown of a vain ex.|sly;piano;strut|Carole King;Linda Ronstadt",
+"S|You're No Good|Linda Ronstadt|1974|rock|US|1|50,35,45,40,45,100|r,d|A slow-burning kiss-off with a blazing finish.|slow burn;soulful;guitar|Eagles;Fleetwood Mac",
+"S|Blue Bayou|Linda Ronstadt|1977|country|US|1|30,40,25,10,70,100|c,d|A wistful, swaying ballad with a soaring voice.|wistful;soaring;swaying|Emmylou Harris;Roy Orbison",
+"S|(They Long to Be) Close to You|Carpenters|1970|pop|US|0|25,75,25,5,60,100|c,d,n|Velvet vocals and lush, dreamy arrangement.|velvet;dreamy;lush|Burt Bacharach;Olivia Newton-John",
+"S|Top of the World|Carpenters|1972|country|US|1|50,95,40,10,65,100|r,n,d|A sunny, country-tinged high.|sunny;country pop;sweet|Olivia Newton-John;John Denver",
+"S|Rich Girl|Hall & Oates|1977|pop|US|1|60,60,60,30,35,95|r|Blue-eyed soul with a punchy piano hook.|blue-eyed soul;piano;punchy|Bee Gees;Steely Dan",
+"S|You Make My Dreams|Hall & Oates|1980|pop|US|0|75,95,85,30,20,95|p,r,n|A bouncing, feel-good shuffle that never ages.|bouncy;feel-good;shuffle|Fleetwood Mac;ELO",
+"S|Maneater|Hall & Oates|1982|pop|US|1|60,40,70,35,15,95|r,p|A sleek, sax-slinky warning.|sleek;sax;slinky|Toto;The Cars",
+"S|Africa|Toto|1982|rock|US|0|55,70,50,30,30,95|r,n,p|Rainy marimba synths and a huge sing-along chorus.|sing-along;marimba synths;anthemic|Hall & Oates;Fleetwood Mac",
+"S|I'm Not in Love|10cc|1975|pop|UK|1|20,40,15,10,20,90|c,d|A shimmering wall of hundreds of overdubbed voices.|layered voices;dreamy;hushed|Pink Floyd;Roxy Music",
+"S|Dreadlock Holiday|10cc|1978|pop|UK|1|45,70,65,20,45,90|c,r|A laid-back, reggae-tinged holiday yarn.|reggae;laid back;storytelling|The Police;Men at Work",
+"S|The Logical Song|Supertramp|1979|rock|UK|0|65,60,50,40,35,95|r,n|Wurlitzer bounce and a clever chorus about growing up.|wurlitzer;clever;sing-along|ELO;Toto",
+"S|Breakfast in America|Supertramp|1979|pop|UK|1|60,80,45,25,50,90|r,d|A jaunty, tuba-bouncing daydream.|jaunty;piano;whimsical|10cc;ELO",
+"S|Love Is the Drug|Roxy Music|1975|rock|UK|1|70,65,80,45,25,90|p|A strutting, glam-funk night out.|glam funk;strut;cool|David Bowie;Chic",
+"S|Avalon|Roxy Music|1982|pop|UK|2|35,50,45,15,25,90|c,d|Silky, late-night sophisticate pop.|silky;sophisticated;late night|Bryan Ferry;Sade",
+"S|Don't You Want Me|The Human League|1981|newwave|UK|0|65,50,75,35,5,95|p,n,r|A duet of synth-pop heartbreak with a huge chorus.|synth pop;duet;heartbreak|Eurythmics;Soft Cell",
+"S|Hungry Like the Wolf|Duran Duran|1982|newwave|UK|0|80,70,85,50,15,90|p,r|A prowling, jungle-flavoured new romantic banger.|new romantic;prowling;danceable|INXS;Spandau Ballet",
+"S|Rio|Duran Duran|1982|newwave|UK|1|80,85,80,45,15,90|p,r|Sun-soaked, sax-shining new romantic glamour.|sun-soaked;sax;glossy|INXS;Roxy Music",
+"S|Wake Me Up Before You Go-Go|Wham!|1984|pop|UK|0|85,100,85,30,20,95|p,n|Jitterbugging, Motown-inspired sunshine pop.|jitterbug;bouncy;sunny|Cyndi Lauper;Hall & Oates",
+"S|Running Up That Hill (A Deal with God)|Kate Bush|1985|pop|UK|0|65,35,60,50,10,95|r,c|Thudding drums and a fierce, yearning deal.|thudding drums;yearning;synths|Peter Gabriel;Tears for Fears",
+"S|Holiday|Madonna|1983|pop|US|1|75,90,90,25,15,90|p,n|A breezy, celebratory dance-pop invitation.|breezy;dance pop;celebratory|Cyndi Lauper;Chic",
+"S|Like a Prayer|Madonna|1989|pop|US|0|75,70,75,50,20,100|p,n|Gospel choir meets dancefloor in a pop epic.|gospel;epic;dancefloor|Prince;Whitney Houston",
+"S|Vogue|Madonna|1990|electronic|US|0|80,75,95,35,0,85|p,w|Sleek house groove with a celebrity roll-call.|house;sleek;posing|Deee-Lite;Janet Jackson",
+"S|I Wanna Dance with Somebody (Who Loves Me)|Whitney Houston|1987|pop|US|0|85,95,90,35,10,100|p,n|Pure euphoric, bright 80s dance-pop.|euphoric;bright;powerhouse|Madonna;The Pointer Sisters",
+"S|What's Love Got to Do with It|Tina Turner|1984|pop|US|0|50,45,60,25,30,100|d,r|A cool, cynical groove with Tina's grit.|cool;gritty;smooth|Whitney Houston;Hall & Oates",
+"S|The Best|Tina Turner|1989|rock|US|0|75,85,55,55,15,100|r,p,n|A sax-blasting anthem that Australians made their own.|anthem;sax;powerhouse|Bonnie Tyler;Jimmy Barnes",
+"S|Heaven Is a Place on Earth|Belinda Carlisle|1987|pop|US|0|80,90,65,40,20,95|r,p,n|A soaring, stadium-sized pop rush.|soaring;anthemic;bright|The Go-Go's;The Bangles",
+"S|The Look|Roxette|1989|pop|SE|1|80,70,75,50,10,90|p,r|Chunky guitars and a cool, chanted hook.|chunky;chanted;cool|ABBA;Eurythmics",
+"S|It Must Have Been Love|Roxette|1990|pop|SE|0|40,30,30,25,30,100|c,n,d|A sweeping, rain-soaked power ballad.|power ballad;sweeping;heartbreak|Heart;ABBA",
+"S|Physical|Olivia Newton-John|1981|pop|AU|0|80,85,80,35,10,95|p,w,n|Headband-and-leg-warmers aerobic pop.|aerobics;synths;cheeky|Kim Wilde;Madonna",
+"S|Have You Never Been Mellow|Olivia Newton-John|1975|country|AU|1|25,60,20,5,75,100|c,d|Soft, gentle soft-rock lullaby.|soft rock;gentle;sweet|Carpenters;Linda Ronstadt",
+"S|You're the One That I Want|John Travolta & Olivia Newton-John|1978|pop|AU|0|85,95,80,40,30,95|p,n,r|Hand-jive-ready Grease duet bursting with fun.|duet;hand jive;fun|ABBA;Bee Gees",
+"S|Love Is in the Air|John Paul Young|1978|disco|AU|0|60,90,70,20,30,95|p,n,d|A sweeping, string-lifted Aussie disco romance.|strings;romantic;disco|Bee Gees;ABBA",
+"S|You|Marcia Hines|1977|soul|AU|2|60,80,70,25,30,100|p,n|Glowing Aussie disco-soul from a powerhouse voice.|disco soul;powerhouse;bright|Donna Summer;Gloria Gaynor",
+"S|Reminiscing|Little River Band|1978|rock|AU|0|35,60,35,15,55,95|c,d,n|A smooth, jazzy soft-rock look back.|soft rock;jazzy;smooth|Eagles;Hall & Oates",
+"S|Cool Change|Little River Band|1979|rock|AU|1|35,55,25,15,60,95|c,r|A breezy, oceanic soft-rock escape.|breezy;oceanic;harmonies|Eagles;Toto",
+"S|All Out of Love|Air Supply|1980|pop|AU|0|40,35,25,25,40,100|c,n|A soaring, unashamed soft-rock ballad.|ballad;soaring;soft rock|Chicago;Roxette",
+"S|April Sun in Cuba|Dragon|1977|rock|AU|1|65,80,60,40,40,95|r,p,n|Breezy, sunny pop-rock begging for a holiday.|sunny;breezy;sing-along|Sherbet;Split Enz",
+"S|Rain|Dragon|1983|rock|AU|1|60,50,55,40,30,95|r,n|A brooding, catchy rock song with a big chorus.|brooding;catchy;synths|INXS;Icehouse",
+"S|What About Me|Moving Pictures|1982|rock|AU|1|40,25,25,30,45,100|r,n|An earnest, piano-led cry for the little guy.|earnest;piano;anthemic|Cold Chisel;Air Supply",
+"S|Send Me an Angel|Real Life|1983|newwave|AU|2|70,40,70,45,5,95|p|Dark, dramatic Melbourne synth-pop.|synth pop;dramatic;dark|Icehouse;Ultravox",
+"S|Funky Town|Pseudo Echo|1986|newwave|AU|1|85,80,90,50,5,85|p,w|A synth-rock take on the disco classic.|synth rock;danceable;cover|Duran Duran;INXS",
+"S|Hit and Run|Jo Jo Zep & the Falcons|1979|newwave|AU|2|70,60,70,45,30,90|p|Reggae-tinged Aussie new wave with a sly bounce.|reggae;new wave;sly|The Police;Men at Work",
+"S|Come Said the Boy|Mondo Rock|1983|rock|AU|1|50,60,45,25,35,95|r,n|A tender coming-of-age story in soft focus.|storytelling;tender;nostalgic|Little River Band;Icehouse",
+"S|Reckless|Australian Crawl|1983|rock|AU|1|45,40,30,30,50,95|r,c,n|A wistful, laid-back beach-town ballad.|laid back;wistful;surfy|Cold Chisel;The Church",
+"S|Out of Mind, Out of Sight|Models|1985|newwave|AU|2|75,70,75,45,10,90|p,r|Funky, synth-shiny Melbourne pop.|funky;synths;shiny|INXS;Duran Duran",
+"S|Live It Up|Mental As Anything|1985|pop|AU|1|60,85,60,30,35,90|p,r,n|A happy-go-lucky Sydney sing-along.|happy-go-lucky;sing-along;jaunty|Men at Work;Split Enz",
+"S|Boys in Town|Divinyls|1981|rock|AU|1|80,45,55,70,20,95|w,r|Chrissy Amphlett's snarling, schoolgirl-uniformed rock.|snarling;raw;punky|The Pretenders;Blondie",
+"S|I Touch Myself|Divinyls|1990|pop|AU|0|60,65,65,35,25,95|p|Sultry, cheeky pop-rock that went global.|sultry;cheeky;pop rock|Blondie;Roxette",
+"S|I Got You|Split Enz|1980|newwave|NZ|1|65,50,60,45,30,90|r,n|Nervy, catchy new wave about jealousy.|nervy;catchy;quirky|Crowded House;The Cars",
+"S|Locomotion|Kylie Minogue|1987|pop|AU|0|85,95,85,30,10,90|p,n|Bubblegum Stock Aitken Waterman fun.|bubblegum;bouncy;fun|Bananarama;Rick Astley",
+"S|I Should Be So Lucky|Kylie Minogue|1987|pop|AU|0|80,90,85,25,5,90|p,n|Sugary, irresistible hi-NRG pop.|sugary;hi-nrg;catchy|Bananarama;Rick Astley",
+"S|Electric Blue|Icehouse|1987|newwave|AU|1|65,65,60,35,15,90|r,n|Glossy, romantic synth-rock.|glossy;romantic;synths|INXS;Duran Duran",
+"S|Never Tear Us Apart|INXS|1988|rock|AU|0|40,40,30,35,30,95|c,d,n|A slow, string-laden waltz with a famous sax break.|waltz;strings;sax|Crowded House;U2",
+"S|What You Need|INXS|1985|rock|AU|1|80,65,85,55,15,90|p,w|Choppy, funky rock with a horn-stab chorus.|funky;choppy;horns|Duran Duran;Prince",
+"S|Beds Are Burning|Midnight Oil|1987|rock|AU|0|80,50,65,65,25,95|r,p|An urgent, chanting land-rights anthem.|urgent;chanting;political|Hunters & Collectors;U2",
+"S|T.N.T.|AC/DC|1975|rock|AU|1|85,65,55,85,15,85|w,p|Oi! Oi! Oi! A chant-along hard rock stomp.|chant-along;stomp;riffs|Rose Tattoo;The Angels",
+"S|Back in Black|AC/DC|1980|rock|AU|0|85,60,65,90,10,85|w,r,p|One of rock's most famous riffs, cool and heavy.|iconic riff;hard rock;swagger|Guns N' Roses;Led Zeppelin",
+"S|Thunderstruck|AC/DC|1990|rock|AU|0|95,65,55,95,5,80|w|A tapping, chanting, adrenaline-charged opener.|tapping riff;chanting;adrenaline|Metallica;Guns N' Roses",
+"S|Flame Trees|Cold Chisel|1984|rock|AU|0|40,40,30,30,50,95|r,n,c|A tender ode to a country town and lost love.|tender;nostalgic;piano|Jimmy Barnes;Paul Kelly",
+"S|Bow River|Cold Chisel|1979|rock|AU|1|80,60,55,70,35,90|r,w|A rollicking, slide-guitar outback rocker.|slide guitar;rollicking;outback|The Angels;AC/DC",
+"S|Too Much Ain't Enough Love|Jimmy Barnes|1987|rock|AU|1|65,55,45,60,25,100|r|A big, bluesy rock ballad from Barnesy.|big ballad;bluesy;powerful vocals|Cold Chisel;Bon Jovi",
+"S|Dumb Things|Paul Kelly & the Coloured Girls|1987|rock|AU|1|70,60,55,45,50,90|r|A punchy, wry look at all the dumb things we do.|punchy;wry;jangle|The Go-Betweens;Hunters & Collectors",
+"S|Fall at Your Feet|Crowded House|1991|pop|AU|1|45,45,35,25,55,95|c,d|Gentle, gorgeous devotion from Neil Finn.|gentle;devotional;melodic|Paul Kelly;The Beatles",
+"S|Weather with You|Crowded House|1992|pop|AU|0|55,70,45,25,60,95|r,c,n|A breezy, rootsy summer-in-a-song.|breezy;harmonies;rootsy|Paul Kelly;Neil Finn",
+"S|She's So Fine|The Easybeats|1965|rock|AU|1|85,80,70,60,35,90|p,n|A raucous, jangling Beatlemania-era rave-up.|raucous;beat;jangly|The Kinks;The Beatles",
+"S|I'll Never Find Another You|The Seekers|1964|folk|AU|0|40,65,30,10,80,100|n,d,c|A clear, tender folk-pop vow.|folk pop;tender;harmonies|The Mamas & the Papas;Peter, Paul and Mary",
+"S|Ego Is Not a Dirty Word|Skyhooks|1975|rock|AU|1|60,60,50,50,35,90|r,n|A swaggering, satirical slab of 70s Aussie glam.|glam;swagger;satirical|Sherbet;Daddy Cool",
+"S|I Want You|Savage Garden|1996|pop|AU|1|80,80,80,35,15,95|p|Rapid-fire, bubbly debut pop.|rapid-fire;bubbly;catchy|Roxette;Natalie Imbruglia",
+"S|Freak|silverchair|1997|grunge|AU|1|85,25,50,90,10,85|w|A crunching, drop-tuned blast of teenage menace.|drop-tuned;crunching;menacing|Nirvana;Soundgarden",
+"S|Into My Arms|Nick Cave and the Bad Seeds|1997|rock|AU|1|20,40,10,10,80,95|c,d|A hushed, piano-led love song and prayer.|piano;hushed;devotional|Leonard Cohen;Paul Kelly",
+"S|Black Stick|The Cruel Sea|1993|rock|AU|2|55,45,55,45,50,80|r|A dusty, swaggering surf-blues groove.|surf blues;swagger;groove|Hunters & Collectors;The Triffids",
+"S|! (The Song Formerly Known As)|Regurgitator|1997|pop|AU|1|75,85,80,35,10,85|p|Disco-pop silliness about dancing alone in your loungeroom.|disco pop;silly;danceable|TISM;Beck",
+"S|Aloha Steve and Danno|Radio Birdman|1977|rock|AU|2|90,55,55,85,15,80|w|Surf-punk blitz inspired by Hawaii Five-O.|surf punk;blistering;fun|The Saints;Ramones",
+"S|(I'm) Stranded|The Saints|1976|rock|AU|2|90,35,45,90,10,80|w|Brisbane's raw, revved-up punk shot heard around the world.|punk;raw;fast|Radio Birdman;Ramones",
+"S|See Emily Play|Pink Floyd|1967|rock|UK|1|55,60,40,45,35,85|c|Syd Barrett's whimsical, woozy psych-pop.|psychedelic;whimsical;woozy|The Beatles;Small Faces",
+"S|Purple Haze|The Jimi Hendrix Experience|1967|rock|UK|0|80,50,45,85,15,80|w,r|Fuzzed-out, mind-bending guitar fireworks.|fuzz;psychedelic;fireworks|Cream;Led Zeppelin",
+"S|Light My Fire|The Doors|1967|rock|US|0|65,55,50,45,30,90|r,p|Swirling organ and a long, hypnotic jam.|organ;hypnotic;jam|Jefferson Airplane;Santana",
+"S|Somebody to Love|Jefferson Airplane|1967|rock|US|1|75,50,50,65,30,100|r|Grace Slick's piercing, psychedelic call.|psychedelic;piercing;urgent|The Doors;Big Brother and the Holding Company",
+"S|Alone Again Or|Love|1967|folk|US|2|50,50,35,25,70,90|c|Flamenco guitar and mariachi horns in a baroque gem.|flamenco;baroque;horns|The Byrds;The Zombies",
+"S|Sunday Morning|The Velvet Underground|1966|pop|US|2|25,45,20,10,50,85|c|A hazy, celesta-chimed Sunday comedown.|hazy;celesta;gentle|Lou Reed;Nico",
+"S|My Generation|The Who|1965|rock|UK|0|85,50,50,80,25,90|w,r|Stuttering, amp-smashing mod rebellion.|mod;stuttering;loud|The Kinks;Small Faces",
+"S|Time of the Season|The Zombies|1968|pop|UK|1|50,50,55,30,35,90|c,d|Breathy, organ-swirling summer-of-love cool.|breathy;organ;cool|The Doors;The Beach Boys",
+"S|Suzanne|Leonard Cohen|1967|folk|CA|2|20,40,10,5,95,95|c|A hushed, poetic river-side reverie.|poetic;hushed;fingerpicked|Judy Collins;Nick Drake",
+"S|Mrs. Robinson|Simon & Garfunkel|1968|folk|US|0|65,75,50,30,75,95|r,n|A jaunty, strumming tune with sly wit.|strumming;jaunty;harmonies|The Byrds;The Everly Brothers",
+"S|California Dreamin'|The Mamas & the Papas|1965|pop|US|0|50,45,40,25,55,100|r,n|Wintry longing for California sunshine.|harmonies;longing;flute|The Seekers;The Byrds",
+"S|Baby Love|The Supremes|1964|soul|US|0|60,80,70,20,40,95|n,p,d|Breezy Motown heartbreak with cooing backing.|motown;breezy;cooing|The Ronettes;Martha and the Vandellas",
+"S|Everyday People|Sly and the Family Stone|1968|soul|US|1|65,90,75,30,35,90|p,r|A joyful, simple song of unity.|unity;joyful;funky|James Brown;The Staple Singers",
+"S|(Sittin' On) The Dock of the Bay|Otis Redding|1968|soul|US|0|30,45,30,10,60,95|c,d,n|Whistling, waves and wistful soul.|wistful;whistled;gentle|Sam Cooke;Bill Withers",
+"S|Son of a Preacher Man|Dusty Springfield|1968|soul|UK|0|55,65,55,25,50,100|d,n|Sultry, swinging blue-eyed soul.|sultry;swinging;soulful|Aretha Franklin;Carole King",
+"S|Feeling Good|Nina Simone|1965|soul|US|0|45,70,30,40,60,100|d,c|A slow-blooming brassy celebration of new beginnings.|brass;slow bloom;powerful|Aretha Franklin;Billie Holiday",
+"S|Crazy|Patsy Cline|1961|country|US|0|20,30,20,5,70,100|c,d,n|A heartbreak ballad in pure velvet.|velvet;heartbreak;ballad|Willie Nelson;Tammy Wynette",
+"S|Wichita Lineman|Glen Campbell|1968|country|US|1|35,40,25,15,55,95|r,c|A lonely, widescreen lineman's longing.|lonesome;strings;widescreen|Jimmy Webb;Johnny Cash",
+"S|Proud Mary|Creedence Clearwater Revival|1969|rock|US|0|65,75,60,45,50,90|r,n|A rolling river-boat rock and roll song.|rolling;swamp rock;sing-along|The Band;Tina Turner",
+"S|Whole Lotta Love|Led Zeppelin|1969|rock|UK|0|85,50,55,95,15,85|w,r|Monster riff and a freaky, swirling midsection.|monster riff;heavy;psychedelic|Deep Purple;Jimi Hendrix",
+"S|Big Yellow Taxi|Joni Mitchell|1970|folk|CA|0|60,80,50,20,85,95|r,n|A breezy, strummy protest with a cheeky laugh.|strummy;breezy;protest|Carole King;James Taylor",
+"S|Move On Up|Curtis Mayfield|1970|soul|US|1|80,95,85,40,30,90|p,r,w|Nine joyous minutes of horns, congas and uplift.|uplifting;horns;congas|Marvin Gaye;Earth, Wind & Fire",
+"S|Paranoid|Black Sabbath|1970|rock|UK|0|90,25,45,95,10,85|w|A galloping, three-minute metal blast.|metal;galloping;dark|Led Zeppelin;Deep Purple",
+"S|What's Going On|Marvin Gaye|1971|soul|US|0|45,55,55,20,45,95|d,c|A smooth, gentle plea for peace and understanding.|smooth;socially aware;gentle|Curtis Mayfield;Stevie Wonder",
+"S|Let's Stay Together|Al Green|1971|soul|US|0|40,80,55,15,45,95|d,c|Silky, romantic Memphis soul.|silky;romantic;falsetto|Marvin Gaye;Otis Redding",
+"S|It's Too Late|Carole King|1971|pop|US|1|40,40,40,15,60,95|c,d|A warm, honest piano look at a love that's run out.|piano;warm;honest|James Taylor;Carly Simon",
+"S|Heart of Gold|Neil Young|1972|folk|CA|0|40,50,25,15,90,90|r,c|Harmonica and a searching heart.|harmonica;searching;acoustic|Bob Dylan;James Taylor",
+"S|Reelin' in the Years|Steely Dan|1972|rock|US|1|75,65,55,55,35,90|r|Slick, sardonic rock with blistering guitar.|slick;sardonic;guitar solo|Doobie Brothers;Toto",
+"S|Take It Easy|Eagles|1972|country|US|1|60,80,45,30,70,95|r,n|A breezy, country-rock highway cruise.|country rock;breezy;harmonies|Jackson Browne;Linda Ronstadt",
+"S|Born to Run|Bruce Springsteen|1975|rock|US|0|90,70,50,75,25,95|r|A roaring, wall-of-sound escape anthem.|roaring;wall of sound;anthem|Cold Chisel;Tom Petty",
+"S|Wish You Were Here|Pink Floyd|1975|rock|UK|0|35,30,20,25,75,90|c,r|An aching, acoustic song for an absent friend.|aching;acoustic;reflective|Neil Young;David Gilmour",
+"S|Blue Eyes Crying in the Rain|Willie Nelson|1975|country|US|1|15,30,10,5,95,90|c,d|Sparse, tender heartbreak from the outlaw.|sparse;tender;outlaw|Johnny Cash;Patsy Cline",
+"S|Hotel California|Eagles|1976|rock|US|0|55,40,40,45,50,90|r,n|Mysterious West Coast rock with famous dueling guitars.|mysterious;dueling guitars;smooth|Fleetwood Mac;Steely Dan",
+"S|Give Up the Funk (Tear the Roof off the Sucker)|Parliament|1976|disco|US|1|75,85,95,45,20,85|p|Slow-rolling, chanting P-Funk party.|p-funk;chanting;groove|Sly and the Family Stone;Chic",
+"S|Blitzkrieg Bop|Ramones|1976|rock|US|0|95,80,60,85,15,85|w,p|Hey! Ho! Let's go! Two minutes of punk joy.|punk;chant;fast|The Saints;The Clash",
+"S|Marquee Moon|Television|1977|rock|US|2|65,45,40,55,40,80|r|Ten minutes of interlocking guitars that spiral and soar.|twin guitars;spiralling;cerebral|Patti Smith;Talking Heads",
+"S|Oxygène (Part IV)|Jean-Michel Jarre|1976|electronic|FR|2|50,60,50,15,0,0|c|A bubbling, spacey synth melody.|synths;spacey;instrumental|Kraftwerk;Vangelis",
+"S|Because the Night|Patti Smith Group|1978|rock|US|1|70,45,45,60,35,100|r|A passionate, building rock anthem co-written with Springsteen.|passionate;building;anthem|Bruce Springsteen;The Pretenders",
+"S|The Model|Kraftwerk|1978|electronic|DE|1|55,50,65,20,0,70|c,p|Cool, deadpan synth-pop about a fashion model.|synth pop;deadpan;cool|Depeche Mode;The Human League",
+"S|London Calling|The Clash|1979|rock|UK|0|75,30,55,70,25,90|r,w|A stomping, apocalyptic punk bulletin.|stomping;apocalyptic;punk|Ramones;The Jam",
+"S|Once in a Lifetime|Talking Heads|1980|newwave|US|0|70,55,80,40,20,85|p|Hypnotic funk and existential questions.|hypnotic;afro-funk;existential|Brian Eno;Peter Gabriel",
+"S|When Doves Cry|Prince|1984|pop|US|0|70,40,85,45,5,95|p|A bassless, hypnotic, utterly unique groove.|hypnotic;no bass;funky|Michael Jackson;Madonna",
+"S|You Can Call Me Al|Paul Simon|1986|pop|US|0|75,90,70,30,40,90|p,r,n|A bouncy, bass-popping mid-life romp.|bouncy;slap bass;horns|Talking Heads;Peter Gabriel",
+"S|Nasty|Janet Jackson|1986|soul|US|1|85,60,90,60,5,90|p,w|Hard-edged, clattering R&B attitude.|new jack;clattering;attitude|Michael Jackson;Prince",
+"S|With or Without You|U2|1987|rock|IE|0|45,35,30,40,30,95|c,r|A slow-building, shimmering ache.|slow build;shimmering;ache|Simple Minds;Midnight Oil",
+"S|Just Like Heaven|The Cure|1987|newwave|UK|0|70,80,60,35,25,90|r,p|A giddy, swooning burst of jangle and keys.|giddy;swooning;jangle|The Smiths;New Order",
+"S|Sweet Child o' Mine|Guns N' Roses|1987|rock|US|0|80,65,45,75,20,95|r,w|That arpeggio riff and a sweet, soaring rock love song.|arpeggio riff;soaring;hard rock|AC/DC;Bon Jovi",
+"S|Paid in Full|Eric B. & Rakim|1987|hiphop|US|1|65,55,80,45,5,85|p|Smooth flow over a classic breakbeat.|smooth flow;breakbeat;golden age|Public Enemy;Run-DMC",
+"S|Where Is My Mind?|Pixies|1988|rock|US|1|55,35,35,55,30,85|c,r|Surreal, ghostly 'ooh-ooh' alt-rock.|surreal;ghostly;alt rock|The Breeders;Nirvana",
+"S|Teen Age Riot|Sonic Youth|1988|rock|US|2|75,55,45,70,25,80|r|Chiming, detuned guitars and a slacker anthem.|detuned;chiming;slacker|Pixies;Dinosaur Jr.",
+"S|Me Myself and I|De La Soul|1989|hiphop|US|1|65,85,85,25,15,90|p|Playful, P-Funk-sampling individuality anthem.|playful;samples;bouncy|A Tribe Called Quest;The Pharcyde",
+"S|Free Fallin'|Tom Petty|1989|rock|US|0|45,60,35,25,70,95|r,n|A jangly, open-road classic about letting go.|jangly;open road;sing-along|Fleetwood Mac;Bruce Springsteen",
+"S|Can I Kick It?|A Tribe Called Quest|1990|hiphop|US|0|55,80,80,25,20,90|p,c|Laid-back, call-and-response jazz rap.|jazz rap;call and response;laid back|De La Soul;The Pharcyde",
+"S|Loaded|Primal Scream|1990|electronic|UK|1|65,85,85,30,15,40|p|A shuffling, gospel-house party epic.|shuffling;gospel house;euphoric|Happy Mondays;The Stone Roses",
+"S|Alive|Pearl Jam|1991|grunge|US|0|75,40,40,75,30,95|r,w|Soaring grunge with a towering guitar outro.|soaring;guitar solo;grunge|Soundgarden;silverchair",
+"S|Man in the Box|Alice in Chains|1991|grunge|US|1|75,15,45,85,15,90|w|Sludgy, talk-box grunge menace.|sludgy;talk box;menacing|Soundgarden;Nirvana",
+"S|Enter Sandman|Metallica|1991|rock|US|0|85,25,40,95,5,85|w|A heavy, lullaby-from-hell metal juggernaut.|heavy;juggernaut;menacing|Black Sabbath;AC/DC",
+"S|Nuthin' but a 'G' Thang|Dr. Dre|1992|hiphop|US|0|60,70,85,40,10,90|p,r|Breezy, synth-whining G-funk perfection.|g-funk;breezy;synths|Snoop Doggy Dogg;2Pac",
+"S|C.R.E.A.M.|Wu-Tang Clan|1994|hiphop|US|1|55,30,60,50,20,95|r|A moody, soulful piano loop and hard truths.|soulful loop;moody;gritty|Nas;Mobb Deep",
+"S|N.Y. State of Mind|Nas|1994|hiphop|US|2|60,25,60,55,15,100|r|Dark, jazz-piano street poetry.|jazz piano;dark;poetic|Wu-Tang Clan;The Notorious B.I.G.",
+"S|Hallelujah|Jeff Buckley|1994|rock|US|0|20,30,10,15,85,100|c|A tender, soaring take on Leonard Cohen's hymn.|tender;soaring;guitar|Leonard Cohen;Elliott Smith",
+"S|Glory Box|Portishead|1995|electronic|UK|1|35,25,45,35,20,95|c,d|Smoky, sultry trip-hop with a torch-song vocal.|trip hop;smoky;sultry|Massive Attack;Björk",
+"S|Firestarter|The Prodigy|1996|electronic|UK|0|95,35,80,95,0,70|w|Snarling, breakbeat-punk mayhem.|breakbeat;snarling;mayhem|The Chemical Brothers;Underworld",
+"S|Midnight in a Perfect World|DJ Shadow|1996|electronic|US|2|35,30,40,30,25,40|c|Melancholy, sample-built late-night drift.|samples;melancholy;late night|Portishead;Massive Attack",
+"S|On & On|Erykah Badu|1996|soul|US|1|35,55,60,15,40,95|c,d|Smoky, jazzy neo-soul cool.|neo soul;jazzy;smoky|Lauryn Hill;D'Angelo",
+"S|Don't Look Back in Anger|Oasis|1996|britpop|UK|0|60,55,40,50,45,95|r,n,p|A piano-intro'd, fist-in-the-air Britpop singalong.|sing-along;anthemic;piano|The Verve;Blur",
+"S|Ironic|Alanis Morissette|1996|rock|CA|0|60,50,40,50,45,100|r,n|A wry, quiet-loud list of life's bad timing.|wry;quiet-loud;confessional|The Cranberries;Sheryl Crow",
+"S|Say Yes|Elliott Smith|1997|folk|US|2|35,60,20,10,95,90|c|A whispered, hopeful little love song.|whispered;fingerpicked;hopeful|Nick Drake;Big Star",
+"S|Right in Time|Lucinda Williams|1998|country|US|2|45,50,40,25,65,95|r,c|A dusty, longing roots-rock ache.|roots;dusty;longing|Emmylou Harris;Steve Earle",
+"S|Every Breath You Take|The Police|1983|newwave|UK|0|40,40,45,25,35,95|c,d,n|A silky, gentle-sounding song that is absolutely about watching your every move.|silky;hypnotic;ominous|Sting;Hall & Oates",
+"S|Don't Stand So Close to Me|The Police|1980|newwave|UK|0|60,35,60,40,30,90|r,n|Reggae-rock about a teacher who really should keep his distance.|reggae rock;tense;catchy|Men at Work;The Cars",
+"S|Jessie's Girl|Rick Springfield|1981|rock|AU|0|80,65,60,60,25,95|r,p,n|An Aussie-born power-pop pine for a mate's girlfriend.|power pop;jealous;sing-along|The Cars;Hall & Oates",
+"S|My Best Friend's Girl|The Cars|1978|newwave|US|1|70,65,60,45,30,90|r,p|Handclaps, rockabilly twang and a slightly awkward situation.|handclaps;rockabilly;power pop|Blondie;Cheap Trick",
+"S|Private Eyes|Hall & Oates|1981|pop|US|0|75,70,75,40,20,95|p,r,n|A clap-along groove that is always, always watching.|clap-along;groovy;catchy|Toto;The Cars",
+"S|Hello|Lionel Richie|1984|soul|US|0|25,35,20,10,40,100|c,d,n|A tender ballad that is also, frankly, a bit much.|ballad;tender;earnest|Air Supply;Whitney Houston",
+"S|Somebody's Watching Me|Rockwell|1984|newwave|US|1|75,45,85,45,5,90|p|Paranoid synth-funk with Michael Jackson on the hook.|paranoid;synth funk;spooky|Michael Jackson;Ray Parker Jr.",
+"S|Obsession|Animotion|1984|newwave|US|2|80,40,80,50,5,95|p|Dramatic synth-pop duet about wanting someone way too much.|dramatic;synth pop;duet|Eurythmics;The Human League",
+"S|Jolene|Dolly Parton|1973|country|US|0|55,25,45,30,70,100|r,n,d|A frantic, fingerpicked plea to the woman eyeing her man.|fingerpicked;pleading;haunting|Loretta Lynn;Tammy Wynette",
+"S|Escape (The Piña Colada Song)|Rupert Holmes|1979|pop|US|1|55,80,55,15,40,95|c,r,n|A breezy yacht-rock yarn about two very sneaky singles ads.|yacht rock;breezy;storytelling|Hall & Oates;10cc",
+"S|Careless Whisper|George Michael|1984|pop|UK|0|35,30,45,20,25,100|d,c,n|That sax riff, and a guilty conscience on the dancefloor.|sax;guilty;smooth|Wham!;Sade",
+"S|Tempted|Squeeze|1981|newwave|UK|1|50,50,55,25,35,95|r,d|Soulful, organ-warmed new wave about temptation.|soulful;organ;smooth|Elvis Costello;Hall & Oates",
+"S|Smooth Operator|Sade|1984|soul|UK|1|35,40,50,15,30,95|d,c|Silky, jazz-soul portrait of a charming heartbreaker.|silky;jazzy;sax|Roxy Music;George Michael",
+"S|Secret Lovers|Atlantic Starr|1985|soul|US|2|35,45,40,10,20,95|d,c|Slow-jam confession of sneaking around.|slow jam;smooth;confessional|Lionel Richie;Luther Vandross",
+"S|Torn Between Two Lovers|Mary MacGregor|1976|pop|US|2|25,35,15,5,75,100|c|A soft, apologetic ballad about having it both ways.|soft;apologetic;ballad|Carpenters;Olivia Newton-John",
+"S|Lyin' Eyes|Eagles|1975|country|US|1|45,40,35,15,75,95|r,c|A country-rock short story about a wandering wife.|storytelling;country rock;harmonies|Linda Ronstadt;Fleetwood Mac",
+"S|Me and Mrs. Jones|Billy Paul|1972|soul|US|1|30,40,30,10,40,100|d,c|Lush Philly soul about a very regular rendezvous.|lush;philly soul;sultry|The O'Jays;Marvin Gaye",
+"S|Hit the Road Jack|Ray Charles|1961|soul|US|0|65,70,70,30,45,95|p,n|A snappy call-and-response kiss-off.|call and response;snappy;sassy|Sam Cooke;Nina Simone",
+"S|These Boots Are Made for Walkin'|Nancy Sinatra|1966|pop|US|0|60,65,55,40,45,95|p,r,n|A strutting, bass-sliding warning to a two-timer.|strutting;sliding bass;sassy|Dusty Springfield;The Ronettes",
+"S|Total Eclipse of the Heart|Bonnie Tyler|1983|pop|UK|0|55,20,25,60,30,100|r,n|Seven minutes of over-the-top, turn-around-bright-eyes drama.|melodrama;power ballad;epic|Meat Loaf;Heart",
+"S|Nothing Compares 2 U|Sinéad O'Connor|1990|pop|IE|0|25,10,20,25,30,100|c|A stark, devastating Prince-penned ache.|stark;devastating;strings|Prince;The Cranberries",
+"S|Without You|Nilsson|1971|pop|US|1|35,15,15,35,45,100|c,n|A ballad that builds into a full-throated howl of despair.|howling;ballad;strings|Badfinger;Carpenters",
+"S|Nutbush City Limits|Ike & Tina Turner|1973|rock|US|0|85,80,85,55,20,95|p,n|The song every Aussie knows the line dance to.|line dance;funky rock;stomp|Tina Turner;Sly and the Family Stone",
+"S|Come On Eileen|Dexys Midnight Runners|1982|pop|UK|0|80,90,80,40,50,95|p,n|Fiddles, dungarees and a tempo-shifting wedding classic.|fiddles;tempo shift;sing-along|The Pogues;Madness",
+"S|Footloose|Kenny Loggins|1984|rock|US|0|90,90,80,50,15,95|p,w,n|Kick-off-your-Sunday-shoes rock and roll.|rock and roll;bouncy;movie|Bonnie Tyler;Huey Lewis and the News",
+"S|Bat Out of Hell|Meat Loaf|1977|rock|US|0|90,60,45,80,25,100|r,p|Ten minutes of motorbike-revving, operatic rock melodrama.|melodrama;operatic;epic|Bonnie Tyler;Bruce Springsteen"
 ];
 
 (function(){
@@ -475,7 +571,7 @@ const OCC=[['chill','🛋️','Chilled night in'],['party','🎉','Party'],['roa
 const OCODE={c:'chill',p:'party',r:'road',d:'dinner',w:'workout',n:'nostalgic'};
 const OFIT={chill:'Great for a chilled night',party:'Great for parties',road:'Great for road trips',dinner:'Great with dinner',workout:'Great for workouts',nostalgic:'Pure nostalgia'};
 const GENRES={rock:'Rock',pop:'Pop',soul:'Soul / R&B',disco:'Disco / Funk',country:'Country',folk:'Folk',newwave:'New wave',hiphop:'Hip hop',electronic:'Electronic',grunge:'Grunge',britpop:'Britpop'};
-const FLAG={AU:'🇦🇺',US:'🇺🇸',UK:'🇬🇧',CA:'🇨🇦',IE:'🇮🇪',DE:'🇩🇪',FR:'🇫🇷',SE:'🇸🇪',NO:'🇳🇴',BE:'🇧🇪'};
+const FLAG={AU:'🇦🇺',US:'🇺🇸',UK:'🇬🇧',CA:'🇨🇦',IE:'🇮🇪',DE:'🇩🇪',FR:'🇫🇷',SE:'🇸🇪',NO:'🇳🇴',BE:'🇧🇪',NZ:'🇳🇿'};
 const DIMS=[['energy','Energy','calm','wild'],['mood','Mood','melancholy','happy'],['dance','Dance','still','groovy'],['intensity','Intensity','gentle','heavy'],['acoustic','Acoustic','electronic','acoustic'],['vocals','Vocals','instrumental','vocal-led']];
 const EL=['Mellow','Steady','Pumped'],ML=['Moody','In between','Upbeat'],SL=['Acoustic','Mixed','Electric'],LVL=['Low','Mid','High'];
 const LV=[20,50,85],SV=[80,50,15],VV=[20,55,90];
@@ -491,7 +587,7 @@ const BYID=Object.fromEntries(CAT.map(x=>[x.id,x]));
 // ---------- storage ----------
 const LS={get(k,d){try{const v=localStorage.getItem('dmm.'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('dmm.'+k,JSON.stringify(v))}catch(e){}}};
 const DEF={o:'',e:1,m:1,s:1,d:[],t:'b',g:'',au:false,xd:null,xi:null,xv:null};
-let S=Object.assign({},DEF,LS.get('mix',{}));
+let S=Object.assign({},DEF,LS.get('mix',{}));S.t='b';
 let R=LS.get('ratings',{});
 let ROOM=LS.get('room',[{n:'Me',e:1,m:2,s:2,d:80},{n:'Friend',e:1,m:1,s:0,d:70}]);
 let GAME=Object.assign({best:0},LS.get('game',{}));
@@ -505,6 +601,7 @@ function mixHash(){const a=[];if(S.o)a.push('o',S.o);a.push('e',S.e,'m',S.m,'s',
 function roomHash(){return '#room-'+ROOM.map(p=>[encodeURIComponent(p.n.replace(/[.~]/g,' ')),p.e,p.m,p.s,p.d].join('.')).join('~')}
 function readHash(){
   const h=decodeURIComponent(location.hash.slice(1)||'');if(!h)return false;
+  if(h.startsWith('crate-')){const c=CRATES.find(c=>c.id===h.slice(6));if(c){CRATE=c.id;TAB='mix';return true}return false}
   if(h.startsWith('room-')){
     const ppl=location.hash.slice(6).split('~').map(s=>{const q=s.split('.');return{n:decodeURIComponent(q[0]||'Friend').slice(0,20),e:i3(q[1]),m:i3(q[2]),s:i3(q[3]),d:DECS.includes(+q[4])?+q[4]:0}}).slice(0,8);
     if(ppl.length>=1){ROOM=ppl;LS.set('room',ROOM);TAB='room';return true}return false;
@@ -514,7 +611,6 @@ function readHash(){
     if(k==='o'&&OCC.some(o=>o[0]===v))n.o=v;
     else if(k==='e'||k==='m'||k==='s')n[k]=i3(v);
     else if(k==='d')n.d=v.split('.').map(Number).filter(x=>DECS.includes(x));
-    else if(k==='t'&&['a','s','b'].includes(v))n.t=v;
     else if(k==='g'&&GENRES[v])n.g=v;
     else if(k==='au')n.au=v==='1';
     else if(k==='xd'||k==='xi'||k==='xv')n[k]=i3(v);}
@@ -623,7 +719,7 @@ function card(it,o){
     const why=o.T?whyChips(x,o.T,o.ctx||{}):(x.country==='AU'?['🇦🇺 Aussie'+(x.tier===0?' classic':' gem')]:[]);
     h+=`<div class="cb"><p class="desc">${esc(x.desc)}</p>`;
     if(why.length)h+=`<div class="why">${why.map(w=>`<span${w.startsWith('🇦🇺')?' class="au"':''}>${esc(w)}</span>`).join('')}</div>`;
-    h+=`<p class="meta">${x.type==='album'?'💿 Album':'🎵 Song'} · ${GENRES[x.genre]} · ${FLAG[x.country]||''} · ${['Classic','Less obvious','Deep cut'][x.tier]}</p>`;
+    h+=`<p class="meta">${GENRES[x.genre]} · ${FLAG[x.country]||''} · ${['Classic','Less obvious','Deep cut'][x.tier]}</p>`;
     h+=`<div class="bars">${DIMS.map(([k,l])=>{const t=o.T&&o.T.t[k]!=null?`<i class="tick" style="left:${o.T.t[k]}%" title="You asked for ${o.T.t[k]}"></i>`:'';
       return`<div class="bar"><span>${l}</span><div class="track"><div class="fill" style="width:${x[k]}%"></div>${t}</div></div>`}).join('')}</div>`;
     if(o.T)h+=`<p class="tags" style="margin-top:-6px">▮ what it is · <b style="color:var(--ink)">|</b> what you asked for</p>`;
@@ -659,9 +755,8 @@ function renderMixCtl(){
   <div class="row"><span>⚡ Energy</span>${seg('mix','e',S.e,EL)}</div>
   <div class="row"><span>🌤️ Mood</span>${seg('mix','m',S.m,ML)}</div>
   <div class="row"><span>🎸 Sound</span>${seg('mix','s',S.s,SL)}</div>
-  <h2>Decades & format</h2>
+  <h2>Decades</h2>
   <div class="chips">${['Any',...DECS].map(d=>{const on=d==='Any'?!S.d.length:S.d.includes(d);return`<button class="chip${on?' on':''}" data-act="dec" data-v="${d}" aria-pressed="${on}">${d==='Any'?'Any':d+'s'}</button>`}).join('')}</div>
-  <div style="margin-top:10px">${seg('fmt','t',['a','s','b'].indexOf(S.t),['💿 Albums','🎵 Songs','Both'])}</div>
   <details class="geek"${GEEKOPEN?' open':''}><summary data-act="geekopen">🤓 Music Geek mode ${badge?`<span class="badge">${esc(badge)}</span>`:''}<span class="chev">›</span></summary>
    <div class="geekbody">
     <div class="row"><span>Genre</span><select data-in="genre" aria-label="Genre"><option value="">Any genre</option>${Object.entries(GENRES).map(([k,l])=>`<option value="${k}"${S.g===k?' selected':''}>${l}</option>`).join('')}</select></div>
@@ -680,8 +775,25 @@ function renderMixRes(){
   h+=`<div class="btns"><button class="btn" data-act="surprise">🎲 Surprise me</button><button class="btn pri" data-act="share-mix">📤 Share</button></div>`;
   $('#mix-res').innerHTML=h;
 }
+// ---------- cheeky crates ----------
+const CRATES=[
+ {id:'stalker',e:'🕵️',n:'Stalker Songs',b:'Sweet melodies. Deeply concerning lyrics. Please do not dedicate these to anyone.',s:['The Police|Every Breath You Take','The Police|Don\'t Stand So Close to Me','Rick Springfield|Jessie\'s Girl','The Cars|My Best Friend\'s Girl','Hall & Oates|Private Eyes','Lionel Richie|Hello','Rockwell|Somebody\'s Watching Me','Blondie|One Way or Another','Animotion|Obsession','Blondie|Hanging on the Telephone','Duran Duran|Hungry Like the Wolf','Savage Garden|I Want You']},
+ {id:'cheater',e:'💔',n:'Cheater Songs',b:'80s sneakers (and a few 70s repeat offenders). Lipstick on the collar not included.',s:['George Michael|Careless Whisper','Rupert Holmes|Escape (The Piña Colada Song)','Squeeze|Tempted','Atlantic Starr|Secret Lovers','Dolly Parton|Jolene','Eagles|Lyin\' Eyes','Billy Paul|Me and Mrs. Jones','Mary MacGregor|Torn Between Two Lovers','Marvin Gaye|I Heard It Through the Grapevine','Fleetwood Mac|Little Lies','Michael Jackson|Billie Jean','Sade|Smooth Operator']},
+ {id:'riddance',e:'👋',n:'Good Riddance',b:'For when they finally pack up their stuff. Door\'s that way, mate.',s:['Ray Charles|Hit the Road Jack','Nancy Sinatra|These Boots Are Made for Walkin\'','Gloria Gaynor|I Will Survive','Carly Simon|You\'re So Vain','Linda Ronstadt|You\'re No Good','TLC|No Scrubs','Sherbet|Howzat','Fleetwood Mac|Go Your Own Way','ABBA|Knowing Me, Knowing You','Blondie|Heart of Glass']},
+ {id:'uglycry',e:'😭',n:'Ugly-Cry Ballads',b:'Tissues ready. Mascara optional. Lean into it.',s:['Bonnie Tyler|Total Eclipse of the Heart','Sinéad O\'Connor|Nothing Compares 2 U','Nilsson|Without You','ABBA|The Winner Takes It All','Air Supply|All Out of Love','Roxette|It Must Have Been Love','Heart|Alone','George Jones|He Stopped Loving Her Today','Moving Pictures|What About Me','Crowded House|Don\'t Dream It\'s Over','Patsy Cline|Crazy','Cold Chisel|Flame Trees']},
+ {id:'karaoke',e:'🎤',n:'Karaoke Regret',b:'Songs you are definitely not able to sing. Do it anyway.',s:['Queen|Bohemian Rhapsody','Journey|Don\'t Stop Believin\'','Bon Jovi|Livin\' on a Prayer','a-ha|Take On Me','Whitney Houston|I Wanna Dance with Somebody (Who Loves Me)','John Farnham|You\'re the Voice','Bonnie Tyler|Total Eclipse of the Heart','Cold Chisel|Khe Sanh','Tina Turner|The Best','Oasis|Wonderwall','Guns N\' Roses|Sweet Child o\' Mine','Meat Loaf|Bat Out of Hell']},
+ {id:'dad',e:'🕺',n:'Dad-Dancing at the Wedding',b:'Guaranteed to get Uncle Kev on the dancefloor, tie round his head.',s:['Ike & Tina Turner|Nutbush City Limits','Daddy Cool|Eagle Rock','John Paul Young|Love Is in the Air','Dexys Midnight Runners|Come On Eileen','Kenny Loggins|Footloose','Village People|Y.M.C.A.','Kool & the Gang|Celebration','Earth, Wind & Fire|September','ABBA|Dancing Queen','Boney M.|Rasputin','Hall & Oates|You Make My Dreams','Kylie Minogue|Locomotion']}
+].map(c=>Object.assign(c,{items:c.s.map(s=>{const [a,t]=s.split('|');return BYID[slug(a+'-'+t)]}).filter(Boolean)}));
+let CRATE='';
+function renderCrates(){
+  const c=CRATES.find(c=>c.id===CRATE);
+  let h=`<h2>😂 Cheeky crates</h2><div class="chips">${CRATES.map(k=>`<button class="chip${k.id===CRATE?' on':''}" data-act="crate" data-v="${k.id}" aria-pressed="${k.id===CRATE}">${k.e} ${k.n}</button>`).join('')}</div>`;
+  if(c)h+=`<div class="box crate" id="crate-box"><h3>${c.e} ${c.n}</h3><p class="sub">${esc(c.b)}</p><ol class="pl">${c.items.map(x=>`<li><span class="t"><b>${esc(x.title)}</b><small>${esc(x.artist)} · ${x.year}${x.country==='AU'?' · 🇦🇺':''}</small></span>${playBtn(x)}</li>`).join('')}</ol>
+   <div class="btns"><button class="btn pri" data-act="share-crate">📤 Share this crate</button></div></div>`;
+  $('#mix-crates').innerHTML=h;
+}
 const gemList=list=>list.filter(i=>i.x.tier===2).slice(0,8);
-function renderMix(){renderMixCtl();renderMixRes()}
+function renderMix(){renderMixCtl();renderMixRes();renderCrates()}
 function mixChanged(){SURP=-1;saveMix();renderMix()}
 
 // ---------- ROOM ----------
@@ -743,8 +855,7 @@ function renderMine(){
 function renderExCtl(){
   let h=`<div style="margin-top:6px">${seg('exmode','mode',EX.mode==='browse'?0:1,['🔍 Browse','🎯 Guess the year'])}</div>`;
   if(EX.mode==='browse')h+=`<div style="margin-top:12px"><input class="search" type="search" placeholder="Search title, artist, genre…" value="${esc(EX.q)}" data-in="search" aria-label="Search"></div>
-   <div class="chips" style="margin-top:10px">${[0,...DECS].map(d=>`<button class="chip${EX.d===d?' on':''}" data-act="ex-dec" data-v="${d}">${d?d+'s':'Any'}</button>`).join('')}<button class="chip au${EX.au?' on':''}" data-act="ex-au">🇦🇺</button></div>
-   <div style="margin-top:10px">${seg('ex','t',['a','s','b'].indexOf(EX.t),['💿 Albums','🎵 Songs','Both'])}</div>`;
+   <div class="chips" style="margin-top:10px">${[0,...DECS].map(d=>`<button class="chip${EX.d===d?' on':''}" data-act="ex-dec" data-v="${d}">${d?d+'s':'Any'}</button>`).join('')}<button class="chip au${EX.au?' on':''}" data-act="ex-au">🇦🇺</button></div>`;
   $('#ex-ctl').innerHTML=h;
 }
 function exList(){const qq=EX.q.trim().toLowerCase();
@@ -771,7 +882,7 @@ function renderGame(){
   const x=G.cur;
   let h=`<div class="box game"><div class="score"><div><b>${G.score}/${G.played}</b>Score</div><div><b>${G.streak}</b>Streak</div><div><b>${GAME.best}</b>Best streak</div></div>
   <h2>Pass the phone · what year?</h2>
-  <p class="meta">${x.type==='album'?'💿 Album':'🎵 Song'} · ${GENRES[x.genre]} · ${FLAG[x.country]||''}</p>
+  <p class="meta">${GENRES[x.genre]} · ${FLAG[x.country]||''}</p>
   <p class="clue">“${esc(x.desc)}”</p>
   <div class="bars">${DIMS.map(([k,l])=>`<div class="bar"><span>${l}</span><div class="track"><div class="fill" style="width:${x[k]}%"></div></div></div>`).join('')}</div>
   <p class="tags">Sounds like: ${x.tags.map(esc).join(', ')}</p>
@@ -839,6 +950,8 @@ document.addEventListener('click',e=>{
     case 'ex-more':EX.n+=40;renderExRes();break;
     case 'g-ans':{if(G.ans!=null)break;G.ans=+v;G.played++;if(G.ans===G.cur.year){G.score++;G.streak++;if(G.streak>GAME.best){GAME.best=G.streak;LS.set('game',GAME)}}else G.streak=0;renderGame();break}
     case 'g-next':newRound();renderGame();break;
+    case 'crate':CRATE=CRATE===v?'':v;renderCrates();if(CRATE){try{history.replaceState(null,'','#crate-'+CRATE)}catch(_){}const el=$('#crate-box');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}else saveMix();break;
+    case 'share-crate':{const c=CRATES.find(c=>c.id===CRATE);if(c)share('Decades Mood Mixer',`${c.e} ${c.n} — ${c.b}\n\n`+c.items.map((x,j)=>`${j+1}. ${x.title} — ${x.artist} (${x.year})`).join('\n'),base()+'#crate-'+c.id);break}
     case 'play':e.preventDefault();if(BYID[b.dataset.id])playOnSpotify(BYID[b.dataset.id]);break;
   }
 });
@@ -859,9 +972,10 @@ window.addEventListener('hashchange',()=>{if(readHash())showTab(TAB)});
 // ---------- boot ----------
 readHash();
 showTab(TAB);
+if(CRATE){try{history.replaceState(null,'','#crate-'+CRATE)}catch(_){}setTimeout(()=>{const el=$('#crate-box');if(el)el.scrollIntoView({block:'start'})},50)}
 if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))
   window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
-window.DMM={CAT,mixRanked,threePicks};
+window.DMM={CAT,mixRanked,threePicks,CRATES};
 })();
 
 </script>
