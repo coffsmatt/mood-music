@@ -1,6 +1,6 @@
 // Decades Mood Mixer service worker.
 // Bump CACHE every time you upload a new version so phones pick up the change.
-const CACHE = 'dmm-v3';
+const CACHE = 'dmm-v5';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-180.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
